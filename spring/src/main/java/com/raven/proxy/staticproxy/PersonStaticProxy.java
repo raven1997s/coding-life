@@ -20,6 +20,7 @@ public class PersonStaticProxy implements Human {
         this.human = human;
     }
 
+    @Override
     public void eat() {
         System.out.println("eat 前置加强！");
         // 代理类调用被代理的类方法

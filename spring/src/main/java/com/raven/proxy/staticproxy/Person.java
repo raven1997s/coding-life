@@ -14,6 +14,7 @@ public class Person implements Human {
     private String name;
     private int age;
 
+    @Override
     public void eat() {
         System.out.println(name + ":eat food ...");
     }
