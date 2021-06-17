@@ -114,7 +114,7 @@ public class LambdaSpecialityTest {
         new LambdaSpecialityTest().doReferenceMethod2((System.out::println));
 
         // 在方法中传递接口的时候再进行定义该怎么玩 要怎么玩 想怎么玩
-        doReferenceMethod((str -> System.out.println(String.format("自定义：%s",str))));
+        doReferenceMethod((str -> System.out.println(String.format("自定义：%s", str))));
     }
 
     // 静态方法引用
