@@ -19,5 +19,6 @@ public class MethodFactoryTest {
         JavaCourseFactory javaCourseFactory2 = JavaCourseFactory.createCourseFactory();
         System.out.println(javaCourseFactory);
         System.out.println(javaCourseFactory2);
+        System.out.println("test");
     }
 }
