@@ -4,11 +4,11 @@ import com.raven.pattern.factory.GoCourse;
 import com.raven.pattern.factory.ICourse;
 
 /**
- * @PackageName: com.raven.pattern.factory.simplefactory
- * @ClassName: CourseFactory
+ * @PackageName: com.raven.pattern.factory.methodfactory
+ * @ClassName: GoCourseFactory
  * @Blame: raven
  * @Date: 2021-06-17 21:00
- * @Description: 创建课程对象简单工厂
+ * @Description: 创建GO课程对象方法工厂
  */
 public class GoCourseFactory implements IFactory{
 

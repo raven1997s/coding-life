@@ -2,7 +2,7 @@ package com.raven.pattern.factory;
 
 /**
  * @PackageName: com.raven.pattern.factory.simplefactory
- * @ClassName: JavaCourse
+ * @ClassName: GoCourse
  * @Blame: raven
  * @Date: 2021-06-17 20:57
  * @Description:

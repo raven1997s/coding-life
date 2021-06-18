@@ -1,16 +1,16 @@
-package com.raven.pattern.factory.methodfactory;
+package com.raven.pattern.factory.abstractfactory;
 
 import com.raven.pattern.factory.ICourse;
 import com.raven.pattern.factory.JavaCourse;
 
 /**
- * @PackageName: com.raven.pattern.factory.methodfactory
+ * @PackageName: com.raven.pattern.factory.abstractfactory
  * @ClassName: JavaCourseFactory
  * @Blame: raven
  * @Date: 2021-06-17 21:00
- * @Description: 创建JAVA课程对象方法工厂
+ * @Description: 创建课程对象简单工厂
  */
-public class JavaCourseFactory  implements IFactory{
+public class JavaCourseFactory implements ICourseFactory {
 
     private static JavaCourseFactory javaCourseFactory;
 
@@ -36,10 +36,21 @@ public class JavaCourseFactory  implements IFactory{
 
     /**
      * 单一职责，创建java课程对象
+     *
      * @return
      */
     @Override
     public ICourse createCourse() {
         return new JavaCourse();
+    }
+
+    @Override
+    public ISource createSource() {
+        return new JavaSource();
+    }
+
+    @Override
+    public IVideo createVideo() {
+        return new JavaVideo();
     }
 }
