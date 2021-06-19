@@ -17,14 +17,14 @@ public class SimpleFactoryTest {
 //        course.schooling();
 
         // 通过传入课程名字的方式创建课程对象
-//        CourseFactory courseFactory = CourseFactory.createCourseFactory();
+//        CourseFactory courseFactory = CourseFactory.getInstance();
 //        ICourse goCourse = courseFactory.createICourse("go");
 //        goCourse.schooling();
 //        ICourse javaCourse = courseFactory.createICourse("java");
 //        javaCourse.schooling();
 
         // 通过传入课程对象的实现类对象的class对象创建课程对象
-        CourseFactory courseFactory = CourseFactory.createCourseFactory();
+        CourseFactory courseFactory = CourseFactory.getInstance();
         ICourse goCourse = courseFactory.createICourse(GoCourse.class);
         goCourse.schooling();
 

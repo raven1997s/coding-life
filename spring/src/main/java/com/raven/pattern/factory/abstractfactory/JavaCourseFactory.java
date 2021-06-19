@@ -12,7 +12,7 @@ import com.raven.pattern.factory.JavaCourse;
  */
 public class JavaCourseFactory implements ICourseFactory {
 
-    private static JavaCourseFactory javaCourseFactory;
+    private static volatile JavaCourseFactory javaCourseFactory = null;
 
     private JavaCourseFactory() {
     }
@@ -22,7 +22,7 @@ public class JavaCourseFactory implements ICourseFactory {
      *
      * @return
      */
-    public static JavaCourseFactory createCourseFactory() {
+    public static JavaCourseFactory getInstance() {
         if (javaCourseFactory == null) {
             synchronized (JavaCourseFactory.class) {
                 if (javaCourseFactory == null) {

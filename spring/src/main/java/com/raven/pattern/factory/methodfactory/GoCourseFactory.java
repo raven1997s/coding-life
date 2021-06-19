@@ -10,9 +10,9 @@ import com.raven.pattern.factory.ICourse;
  * @Date: 2021-06-17 21:00
  * @Description: 创建GO课程对象方法工厂
  */
-public class GoCourseFactory implements IFactory{
+public class GoCourseFactory implements IFactory {
 
-    private static GoCourseFactory goCourseFactory;
+    private static volatile GoCourseFactory goCourseFactory = null;
 
     private GoCourseFactory() {
     }
@@ -22,7 +22,7 @@ public class GoCourseFactory implements IFactory{
      *
      * @return
      */
-    public static GoCourseFactory createCourseFactory() {
+    public static GoCourseFactory getInstance() {
         if (goCourseFactory == null) {
             synchronized (GoCourseFactory.class) {
                 if (goCourseFactory == null) {
@@ -36,6 +36,7 @@ public class GoCourseFactory implements IFactory{
 
     /**
      * 单一职责，创建go课程对象
+     *
      * @return
      */
     @Override

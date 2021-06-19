@@ -12,11 +12,11 @@ import com.raven.pattern.factory.ICourse;
 public class MethodFactoryTest {
 
     public static void main(String[] args) {
-        JavaCourseFactory javaCourseFactory = JavaCourseFactory.createCourseFactory();
+        JavaCourseFactory javaCourseFactory = JavaCourseFactory.getInstance();
         ICourse javaCourse = javaCourseFactory.createCourse();
         javaCourse.schooling();
         // 顺便验证单例模式创建工厂对象
-        JavaCourseFactory javaCourseFactory2 = JavaCourseFactory.createCourseFactory();
+        JavaCourseFactory javaCourseFactory2 = JavaCourseFactory.getInstance();
         System.out.println(javaCourseFactory);
         System.out.println(javaCourseFactory2);
     }

@@ -12,7 +12,7 @@ import com.raven.pattern.factory.ICourse;
 public class AbstractFactoryTest {
 
     public static void main(String[] args) {
-        ICourseFactory courseFactory = JavaCourseFactory.createCourseFactory();
+        ICourseFactory courseFactory = JavaCourseFactory.getInstance();
         ICourse course = courseFactory.createCourse();
         ISource source = courseFactory.createSource();
         IVideo video = courseFactory.createVideo();

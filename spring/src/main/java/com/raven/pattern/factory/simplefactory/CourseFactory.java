@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class CourseFactory {
 
-    private static CourseFactory courseFactory;
+    private static volatile CourseFactory courseFactory = null;
 
     private CourseFactory() {
     }
@@ -26,7 +26,7 @@ public class CourseFactory {
      *
      * @return
      */
-    public static CourseFactory createCourseFactory() {
+    public static CourseFactory getInstance() {
         if (courseFactory == null) {
             synchronized (CourseFactory.class) {
                 if (courseFactory == null) {
