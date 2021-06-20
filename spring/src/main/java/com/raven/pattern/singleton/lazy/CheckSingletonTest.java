@@ -5,7 +5,7 @@ package com.raven.pattern.singleton.lazy;
  * @ClassName: CheckSingletonTest
  * @Blame: raven
  * @Date: 2021-06-19 22:33
- * @Description:
+ * @Description: 模拟实现double check 少一个if判断时多线程安全问题
  */
 public class CheckSingletonTest {
 

@@ -23,7 +23,7 @@ public class LazyInnerClassSingleton {
      * 最优的方案！
      * @return
      */
-    public static final LazyInnerClassSingleton getInstance() {
+    public static LazyInnerClassSingleton getInstance() {
         return LazyHolder.singleton;
     }
 

@@ -30,6 +30,12 @@ public class LazyDoubleCheckSingleton {
                 // 当A线程创建完对象 但getInstance方法没有return前，B线程也会获取到锁对象，并且创建对象，从而破坏单例
                 if (lazyDoubleCheckSingleton == null) {
                     lazyDoubleCheckSingleton = new LazyDoubleCheckSingleton();
+                    // CPU执行时候会转换为JVM指令执行
+                    // 指令重排序的问题
+                    // 1.分配内存给这个对象
+                    // 2.初始化对象
+                    // 3.将初始化好的对象和内存地址建立关联，赋值
+                    // 4.用户初次访问
                 }
             }
         }
