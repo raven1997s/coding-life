@@ -9,6 +9,9 @@ package com.raven.pattern.singleton.register;
  */
 public enum  EnumSingleton {
 
+    /**
+     * Enum的一个实例对象
+     */
     INSTANCE;
 
     private Object data;
@@ -21,5 +24,7 @@ public enum  EnumSingleton {
         this.data = data;
     }
 
-
+    public static EnumSingleton getInstance(){
+        return INSTANCE;
+    }
 }
