@@ -16,6 +16,4 @@ public class ThreadLocalSingleton {
     public static ThreadLocalSingleton getInstance() {
         return threadLocalInstance.get();
     }
-
-
 }
