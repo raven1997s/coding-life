@@ -1,4 +1,4 @@
-package com.raven.proxy.dynamicproxy.cglib;
+package com.raven.pattern.proxy.dynamicproxy.cglib;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cglib.proxy.Enhancer;
@@ -40,6 +40,7 @@ public class CglibFactory implements MethodInterceptor {
         return enhancer.create();
     }
 
+    @Override
     public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
         if (StringUtils.equals(method.getName(),"eat")){
             System.out.println("前置加强");

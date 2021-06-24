@@ -1,4 +1,4 @@
-package com.raven.proxy.dynamicproxy.jdk;
+package com.raven.pattern.proxy.dynamicproxy.jdk;
 
 public interface Human {
     /**

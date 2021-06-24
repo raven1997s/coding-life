@@ -1,9 +1,7 @@
-package com.raven.proxy.dynamicproxy.jdk;
+package com.raven.pattern.proxy.dynamicproxy.jdk;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
@@ -26,19 +24,18 @@ public class JdkDynamicMain {
          * 第二个参数: 被代理类所实现的所有接口
          * 第三个参数: 执行处理逻辑
          */
-        Human human = (Human) Proxy.newProxyInstance(Person.class.getClassLoader(), Person.class.getInterfaces(), new InvocationHandler() {
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                // 只有方法为 eat时 才进行加强
-                if (StringUtils.equals(method.getName(), "eat")) {
-                    System.out.println("动态代理前置加强...");
-                    Object invoke = method.invoke(person, args);
-                    System.out.println("动态代理后置加强...");
-                    return invoke;
-                } else {
-                    return method.invoke(person, args);
-                }
-            }
-        });
+        Human human = (Human) Proxy.newProxyInstance(Person.class.getClassLoader(), Person.class.getInterfaces(),
+                (proxy, method, args1) -> {
+                    // 只有方法为 eat时 才进行加强
+                    if (StringUtils.equals(method.getName(), "eat")) {
+                        System.out.println("动态代理前置加强...");
+                        Object invoke = method.invoke(person, args1);
+                        System.out.println("动态代理后置加强...");
+                        return invoke;
+                    } else {
+                        return method.invoke(person, args1);
+                    }
+                });
 
         /**
          * 执行代理方法

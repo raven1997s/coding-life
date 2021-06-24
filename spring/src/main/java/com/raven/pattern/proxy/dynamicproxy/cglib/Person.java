@@ -1,4 +1,4 @@
-package com.raven.proxy.dynamicproxy.jdk;
+package com.raven.pattern.proxy.dynamicproxy.cglib;
 
 import lombok.Data;
 
@@ -10,16 +10,14 @@ import lombok.Data;
  * @Description:
  */
 @Data
-public class Person implements Human {
+public class Person  {
     private String name;
     private int age;
 
-    @Override
     public void eat() {
         System.out.println(name + ":eat food ...");
     }
 
-    @Override
     public void sleep() {
         System.out.println(name + ":sleep  ...");
     }

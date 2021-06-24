@@ -1,4 +1,4 @@
-package com.raven.proxy.staticproxy;
+package com.raven.pattern.proxy.staticproxy;
 
 /**
  * @PackageName: com.raven.proxy.main
