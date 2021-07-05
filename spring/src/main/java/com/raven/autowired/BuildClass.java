@@ -19,10 +19,10 @@ public class BuildClass {
     }
 
     /**
-     * E:\develop\coding-life\spring\src\main\java\com\raven\autowired>javac BuildClass.java
+     * E:\develop\coding-life\springconfig\src\main\java\com\raven\autowired>javac BuildClass.java
      *
-     * E:\develop\coding-life\spring\src\main\java\com\raven\autowired>javap -verbose BuildClass.class
-     * Classfile /E:/develop/coding-life/spring/src/main/java/com/raven/autowired/BuildClass.class
+     * E:\develop\coding-life\springconfig\src\main\java\com\raven\autowired>javap -verbose BuildClass.class
+     * Classfile /E:/develop/coding-life/springconfig/src/main/java/com/raven/autowired/BuildClass.class
      *   Last modified 2021-6-1; size 437 bytes
      *   MD5 checksum ac120dc00314ef1d489dcab8fa779290
      *   Compiled from "BuildClass.java"
