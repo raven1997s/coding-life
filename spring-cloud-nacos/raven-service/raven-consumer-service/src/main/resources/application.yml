@@ -1,0 +1,7 @@
+server:
+  port: 38943
+spring:
+  application:
+    name: consumer
+  profiles:
+    active: dev

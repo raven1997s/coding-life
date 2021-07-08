@@ -14,6 +14,7 @@
     <modules>
         <module>raven-driver-service</module>
         <module>raven-order-service</module>
+        <module>raven-consumer-service</module>
     </modules>
 
 

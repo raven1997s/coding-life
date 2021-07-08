@@ -1,0 +1,7 @@
+server:
+  port: 28943
+spring:
+  application:
+    name: order
+  profiles:
+    active: dev

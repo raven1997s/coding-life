@@ -1,7 +1,7 @@
 package com.raven.driver.mapper;
 
 import com.raven.driver.entity.DriverEntity;
-import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.BaseMapper;
 
 /**
@@ -11,7 +11,7 @@ import tk.mybatis.mapper.common.BaseMapper;
  * @Date: 2021-07-08 15:49
  * @Description:
  */
-@Mapper
+@Repository
 public interface DriverMapper extends BaseMapper<DriverEntity> {
 
     DriverEntity findById(int id);
