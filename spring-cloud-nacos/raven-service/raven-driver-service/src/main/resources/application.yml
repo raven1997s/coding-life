@@ -1,0 +1,7 @@
+server:
+  port: 18943
+spring:
+  application:
+    name: driver
+  profiles:
+    active: dev
