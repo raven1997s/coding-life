@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * @PackageName: com.edaijia.edipao.driver.feign
+ * @PackageName: com.raven.driver.feign
  * @ClassName: DriverFeign
  * @Blame: raven
  * @Date: 2021-07-07 17:19
