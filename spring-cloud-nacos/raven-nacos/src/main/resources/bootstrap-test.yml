@@ -6,4 +6,3 @@ spring:
       config:
         server-addr: 1.116.121.207:8848
         file-extension: yml
-
