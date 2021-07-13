@@ -12,21 +12,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope
 public class ConfigController {
 
-    @Value("${useLocalCache:false}")
-    private boolean useLocalCache;
-
     @Autowired
     private NacosConfigService nacosConfigService;
-    /**
-     * http://localhost:8080/config/get
-     */
+    @Value(value = "${demo.data-id-name}")
+    private String dataIdName;
+    @Value(value ="${demo.group-name}")
+    private String groupName;
+    @Value(value ="${demo.env}")
+    private String env;
+
     @RequestMapping("/get")
-    public boolean get() {
-        return useLocalCache;
-    }
-    @RequestMapping("/get2")
-    public String get2() {
-       return nacosConfigService.getConfig("","",0);
+    public String getDev() {
+       return dataIdName;
     }
 
 }

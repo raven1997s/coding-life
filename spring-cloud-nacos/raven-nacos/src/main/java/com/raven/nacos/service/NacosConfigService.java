@@ -13,22 +13,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class NacosConfigService {
 
-    @Value("${raven.name}")
+    @Value("${spring.cloud.nacos.config.server-addr}")
     private String serverAddr;
 
+
     public String getConfig(String dataId, String group, long timeoutMs) {
+//        String content ="";
 //        try {
-////            String dataId = "{dataId}";
-////            String group = "{group}";
 //            Properties properties = new Properties();
 //            properties.put("serverAddr", serverAddr);
 //            ConfigService configService = NacosFactory.createConfigService(properties);
-//            String content = configService.getConfig(dataId, group, 5000);
+//            content = configService.getConfig(dataId, group, timeoutMs);
 //            System.out.println(content);
 //        } catch (NacosException e) {
 //            // TODO Auto-generated catch block
 //            e.printStackTrace();
 //        }
-        return serverAddr;
+        return "";
     }
 }
