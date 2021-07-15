@@ -9,7 +9,9 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: 1.116.121.207:8848
+  main:
+    allow-bean-definition-overriding: true
 #eureka:
 #  client:
 #    service-url:

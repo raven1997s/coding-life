@@ -23,7 +23,7 @@ public class ConfigController {
 
     @RequestMapping("/get")
     public String getDev() {
-       return dataIdName;
+       return dataIdName + "-" + groupName + "-" + env;
     }
 
 }

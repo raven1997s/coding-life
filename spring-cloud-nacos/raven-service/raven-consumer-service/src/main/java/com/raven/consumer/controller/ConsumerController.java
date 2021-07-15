@@ -2,6 +2,7 @@ package com.raven.consumer.controller;
 
 import com.raven.driver.entity.DriverEntity;
 import com.raven.driver.feign.DriverFeign;
+import com.raven.driver.feign.DriverFeign2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +25,12 @@ public class ConsumerController {
     @Autowired
     private DriverFeign driverFeign;
 
+    @Autowired
+    private DriverFeign2 driverFeign2;
     @RequestMapping(value = "/test/{id}", method = RequestMethod.GET)
     public String findDriverName(@PathVariable int id) {
         DriverEntity driverEntity = driverFeign.getOne(id);
+        driverFeign2.getOne2(id);
         return Objects.nonNull(driverEntity) ? driverEntity.getName() : "查无此人";
     }
 }

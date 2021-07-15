@@ -27,5 +27,10 @@ public class DriverController {
     public DriverEntity getOne(@PathVariable(value = "id") int id) {
         return driverService.findById(id);
     }
+
+    @GetMapping("/get2/{id}")
+    public DriverEntity getOne2(@PathVariable(value = "id") int id){
+        return driverService.findById(id);
+    }
 }
 
