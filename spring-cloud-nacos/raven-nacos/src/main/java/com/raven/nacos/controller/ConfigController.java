@@ -14,11 +14,11 @@ public class ConfigController {
 
     @Autowired
     private NacosConfigService nacosConfigService;
-    @Value(value = "${demo.data-id-name}")
+    @Value(value = "${demo.data_id_name}")
     private String dataIdName;
-    @Value(value ="${demo.group-name}")
+    @Value(value ="${demo.group_name}")
     private String groupName;
-    @Value(value ="${demo.env}")
+    @Value(value ="${demo.env.name}")
     private String env;
 
     @RequestMapping("/get")

@@ -7,6 +7,11 @@ spring:
         server-addr: 1.116.121.207:8848 # Nacos 服务器地址
         file-extension: yml # 使用的 Nacos 配置集的 dataId 的文件拓展名，同时也是 Nacos 配置集的配置格式，默认为 properties
         namespace: 08c3e74b-5b7c-4924-a593-e4cf2714e87f # 使用的 Nacos 的命名空间，默认为 null
-        name: com.raven.nacos # 使用的 Nacos 配置集的 dataId，默认为 spring.application.name
-        group: raven-nacos # 使用的 Nacos 配置分组，默认为 DEFAULT_GROUP
+        name: nacosConfig # 使用的 Nacos 配置集的 dataId，默认为 spring.application.name + file-extension
+        group: DEV_GROUP # 使用的 Nacos 配置分组，默认为 DEFAULT_GROUP
 
+# 踩坑标识：
+#  nacos会根据 namespace group dataId 找到唯一的配置文件，并进行加载。多次启动报错，找不到指定配置？
+# 当没有配置spring-cloud--nacos-config-name时，dataId = spring.application.name + file-extension(默认为properties)
+# 当配置name后 dataId = name + file-extension = nacosConfig.yaml
+# 如果在指定的namespace - group - dataId 中没有找到对应的配置 springboot就会报错
