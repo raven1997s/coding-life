@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 1.116.121.207:8848
+        namespace: 8798f07a-b777-47fb-bd2b-9fa811ccccdb
+        group: TEST_GROUP
+      config:
+        file-extension: yml
+        namespace: 8798f07a-b777-47fb-bd2b-9fa811ccccdb
+        group: TEST_GROUP
+        server-addr: 1.116.121.207:8848
+        name: consumer-service-config
+        extension-configs:
+          - data-id: common-dataBase-config.yml
+            group: TEST_GROUP
+            refresh: true
+  main:
+    allow-bean-definition-overriding: true

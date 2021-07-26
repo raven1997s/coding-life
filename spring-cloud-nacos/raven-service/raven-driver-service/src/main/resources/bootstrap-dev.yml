@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 1.116.121.207:8848
+        namespace: 31101cde-16dc-41b9-9154-992b6b848819
+        group: DEV_GROUP
+      config:
+        file-extension: yml
+        namespace: 31101cde-16dc-41b9-9154-992b6b848819
+        group: DEV_GROUP
+        server-addr: 1.116.121.207:8848
+        name: driver-service-config
+        extension-configs:
+          - data-id: common-dataBase-config.yml
+            group: DEV_GROUP
+            refresh: true
+  main:
+    allow-bean-definition-overriding: true

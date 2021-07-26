@@ -1,13 +1,11 @@
-server:
-  port: 48943
 spring:
   cloud:
     nacos:
       config:
         server-addr: 1.116.121.207:8848 # Nacos 服务器地址
         file-extension: yml # 使用的 Nacos 配置集的 dataId 的文件拓展名，同时也是 Nacos 配置集的配置格式，默认为 properties
-        namespace: 08c3e74b-5b7c-4924-a593-e4cf2714e87f # 使用的 Nacos 的命名空间，默认为 null
-        name: nacosConfig # 使用的 Nacos 配置集的 dataId，默认为 spring.application.name + file-extension
+        namespace: 31101cde-16dc-41b9-9154-992b6b848819 # 使用的 Nacos 的命名空间，默认为 null
+        name: nacos-config # 使用的 Nacos 配置集的 dataId，默认为 spring.application.name + file-extension
         group: DEV_GROUP # 使用的 Nacos 配置分组，默认为 DEFAULT_GROUP
 
 # 踩坑标识：

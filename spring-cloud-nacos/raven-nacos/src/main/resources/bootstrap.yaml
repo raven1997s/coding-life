@@ -1,3 +1,5 @@
+server:
+  port: 48943
 spring:
   application:
     name: nacos-config
