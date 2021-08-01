@@ -3,7 +3,7 @@ package com.raven.autowired;
 import lombok.Data;
 
 /**
- * @PackageName: com.raven.springboot.entity
+ * @PackageName: com.raven.springboot.simple
  * @ClassName: PersonController
  * @Blame: raven
  * @Date: 2021-05-31 20:49

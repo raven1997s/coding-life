@@ -3,7 +3,7 @@ package com.raven.entity;
 import lombok.Data;
 
 /**
- * @PackageName: com.raven.stream.entity
+ * @PackageName: com.raven.stream.simple
  * @ClassName: User
  * @Blame: raven
  * @Date: 2021-06-02 15:53

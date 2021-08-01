@@ -35,7 +35,7 @@ public class EntityCodeGenerateUtils {
 
 	public static void main(String[] args) {
 
-		String packageOutPath = "com.edaijia.edipao.hongyan.domain.entity";//指定实体生成所在包的路径
+		String packageOutPath = "com.edaijia.edipao.hongyan.domain.simple";//指定实体生成所在包的路径
 		String suffix = "Entity";
 		generateEntityCode("t_waybill_vls_hongyan", packageOutPath, suffix);
 	}
@@ -166,7 +166,7 @@ public class EntityCodeGenerateUtils {
 		sb.append("import com.zhouyutong.zorm.dao.jdbc.annotation.Table;\r\n");
 		sb.append("import lombok.Data;\r\n");
 		sb.append("import com.zhouyutong.zorm.annotation.PK;\r\n");
-		sb.append("import com.zhouyutong.zorm.entity.IdEntity;\r\n");
+		sb.append("import com.zhouyutong.zorm.simple.IdEntity;\r\n");
 		sb.append("import io.swagger.annotations.ApiModel;\r\n");
 		sb.append("import io.swagger.annotations.ApiModelProperty;\r\n");
 		sb.append("\r\n");
