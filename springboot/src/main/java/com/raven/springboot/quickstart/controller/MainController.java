@@ -1,4 +1,4 @@
-package com.raven.springboot.controller;
+package com.raven.springboot.quickstart.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +12,7 @@ import java.util.Map;
  * @ClassName: MainController
  * @Blame: raven
  * @Date: 2021-05-28 17:23
- * @Description:
+ * @Description: 人脸识别
  */
 @RestController
 @RequestMapping("/api")
