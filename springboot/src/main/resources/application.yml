@@ -4,3 +4,6 @@ server:
 megvii:
   appKey: XXX
   secret: XXX
+  returnUrl: XXX
+  notifyUrl: XXX
+  webTitle: 代码生涯

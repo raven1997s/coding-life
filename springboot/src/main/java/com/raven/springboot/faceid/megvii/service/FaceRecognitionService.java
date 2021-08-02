@@ -19,6 +19,12 @@ public class FaceRecognitionService {
     @Value("${megvii.appKey}")
     private String appKey;
 
+    @Value("${megvii.returnUrl}")
+    private String returnUrl;
+
+    @Value("${megvii.notifyUrl}")
+    private String notifyUrl;
+
     public MsgResult getToken(String bizNo){
 
 
@@ -32,6 +38,9 @@ public class FaceRecognitionService {
         return H5GetTokenDTO.builder()
                 .apiKey(appKey)
                 .apiSecret(secret)
+                .returnUrl(returnUrl)
+                .notifyUrl(notifyUrl)
+                .bizNo(bizNo)
                 .build();
     }
 }
