@@ -1,4 +1,4 @@
-package com.raven.springboot.common;
+package com.raven.springboot.common.constant;
 
 import java.io.Serializable;
 

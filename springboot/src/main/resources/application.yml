@@ -4,6 +4,6 @@ server:
 megvii:
   appKey: XXX
   secret: XXX
-  returnUrl: XXX
-  notifyUrl: XXX
+  returnUrl: https://www.bilibili.com/
+  notifyUrl: https://www.bilibili.com/
   webTitle: 代码生涯
