@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @PackageName: com.raven.springboot.service.faceid.megvii
@@ -49,16 +50,22 @@ public class FaceRecognitionService {
         String responseJson =  requestMegviiGetResultUrl(getResultDTO);
 
         // 返回调用结果
-        return pareseGetResultResponseJson(responseJson);
+        return paresGetResultResponseJson(responseJson);
     }
 
-    private MsgResult pareseGetResultResponseJson(String responseJson) {
+    private MsgResult paresGetResultResponseJson(String responseJson) {
         JSONObject jsonObject = JSONObject.parseObject(responseJson);
         String errorMessage = jsonObject.getString(MegviiConstant.ERROR_MESSAGE);
         if (StringUtils.isNotBlank(errorMessage)){
             log.info("Megvii | 获取result请求失败，失败原因 {}",errorMessage);
             return MsgResult.error("获取result请求失败");
         }
+
+        MsgResult msgResult = this.checkReturnDataInfo(JSON.toJSONString(jsonObject));
+        if (!msgResult.hasSuccess()){
+            return msgResult;
+        }
+
         return MsgResult.success(jsonObject);
     }
 
@@ -107,4 +114,77 @@ public class FaceRecognitionService {
                 .idcard_name(idcardName)
                 .build();
     }
+    /**
+     * 校验人脸识别信息
+     *
+     * @param dataJson
+     * @return
+     */
+    public MsgResult checkReturnDataInfo(String dataJson) {
+
+        if (StringUtils.isEmpty(dataJson)) {
+            log.error("Megvii | 旷视人脸识别消息接收错误,dataJson = {}", dataJson);
+            return MsgResult.error("人脸识别错误！");
+        }
+
+        JSONObject dataJsonObject = JSONObject.parseObject(dataJson);
+
+        // 检验FaceID Lite 的使用状态
+        String requestId = dataJsonObject.getString("request_id");
+        String status = dataJsonObject.getString("status");
+        String statusDesc = MegviiConstant.getStatusDesc(status);
+        if (!StringUtils.equals(MegviiConstant.OK, statusDesc)) {
+            log.error("Megvii | 旷视人脸识别消息接收错误, request_id:{}, 错误原因:{}", requestId, statusDesc);
+            return MsgResult.error("人脸识别错误！");
+        }
+
+        // 活体检测结果
+        JSONObject livenessResult = dataJsonObject.getJSONObject("liveness_result");
+        String result = livenessResult.getString("result");
+        if (!StringUtils.equals(MegviiConstant.LIVENESS_RESULT_PASS, result)) {
+            log.error("Megvii | 旷视人脸识别消息接收错误, 活体检测失败, request_id:{}", requestId);
+            return MsgResult.error("人脸识别错误！");
+        }
+
+
+        // 人脸比对结果风险
+        JSONObject verifyResult = dataJsonObject.getJSONObject("verify_result");
+        if (this.verifyResultRisk(verifyResult, requestId)) {
+            return MsgResult.error("人脸识别错误！");
+        }
+
+        return MsgResult.success();
+    }
+
+    /**
+     * 校验是否为同一人
+     *
+     * @param verifyResult
+     * @param requestId
+     * @return
+     */
+    private boolean verifyResultRisk(JSONObject verifyResult, String requestId) {
+        if (Objects.isNull(verifyResult)) {
+            return true;
+        }
+
+        String verifyResultErrorMessage = MegviiConstant.getVerifyResultErrorMessage(MegviiConstant.ERROR_MESSAGE);
+        if (!StringUtils.equals(MegviiConstant.OK, verifyResultErrorMessage)) {
+            log.error("Megvii | 旷视人脸识别消息接收错误, 在做人脸比对的时候出现错误, request_id:{}, 错误原因:{}", requestId, verifyResult.getString(MegviiConstant.ERROR_MESSAGE));
+            return true;
+        }
+
+        JSONObject resultFaceid = verifyResult.getJSONObject("result_faceid");
+        // 综合分数的置信度
+        Double confidence = resultFaceid.getDouble("confidence");
+        JSONObject thresholds = resultFaceid.getJSONObject("thresholds");
+        // 风险为万分之一的置信度阈值
+        Double score = thresholds.getDouble("1e-4");
+        if (confidence < score) {
+            log.error("Megvii | 旷视人脸识别消息接收错误, 系统认证不是同一个人, request_id:{}", requestId);
+            return true;
+        }
+        return false;
+    }
+
 }

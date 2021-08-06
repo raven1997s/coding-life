@@ -38,4 +38,11 @@ class FaceRecognitionServiceTest{
         MsgResult result = faceRecognitionService.getResult("1627972354,2536dc52-0b48-4816-9506-e98932533ddc");
         System.out.println(result);
     }
+
+
+    @Test
+    public void checkReturnDataInfo(){
+        MsgResult result = faceRecognitionService.checkReturnDataInfo("xxx");
+        System.out.println(result);
+    }
 }

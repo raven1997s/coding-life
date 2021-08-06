@@ -4,6 +4,8 @@ server:
 megvii:
   appKey: XXX
   secret: XXX
+  # 验证通过后跳转的页面
   returnUrl: https://www.bilibili.com/
+  # 验证后回调的接口
   notifyUrl: https://www.bilibili.com/
   webTitle: 代码生涯
