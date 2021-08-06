@@ -29,7 +29,7 @@ class FaceRecognitionServiceTest{
 
     @Test
     public void getTokenTest(){
-        MsgResult result = faceRecognitionService.getToken("or00000", "610624199703233918", "高宁");
+        MsgResult result = faceRecognitionService.getToken("or00000", "610624XXXXXXX", "XXX");
         System.out.println(result);
     }
 

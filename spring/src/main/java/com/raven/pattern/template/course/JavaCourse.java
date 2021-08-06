@@ -28,7 +28,4 @@ public class JavaCourse extends AbstractNetworkCourse {
     void submitJob() {
         System.out.println("如果java老师有布置作业，我就写！");
     }
-
-
-
 }
