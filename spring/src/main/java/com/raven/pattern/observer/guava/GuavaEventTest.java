@@ -7,7 +7,7 @@ import com.google.common.eventbus.EventBus;
  * @ClassName: GuavaEventTest
  * @Blame: raven
  * @Date: 2021-08-07 21:19
- * @Description:
+ * @Description: 多线程
  */
 public class GuavaEventTest {
 
