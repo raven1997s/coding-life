@@ -20,6 +20,9 @@ public class WaitThread extends Thread {
         synchronized (lock) {
             System.out.println("wait before:" + Thread.currentThread().getName() + " running");
             try {
+                // 会做俩件事
+                // 1.将当前线程阻塞加入等待队列
+                // 2.释放锁
                 lock.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
