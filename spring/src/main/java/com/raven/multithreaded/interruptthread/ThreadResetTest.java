@@ -18,7 +18,7 @@ public class ThreadResetTest {
                 // 默认为false status = 0
                 if (Thread.currentThread().isInterrupted()){
                     System.out.println("before:" + Thread.currentThread().isInterrupted());
-                    // 复位 回到初始状态
+                    // 复位 回到初始状态false
                     Thread.interrupted();
                     System.out.println("after:" + Thread.currentThread().isInterrupted());
                 }
