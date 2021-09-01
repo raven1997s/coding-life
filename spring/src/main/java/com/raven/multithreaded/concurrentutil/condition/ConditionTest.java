@@ -1,8 +1,6 @@
 package com.raven.multithreaded.concurrentutil.condition;
 
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.*;
 
 /**
  * @PackageName: com.raven.multithreaded.concurrentutil.condition
