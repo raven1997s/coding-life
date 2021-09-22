@@ -276,7 +276,9 @@ public class CHMTest{
                     advance = true; // already processed
                 else {
                     // 数据迁移
-                    // 主要做俩个事情  ln地位链 hn高位链
+                    // 主要做俩个事情  
+                    // 1.将链表中的数据分为ln地位链 hn高位链
+                    // 2.将数据放入新的数组列表下
                     synchronized (f) {
                         if (tabAt(tab, i) == f) {
                             Node<K,V> ln, hn;
