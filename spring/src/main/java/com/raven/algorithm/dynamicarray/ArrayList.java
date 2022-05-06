@@ -9,15 +9,15 @@ import java.util.Arrays;
  *
  * @author raven
  */
-public class ArrayList {
+public class ArrayList<E> {
     private int size;
-    private int[] elements;
+    private E[] elements;
     private static final int DEFAULT_CAPACITY = 16;
     private static final int NOT_FOUND_ELEMENT = -1;
 
     public ArrayList(int capaticy) {
         capaticy = capaticy <= 0 ? DEFAULT_CAPACITY : capaticy;
-        elements = new int[capaticy];
+        elements = (E[]) new Object[capaticy];
     }
 
     public ArrayList() {
@@ -36,7 +36,7 @@ public class ArrayList {
      *
      * @param element
      */
-    public void add(int element) {
+    public void add(E element) {
         add(element, size);
     }
 
@@ -46,10 +46,11 @@ public class ArrayList {
      * @param element
      * @param index
      */
-    public void add(int element, int index) {
-        if (index < 0 || index > size) {
-            throw new ArrayIndexOutOfBoundsException("index :" + index + ", size: " + size);
-        }
+    public void add(E element, int index) {
+        rangeCheckForAdd(index);
+
+        // 根据最新的元素个数来判断是否需要扩容
+        ensureCapacity(size + 1);
         // 0 1 2 3 4
         // 1 2 3 4 5
         // 将原index ～ size - 1 的所有数据 向后移一位
@@ -66,14 +67,12 @@ public class ArrayList {
      * @param index
      * @return
      */
-    public int remove(int index) {
+    public E remove(int index) {
         // 0 1 2 3 4
         // 1 2 3 4 5
         // 将原index ～ size - 1 的所有数据 向前移动一位
-        if (index < 0 || index >= size) {
-            throw new ArrayIndexOutOfBoundsException("index :" + index + ", size: " + size);
-        }
-        int oldElement = elements[index];
+        rangeCheck(index);
+        E oldElement = elements[index];
         for (int i = index + 1; i <= size - 1; i++) {
             elements[i - 1] = elements[i];
         }
@@ -87,7 +86,7 @@ public class ArrayList {
      * @param element
      * @return
      */
-    public boolean contains(int element) {
+    public boolean contains(E element) {
         return indexOf(element) != NOT_FOUND_ELEMENT;
     }
 
@@ -97,10 +96,8 @@ public class ArrayList {
      * @param index
      * @return
      */
-    public int get(int index) {
-        if (index < 0 || index >= size) {
-            throw new ArrayIndexOutOfBoundsException("index :" + index + ", size: " + size);
-        }
+    public E get(int index) {
+        rangeCheck(index);
         return elements[index];
     }
 
@@ -111,11 +108,10 @@ public class ArrayList {
      * @param element 要替换的元素
      * @return 被替换的元素值
      */
-    public int set(int index, int element) {
-        if (index < 0 || index >= size) {
-            throw new ArrayIndexOutOfBoundsException("index :" + index + ", size: " + size);
-        }
-        int old = elements[index];
+    public E set(int index, E element) {
+        rangeCheck(index);
+
+        E old = elements[index];
         elements[index] = element;
         return old;
     }
@@ -142,7 +138,7 @@ public class ArrayList {
      * @param element
      * @return
      */
-    public int indexOf(int element) {
+    public int indexOf(E element) {
         for (int i = 0; i < size; i++) {
             if (elements[i] == element) {
                 return i;
@@ -151,12 +147,46 @@ public class ArrayList {
         return NOT_FOUND_ELEMENT;
     }
 
+    private void rangeCheck(int index) {
+        if (index < 0 || index >= size) {
+            throw new ArrayIndexOutOfBoundsException("index :" + index + ", size: " + size);
+        }
+    }
+
+    private void rangeCheckForAdd(int index) {
+        if (index < 0 || index > size) {
+            throw new ArrayIndexOutOfBoundsException("index :" + index + ", size: " + size);
+        }
+    }
+
+    /**
+     * 确保有足够的容量存储元素
+     *
+     * @param capacity
+     */
+    private void ensureCapacity(int capacity) {
+        // 获取原本的容量 如果新的元素数 >  原本的容量则需要扩容
+        int oldCapacity = elements.length;
+        if (oldCapacity > capacity) {
+            return;
+        }
+        // 扩容 扩容需要copy原来的数组为一个新的数组
+        // 计算扩容的数量  扩容1/5倍
+        capacity = oldCapacity + (oldCapacity >> 1);
+        E[] newElements = (E[]) new Object[capacity];
+        for (int i = 0; i < size; i++) {
+            newElements[i] = elements[i];
+        }
+        elements = newElements;
+        System.out.println(oldCapacity + "扩容为" + capacity);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("ArrayList{size=").append(size).append(", elements=[");
         for (int i = 0; i < size; i++) {
-            if (i != 0 ){
+            if (i != 0) {
                 sb.append(",");
             }
             sb.append(elements[i]);

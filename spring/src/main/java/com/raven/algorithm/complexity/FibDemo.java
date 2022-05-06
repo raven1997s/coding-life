@@ -66,6 +66,6 @@ public class FibDemo {
         //Times.test("a", () -> System.out.println(fib2(40)));
         //Times.test("b", () -> System.out.println(fib1(40)));
         Times.test("c", () -> System.out.println(fib3(400000)));
-        Times.test("D", () -> System.out.println(fib4(400000)));
+        Times.test("D ", () -> System.out.println(fib4(400000)));
     }
 }
