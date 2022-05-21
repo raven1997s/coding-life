@@ -9,11 +9,3 @@ megvii:
   # 验证后回调的接口
   notifyUrl: https://www.bilibili.com/
   webTitle: 代码生涯
-aliyun:
-  oss:
-    bucketName: dipaov2
-    publicAccessDomain: http://dipaov2.oss-cn-shanghai.aliyuncs.com/
-    #internalEndpoint: oss-cn-shanghai-internal.aliyuncs.com
-    internalEndpoint: oss-cn-shanghai.aliyuncs.com
-    accessKeyId: LTAI4FvJXhoqcbd8BbDMJKRD
-    accessKeySecret: bMUAoAWo6I4uVVeLqbgbkjpD3nwavh
