@@ -1,5 +1,6 @@
 package com.raven.algorithm.dynamicarray;
 
+import com.google.common.collect.Lists;
 import com.raven.algorithm.dynamicarray.entity.Car;
 
 /**
@@ -41,9 +42,22 @@ public class Main {
         ArrayList<Car> carList = new ArrayList<>();
         carList.add(new Car("汽车", 12));
         carList.add(new Car("火车", 12));
+        carList.add(null);
+        carList.add(null);
+        int i = carList.indexOf(null);
+        System.out.println(i);
         System.out.println(carList);
-        carList.remove(0);
-        carList.set(0, new Car("动车", 200));
+        System.out.println(carList.remove(null));
         System.out.println(carList);
+        carList.clear();
+        // 提醒垃圾回收
+        System.gc();
+        //carList.remove(0);
+        //carList.set(0, new Car("动车", 200));
+        //ArrayList<Integer> ints = new ArrayList<>();
+        //ints.add(1);
+        //System.out.println(ints);
+        //System.out.println(carList);
+        //java.util.ArrayList<Object> objects = Lists.newArrayList();
     }
 }

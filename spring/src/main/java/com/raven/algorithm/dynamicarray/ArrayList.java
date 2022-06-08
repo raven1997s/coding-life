@@ -54,8 +54,14 @@ public class ArrayList<E> {
         // 0 1 2 3 4
         // 1 2 3 4 5
         // 将原index ～ size - 1 的所有数据 向后移一位
-        for (int i = size - 1; i >= index; i--) {
-            elements[i + 1] = elements[i];
+        //for (int i = size - 1; i >= index; i--) {
+        //    elements[i + 1] = elements[i];
+        //}
+        // 0 1 2 3 4
+        // 1 2 3 4 5
+        // 将原 > index ～ size 的所有数据 向后移一位
+        for (int i = size; i > index; i--) {
+            elements[i] = elements[i - 1];
         }
         elements[index] = element;
         size++;
@@ -68,18 +74,21 @@ public class ArrayList<E> {
      * @return
      */
     public E remove(int index) {
-        // 0 1 2 3 4
-        // 1 2 3 4 5
+        // index   0 1 2 3 4
+        // element 1 2 3 4 5
         // 将原index ～ size - 1 的所有数据 向前移动一位
         rangeCheck(index);
         E oldElement = elements[index];
-        for (int i = index + 1; i <= size - 1; i++) {
+        for (int i = index + 1; i < size; i++) {
             elements[i - 1] = elements[i];
         }
-        size--;
+        elements[--size] = null;
         return oldElement;
     }
 
+    public E remove(E element){
+        return remove(indexOf(element));
+    }
     /**
      * 判断列表中是否包含指定元素
      *
@@ -120,6 +129,9 @@ public class ArrayList<E> {
      * 清空列表
      */
     public void clear() {
+        for (int i = 0; i < size; i++) {
+            elements[i] = null;
+        }
         size = 0;
     }
 
@@ -139,9 +151,17 @@ public class ArrayList<E> {
      * @return
      */
     public int indexOf(E element) {
-        for (int i = 0; i < size; i++) {
-            if (elements[i] == element) {
-                return i;
+        if (element == null) {
+            for (int i = 0; i < size; i++) {
+                if (elements[i] == (element)) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (element.equals(elements[i])) {
+                    return i;
+                }
             }
         }
         return NOT_FOUND_ELEMENT;
@@ -191,7 +211,7 @@ public class ArrayList<E> {
             }
             sb.append(elements[i]);
         }
-        sb.append("]");
+        sb.append("]}");
         return sb.toString();
     }
 }

@@ -1,7 +1,5 @@
 package com.raven.springboot;
 
-import com.edaijia.edipao.SysMain;
-import com.edaijia.edipao.application.utils.EnvHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,13 +18,13 @@ import javax.annotation.PostConstruct;
  * @version
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = SysMain.class)
+//@SpringBootTest(classes = SysMain.class)
 @AutoConfigureMockMvc
 @Slf4j
 public class BaseTest extends ApplicationObjectSupport {
 
     static {
-        EnvHelper.setActive("dev");
+        //EnvHelper.setActive("dev");
     }
 
     @PostConstruct
