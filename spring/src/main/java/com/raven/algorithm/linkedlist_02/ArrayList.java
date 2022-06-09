@@ -1,6 +1,4 @@
-package com.raven.algorithm.dynamicarray;
-
-import java.util.Arrays;
+package com.raven.algorithm.linkedlist_02;
 
 /**
  * Description:
@@ -9,11 +7,9 @@ import java.util.Arrays;
  *
  * @author raven
  */
-public class ArrayList<E> {
-    private int size;
+public class ArrayList<E> extends AbstractList<E>{
     private E[] elements;
     private static final int DEFAULT_CAPACITY = 16;
-    private static final int NOT_FOUND_ELEMENT = -1;
 
     public ArrayList(int capaticy) {
         capaticy = capaticy <= 0 ? DEFAULT_CAPACITY : capaticy;
@@ -25,27 +21,12 @@ public class ArrayList<E> {
     }
 
     /**
-     * @return 数组的长度
-     */
-    public int size() {
-        return size;
-    }
-
-    /**
-     * 在末尾添加一个元素
-     *
-     * @param element
-     */
-    public void add(E element) {
-        add(element, size);
-    }
-
-    /**
      * 在index的位置插入一个元素
      *
      * @param element
      * @param index
      */
+    @Override
     public void add(E element, int index) {
         rangeCheckForAdd(index);
 
@@ -73,6 +54,7 @@ public class ArrayList<E> {
      * @param index
      * @return
      */
+    @Override
     public E remove(int index) {
         // index   0 1 2 3 4
         // element 1 2 3 4 5
@@ -86,15 +68,13 @@ public class ArrayList<E> {
         return oldElement;
     }
 
-    public E remove(E element){
-        return remove(indexOf(element));
-    }
     /**
      * 判断列表中是否包含指定元素
      *
      * @param element
      * @return
      */
+    @Override
     public boolean contains(E element) {
         return indexOf(element) != NOT_FOUND_ELEMENT;
     }
@@ -105,6 +85,7 @@ public class ArrayList<E> {
      * @param index
      * @return
      */
+    @Override
     public E get(int index) {
         rangeCheck(index);
         return elements[index];
@@ -117,6 +98,7 @@ public class ArrayList<E> {
      * @param element 要替换的元素
      * @return 被替换的元素值
      */
+    @Override
     public E set(int index, E element) {
         rangeCheck(index);
 
@@ -128,6 +110,7 @@ public class ArrayList<E> {
     /**
      * 清空列表
      */
+    @Override
     public void clear() {
         for (int i = 0; i < size; i++) {
             elements[i] = null;
@@ -136,20 +119,12 @@ public class ArrayList<E> {
     }
 
     /**
-     * 判断列表是否为空
-     *
-     * @return
-     */
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    /**
      * 返回指定element的位置
      *
      * @param element
      * @return
      */
+    @Override
     public int indexOf(E element) {
         if (element == null) {
             for (int i = 0; i < size; i++) {
@@ -165,18 +140,6 @@ public class ArrayList<E> {
             }
         }
         return NOT_FOUND_ELEMENT;
-    }
-
-    private void rangeCheck(int index) {
-        if (index < 0 || index >= size) {
-            throw new ArrayIndexOutOfBoundsException("index :" + index + ", size: " + size);
-        }
-    }
-
-    private void rangeCheckForAdd(int index) {
-        if (index < 0 || index > size) {
-            throw new ArrayIndexOutOfBoundsException("index :" + index + ", size: " + size);
-        }
     }
 
     /**

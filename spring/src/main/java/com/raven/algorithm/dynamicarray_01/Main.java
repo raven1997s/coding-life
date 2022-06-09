@@ -1,7 +1,6 @@
-package com.raven.algorithm.dynamicarray;
+package com.raven.algorithm.dynamicarray_01;
 
-import com.google.common.collect.Lists;
-import com.raven.algorithm.dynamicarray.entity.Car;
+import com.raven.algorithm.dynamicarray_01.entity.Car;
 
 /**
  * Description:

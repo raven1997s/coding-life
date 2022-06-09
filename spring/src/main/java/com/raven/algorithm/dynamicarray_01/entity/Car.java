@@ -1,4 +1,4 @@
-package com.raven.algorithm.dynamicarray.entity;
+package com.raven.algorithm.dynamicarray_01.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

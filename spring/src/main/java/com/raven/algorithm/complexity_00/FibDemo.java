@@ -1,4 +1,4 @@
-package com.raven.algorithm.complexity;
+package com.raven.algorithm.complexity_00;
 
 import com.raven.algorithm.Times;
 
