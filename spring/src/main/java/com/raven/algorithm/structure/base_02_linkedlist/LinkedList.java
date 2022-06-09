@@ -1,9 +1,4 @@
-package com.raven.algorithm.linkedlist_02;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.w3c.dom.Node;
+package com.raven.algorithm.structure.base_02_linkedlist;
 
 /**
  * Description:

@@ -1,6 +1,6 @@
-package com.raven.algorithm.dynamicarray_01;
+package com.raven.algorithm.structure.base_01_dynamicarray;
 
-import com.raven.algorithm.dynamicarray_01.entity.Car;
+import com.raven.algorithm.structure.base_01_dynamicarray.entity.Car;
 
 /**
  * Description:

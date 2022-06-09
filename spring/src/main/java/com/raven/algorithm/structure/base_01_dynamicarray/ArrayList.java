@@ -1,4 +1,4 @@
-package com.raven.algorithm.dynamicarray_01;
+package com.raven.algorithm.structure.base_01_dynamicarray;
 
 /**
  * Description:

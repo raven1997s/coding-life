@@ -1,4 +1,4 @@
-package com.raven.algorithm.linkedlist_02;
+package com.raven.algorithm.structure.base_02_linkedlist;
 
 /**
  * Description:
