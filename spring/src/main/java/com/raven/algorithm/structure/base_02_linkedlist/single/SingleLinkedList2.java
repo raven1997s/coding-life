@@ -1,4 +1,6 @@
-package com.raven.algorithm.structure.base_02_linkedlist;
+package com.raven.algorithm.structure.base_02_linkedlist.single;
+
+import com.raven.algorithm.structure.base_02_linkedlist.AbstractList;
 
 /**
  * Description:
@@ -7,11 +9,11 @@ package com.raven.algorithm.structure.base_02_linkedlist;
  *
  * @author raven
  */
-public class LinkedList2<E> extends AbstractList<E> {
+public class SingleLinkedList2<E> extends AbstractList<E> {
 
     private Node<E> first;
 
-    public LinkedList2() {
+    public SingleLinkedList2() {
         // 初始化链表时构建一个虚拟节点
         this.first = new Node<>(null, null);
     }
@@ -105,7 +107,7 @@ public class LinkedList2<E> extends AbstractList<E> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("LinkedList{size=").append(size).append(", elements=[");
+        sb.append("SingleLinkedList{size=").append(size).append(", elements=[");
         Node<E> node = first.next ;
         for (int i = 0; i < size; i++) {
             if (i != 0) {

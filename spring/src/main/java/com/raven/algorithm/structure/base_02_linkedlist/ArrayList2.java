@@ -5,20 +5,20 @@ import com.raven.algorithm.structure.base_02_linkedlist.AbstractList;
 /**
  * Description:
  * date: 2022/4/30 10:39
- * 自定义 ArrayList
+ * 自定义 ArrayList (正数版)
  *
  * @author raven
  */
-public class ArrayList<E> extends AbstractList<E> {
+public class ArrayList2<E> extends AbstractList<E> {
     private E[] elements;
     private static final int DEFAULT_CAPACITY = 16;
 
-    public ArrayList(int capaticy) {
+    public ArrayList2(int capaticy) {
         capaticy = capaticy <= 0 ? DEFAULT_CAPACITY : capaticy;
         elements = (E[]) new Object[capaticy];
     }
 
-    public ArrayList() {
+    public ArrayList2() {
         this(DEFAULT_CAPACITY);
     }
 
@@ -81,6 +81,8 @@ public class ArrayList<E> extends AbstractList<E> {
             elements[i - 1] = elements[i];
         }
         elements[--size] = null;
+        // 删除的时候进行缩容判断
+        trim();
         return oldElement;
     }
 
@@ -159,7 +161,7 @@ public class ArrayList<E> extends AbstractList<E> {
             return;
         }
         // 扩容 扩容需要copy原来的数组为一个新的数组
-        // 计算扩容的数量  扩容1/5倍
+        // 计算扩容的数量  扩容1/2倍
         capacity = oldCapacity + (oldCapacity >> 1);
         E[] newElements = (E[]) new Object[capacity];
         for (int i = 0; i < size; i++) {
@@ -167,6 +169,27 @@ public class ArrayList<E> extends AbstractList<E> {
         }
         elements = newElements;
         System.out.println(oldCapacity + "扩容为" + capacity);
+    }
+
+    /**
+     * 缩容 当数组中元素被删除后，数组中元素当数量远小于数组容量，造成空间的浪费 则需要进行缩容
+     */
+    private void trim() {
+        int oldCapacity = elements.length;
+        int newCapacity = oldCapacity >> 1;
+        // 如果元素的个数大于 缩容一半后新的容量则不需要缩容，也就是当数组元素比容量一般还小当时候，再进行缩容。
+        if (size >= newCapacity || newCapacity <= DEFAULT_CAPACITY){
+            return;
+        }
+
+        // 缩容
+        // 创建一个新的数组
+        E[] newElements = (E[]) new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newElements[i] = elements[i];
+        }
+        elements = newElements;
+        System.out.println(oldCapacity + "缩容为：" + newCapacity);
     }
 
     @Override

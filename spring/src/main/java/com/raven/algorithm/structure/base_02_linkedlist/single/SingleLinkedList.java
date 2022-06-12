@@ -1,4 +1,6 @@
-package com.raven.algorithm.structure.base_02_linkedlist;
+package com.raven.algorithm.structure.base_02_linkedlist.single;
+
+import com.raven.algorithm.structure.base_02_linkedlist.AbstractList;
 
 /**
  * Description:
@@ -6,7 +8,7 @@ package com.raven.algorithm.structure.base_02_linkedlist;
  *
  * @author raven
  */
-public class LinkedList<E> extends AbstractList<E> {
+public class SingleLinkedList<E> extends AbstractList<E> {
 
     private Node<E> first;
 
@@ -23,6 +25,13 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public void add(E element, int index) {
         rangeCheckForAdd(index);
+        /**
+         * 需要通过node查找到前一个节点 可能一次找到，也可能需要遍历完整个链表
+         * 时间复杂度：
+         * 最好：O(1)
+         * 最坏：O(n)
+         * 平均：O(n)
+         */
         if (index == 0) {
             //  新创建节点的next 指向之前的first
             //  first再指向新节点
@@ -40,6 +49,13 @@ public class LinkedList<E> extends AbstractList<E> {
 
     @Override
     public E remove(int index) {
+        /**
+         * 需要通过node查找到前一个节点 可能一次找到，也可能需要遍历完整个链表
+         * 时间复杂度：
+         * 最好：O(1)
+         * 最坏：O(n)
+         * 平均：O(n)
+         */
         rangeCheck(index);
         Node<E> node = first;
         if (index == 0) {
@@ -65,11 +81,25 @@ public class LinkedList<E> extends AbstractList<E> {
      */
     @Override
     public E get(int index) {
+        /**
+         * 需要通过node查找到前一个节点 可能一次找到，也可能需要遍历完整个链表
+         * 时间复杂度：
+         * 最好：O(1)
+         * 最坏：O(n)
+         * 平均：O(n)
+         */
         return node(index).element;
     }
 
     @Override
     public E set(int index, E element) {
+        /**
+         * 需要通过node查找到前一个节点 可能一次找到，也可能需要遍历完整个链表
+         * 时间复杂度：
+         * 最好：O(1)
+         * 最坏：O(n)
+         * 平均：O(n)
+         */
         // 获取当前索引对应的节点
         Node<E> node = node(index);
         // 获取当前节点的元素
@@ -109,7 +139,7 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("LinkedList{size=").append(size).append(", elements=[");
+        sb.append("SingleLinkedList{size=").append(size).append(", elements=[");
         Node<E> node = first;
         for (int i = 0; i < size; i++) {
             if (i != 0) {
