@@ -10,7 +10,9 @@ public class Main {
     public static void main(String[] args) {
         List<Integer> linkedList = new LinkedList<>();
         linkedList.add(1);
+        System.out.println(linkedList);
         linkedList.add(2, 1);
+        System.out.println(linkedList);
         linkedList.add(2, 0);
         System.out.println(linkedList);
         System.out.println("contains 1 : " + linkedList.contains(1));

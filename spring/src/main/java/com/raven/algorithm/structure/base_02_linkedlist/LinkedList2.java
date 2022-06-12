@@ -3,12 +3,18 @@ package com.raven.algorithm.structure.base_02_linkedlist;
 /**
  * Description:
  * date: 2022/6/8 21:53
+ * 使用虚拟节点
  *
  * @author raven
  */
-public class LinkedList<E> extends AbstractList<E> {
+public class LinkedList2<E> extends AbstractList<E> {
 
     private Node<E> first;
+
+    public LinkedList2() {
+        // 初始化链表时构建一个虚拟节点
+        this.first = new Node<>(null, null);
+    }
 
     static class Node<E> {
         public Node<E> next;
@@ -23,17 +29,12 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public void add(E element, int index) {
         rangeCheckForAdd(index);
-        if (index == 0) {
-            //  新创建节点的next 指向之前的first
-            //  first再指向新节点
-            first = new Node<>(first, element);
-        } else {
-            // 获取当前index前一个节点
-            Node<E> pre = node(index - 1);
-            // 前一个节点的next 改为当前节点的next
-            // 前一个节点的next指向当前节点
-            pre.next = new Node<>(pre.next, element);
-        }
+        // 获取当前index前一个节点
+        // index == 0 时，pre就是虚拟节点
+        Node<E> pre = index == 0 ? first : node(index - 1);
+        // 前一个节点的next 改为当前节点的next
+        // 前一个节点的next指向当前节点
+        pre.next = new Node<>(pre.next, element);
         size++;
     }
 
@@ -41,18 +42,13 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public E remove(int index) {
         rangeCheck(index);
-        Node<E> node = first;
-        if (index == 0) {
-            // 当index 为0 时，将first指向当前节点的下一个节点
-            first = node.next;
-        } else {
-            // 获取指定index的前一个节点
-            Node<E> pre = node(index - 1);
-            // 返回被删除的当前节点，也就是当前节点的前一个节点的next
-            node = pre.next;
-            // 将前一个节点的next指向当前节点的的下一个节点。也就是当前节点的next
-            pre.next = node.next;
-        }
+        // 获取指定index的前一个节点
+        // index == 0 时，pre就是虚拟节点
+        Node<E> pre = index == 0 ? first : node(index - 1);
+        // 返回被删除的当前节点，也就是当前节点的前一个节点的next
+        Node<E>  node = pre.next;
+        // 将前一个节点的next指向当前节点的的下一个节点。也就是当前节点的next
+        pre.next = node.next;
         size--;
         return node.element;
     }
@@ -82,12 +78,12 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public void clear() {
         size = 0;
-        first = null;
+        first.next = null;
     }
 
     @Override
     public int indexOf(E element) {
-        Node<E> node = first;
+        Node<E> node = first.next;
         if (element == null) {
             for (int i = 0; i < size; i++) {
                 if (node.element == (element)) {
@@ -107,10 +103,10 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("LinkedList{size=").append(size).append(", elements=[");
-        Node<E> node = first;
+        Node<E> node = first.next ;
         for (int i = 0; i < size; i++) {
             if (i != 0) {
                 sb.append(",");
@@ -121,6 +117,7 @@ public class LinkedList<E> extends AbstractList<E> {
         sb.append("]}");
         return sb.toString();
     }
+
     /**
      * 获取index的节点
      *
@@ -130,7 +127,7 @@ public class LinkedList<E> extends AbstractList<E> {
     private Node<E> node(int index) {
         rangeCheck(index);
         // 从第一个开始往下找, 指定index的前一个的next 就是指定index对应的节点
-        Node<E> node = first;
+        Node<E> node = first.next;
         for (int i = 0; i < index; i++) {
             node = node.next;
         }

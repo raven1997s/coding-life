@@ -69,17 +69,6 @@ public class ArrayList<E> extends AbstractList<E>{
     }
 
     /**
-     * 判断列表中是否包含指定元素
-     *
-     * @param element
-     * @return
-     */
-    @Override
-    public boolean contains(E element) {
-        return indexOf(element) != NOT_FOUND_ELEMENT;
-    }
-
-    /**
      * 获取指定位置的元素
      *
      * @param index
