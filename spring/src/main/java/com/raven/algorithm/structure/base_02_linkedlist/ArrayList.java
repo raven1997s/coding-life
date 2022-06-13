@@ -1,11 +1,10 @@
 package com.raven.algorithm.structure.base_02_linkedlist;
 
-import com.raven.algorithm.structure.base_02_linkedlist.AbstractList;
-
 /**
  * Description:
  * date: 2022/4/30 10:39
  * 自定义 ArrayList
+ * 进行了接口抽象
  *
  * @author raven
  */

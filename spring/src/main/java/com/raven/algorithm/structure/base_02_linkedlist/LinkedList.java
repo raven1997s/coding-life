@@ -4,6 +4,7 @@ package com.raven.algorithm.structure.base_02_linkedlist;
  * Description:
  * date: 2022/6/8 21:53
  * 双向链表
+ *
  * @author raven
  */
 public class LinkedList<E> extends AbstractList<E> {
@@ -25,8 +26,8 @@ public class LinkedList<E> extends AbstractList<E> {
         @Override
         public String toString() {
             return "Node{" +
-                    "next=" + next +
-                    ", prev=" + prev +
+                    "next=" + (next == null ? "null" : next.element) +
+                    ", prev=" + (prev == null ? "null" : prev.element) +
                     ", element=" + element +
                     '}';
         }
@@ -35,30 +36,55 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public void add(E element, int index) {
         rangeCheckForAdd(index);
-        // todo
-        // 在指定index插入节点。则index对应的节点为下一个节点
-        Node<E> next = node(index);
-        Node<E> prev = next.prev;
-        Node<E> node = new Node<>(next, prev, element);
-
+        // index = 0 size = 0 在链表最后添加节点
+        // index <> 0 index = size 在链表最后添加节点
+        if (index == size) {
+            Node<E> oldLast = last;
+            // 新增的节点的next指向null prev指向之前的last
+            // last 指向新增的节点
+            last = new Node<>(null, oldLast, element);
+            // 之前的最后一个节点 的next指向新的last
+            if (oldLast == null) {
+                // 如果之前一个元素都没有 现在添加的就是第一个元素 则first和last一起指向新增的元素
+                first = last;
+            } else {
+                oldLast.next = last;
+            }
+        } else {
+            Node<E> next = node(index);
+            Node<E> prev = next.prev;
+            // 在链表的中间添加节点
+            // 新增的节点的next指向next节点 新增的阶段的prev指向next的prev
+            Node<E> node = new Node<>(next, prev, element);
+            next.prev = node;
+            if (prev == null) {
+                // index == 0  fist 指向当前节点
+                first = node;
+            } else {
+                // prev的next指向当前节点，next的prev指向当前节点
+                prev.next = node;
+            }
+        }
         size++;
     }
 
 
     @Override
     public E remove(int index) {
+        // index = 0 size = 0 时抛出异常
         rangeCheck(index);
-        Node<E> node = first;
-        if (index == 0) {
-            // 当index 为0 时，将first指向当前节点的下一个节点
-            first = node.next;
+        Node<E> node = node(index);
+        Node<E> prev = node.prev;
+        Node<E> next = node.next;
+        if (prev == null) {
+            first = next;
         } else {
-            // 获取指定index的前一个节点
-            Node<E> pre = node(index - 1);
-            // 返回被删除的当前节点，也就是当前节点的前一个节点的next
-            node = pre.next;
-            // 将前一个节点的next指向当前节点的的下一个节点。也就是当前节点的next
-            pre.next = node.next;
+            prev.next = next;
+        }
+        if (next == null) {
+            last = prev;
+        } else {
+            next.prev = prev;
         }
         size--;
         return node.element;
@@ -90,6 +116,7 @@ public class LinkedList<E> extends AbstractList<E> {
     public void clear() {
         size = 0;
         first = null;
+        last = null;
     }
 
     @Override
@@ -114,7 +141,7 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("LinkedList{size=").append(size).append(", elements=[");
         Node<E> node = first;
@@ -128,6 +155,7 @@ public class LinkedList<E> extends AbstractList<E> {
         sb.append("]}");
         return sb.toString();
     }
+
     /**
      * 获取index的节点
      *
@@ -138,13 +166,13 @@ public class LinkedList<E> extends AbstractList<E> {
         rangeCheck(index);
         Node<E> node;
         // 如果index 大于等于链表长度的一半 则从右边开始查找节点会更快
-        if (index >= size >> 1){
+        if (index >= (size >> 1)) {
             node = last;
             // 从最后一个开始往前找
-            for (int i = size -1 ; i > index; i--) {
+            for (int i = size - 1; i > index; i--) {
                 node = node.prev;
             }
-        }else {
+        } else {
             // 从第一个开始往下找, index的next 就是指定index对应的节点
             node = first;
             for (int i = 0; i < index; i++) {

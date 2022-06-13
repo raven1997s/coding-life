@@ -1,12 +1,11 @@
 package com.raven.algorithm.structure.base_02_linkedlist;
 
-import com.raven.algorithm.structure.base_02_linkedlist.AbstractList;
-
 /**
  * Description:
  * date: 2022/4/30 10:39
- * 自定义 ArrayList (正数版)
- * 和ArrayList相比多了缩容
+ * 自定义 ArrayList
+ * 进行了接口抽象 增加了缩容
+ *
  * @author raven
  */
 public class ArrayList2<E> extends AbstractList<E> {
@@ -123,6 +122,10 @@ public class ArrayList2<E> extends AbstractList<E> {
             elements[i] = null;
         }
         size = 0;
+        // 清空链表的时候也进行缩容处理
+        if (elements != null && elements.length > DEFAULT_CAPACITY) {
+            elements = (E[]) new Object[DEFAULT_CAPACITY];
+        }
     }
 
     /**
@@ -178,7 +181,7 @@ public class ArrayList2<E> extends AbstractList<E> {
         int oldCapacity = elements.length;
         int newCapacity = oldCapacity >> 1;
         // 如果元素的个数大于 缩容一半后新的容量则不需要缩容，也就是当数组元素比容量一般还小当时候，再进行缩容。
-        if (size >= newCapacity || newCapacity <= DEFAULT_CAPACITY){
+        if (size >= newCapacity || newCapacity <= DEFAULT_CAPACITY) {
             return;
         }
 
