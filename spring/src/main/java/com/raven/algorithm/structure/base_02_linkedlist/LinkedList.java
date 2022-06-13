@@ -36,6 +36,11 @@ public class LinkedList<E> extends AbstractList<E> {
     public void add(E element, int index) {
         rangeCheckForAdd(index);
         // todo
+        // 在指定index插入节点。则index对应的节点为下一个节点
+        Node<E> next = node(index);
+        Node<E> prev = next.prev;
+        Node<E> node = new Node<>(next, prev, element);
+
         size++;
     }
 
