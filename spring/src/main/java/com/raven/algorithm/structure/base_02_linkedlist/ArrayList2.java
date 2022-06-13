@@ -6,7 +6,7 @@ import com.raven.algorithm.structure.base_02_linkedlist.AbstractList;
  * Description:
  * date: 2022/4/30 10:39
  * 自定义 ArrayList (正数版)
- *
+ * 和ArrayList相比多了缩容
  * @author raven
  */
 public class ArrayList2<E> extends AbstractList<E> {
