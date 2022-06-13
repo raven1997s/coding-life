@@ -1,5 +1,7 @@
 package com.raven.algorithm.structure.base_02_linkedlist;
 
+import com.raven.algorithm.structure.base_02_linkedlist.circle.CircleSingleLinkedList;
+
 /**
  * Description:
  * date: 2022/6/9 21:26
@@ -8,7 +10,7 @@ package com.raven.algorithm.structure.base_02_linkedlist;
  */
 public class Main {
     public static void main(String[] args) {
-        List<Integer> linkedList = new LinkedList<>();
+        List<Integer> linkedList = new CircleSingleLinkedList<>();
         linkedList.add(1);
         System.out.println(linkedList);
         linkedList.add(2, 1);

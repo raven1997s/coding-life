@@ -57,6 +57,7 @@ public class LinkedList<E> extends AbstractList<E> {
             // 新增的节点的next指向next节点 新增的阶段的prev指向next的prev
             Node<E> node = new Node<>(next, prev, element);
             next.prev = node;
+            // index = 0 size <>0;
             if (prev == null) {
                 // index == 0  fist 指向当前节点
                 first = node;
