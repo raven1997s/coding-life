@@ -5,43 +5,73 @@ import com.raven.algorithm.structure.base_02_linkedlist.AbstractList;
 /**
  * Description:
  * date: 2022/6/8 21:53
- * 双向循环列表 todo:
+ * 双向循环链表
+ *
  * @author raven
  */
 public class CircleLinkedList<E> extends AbstractList<E> {
 
     private Node<E> first;
+    private Node<E> last;
 
     static class Node<E> {
         public Node<E> next;
+        public Node<E> prev;
         public E element;
 
-        public Node(Node<E> next, E element) {
+        public Node(Node<E> next, Node<E> prev, E element) {
             this.next = next;
+            this.prev = prev;
             this.element = element;
+        }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "next=" + (next == null ? "null" : next.element) +
+                    ", prev=" + (prev == null ? "null" : prev.element) +
+                    ", element=" + element +
+                    '}';
         }
     }
 
     @Override
     public void add(E element, int index) {
         rangeCheckForAdd(index);
-        /**
-         * 需要通过node查找到前一个节点 可能一次找到，也可能需要遍历完整个链表
-         * 时间复杂度：
-         * 最好：O(1)
-         * 最坏：O(n)
-         * 平均：O(n)
-         */
-        if (index == 0) {
-            //  新创建节点的next 指向之前的first
-            //  first再指向新节点
-            first = new Node<>(first, element);
+        // index = 0 size = 0 在链表最后添加节点
+        // index <> 0 index = size 在链表最后添加节点
+        if (index == size) {
+            Node<E> oldLast = last;
+            // 新增的节点的next指向oldFirst prev指向之前的last
+            // last 指向新增的节点
+            last = new Node<>(first, oldLast, element);
+            // 当前为添加第一个元素
+            if (oldLast == null) {
+                // 当前元素的prev,last 指向当前元素
+                last.prev = last;
+                last.next = last;
+                // 如果之前一个元素都没有 现在添加的就是第一个元素 则first和last一起指向新增的元素
+                first = last;
+            } else {
+                // 之前的最后一个节点 的next指向新的last
+                oldLast.next = last;
+                // 之前的第一个节点的prev 指向新的节点（新的节点已经为last节点）
+                first.prev = last;
+            }
         } else {
-            // 获取当前index前一个节点
-            Node<E> pre = node(index - 1);
-            // 前一个节点的next 改为当前节点的next
-            // 前一个节点的next指向当前节点
-            pre.next = new Node<>(pre.next, element);
+            // 在链表的中间添加节点
+            Node<E> next = node(index);
+            Node<E> prev = next.prev;
+            // 新增的节点的next指向next节点 新增的阶段的prev指向next的prev
+            Node<E> node = new Node<>(next, prev, element);
+            // prev的next指向当前节点，next的prev指向当前节点
+            next.prev = node;
+            prev.next = node;
+            // index = 0 size <>0;
+            if (index == 0) {
+                // index == 0  fist 指向当前节点
+                first = node;
+            }
         }
         size++;
     }
@@ -49,25 +79,27 @@ public class CircleLinkedList<E> extends AbstractList<E> {
 
     @Override
     public E remove(int index) {
-        /**
-         * 需要通过node查找到前一个节点 可能一次找到，也可能需要遍历完整个链表
-         * 时间复杂度：
-         * 最好：O(1)
-         * 最坏：O(n)
-         * 平均：O(n)
-         */
+        // index = 0 size = 0 时抛出异常
         rangeCheck(index);
         Node<E> node = first;
-        if (index == 0) {
-            // 当index 为0 时，将first指向当前节点的下一个节点
-            first = node.next;
+        // 只有一个元素 进行删除 断开first和last
+        if (size == 1) {
+            first = null;
+            last = null;
         } else {
-            // 获取指定index的前一个节点
-            Node<E> pre = node(index - 1);
-            // 返回被删除的当前节点，也就是当前节点的前一个节点的next
-            node = pre.next;
-            // 将前一个节点的next指向当前节点的的下一个节点。也就是当前节点的next
-            pre.next = node.next;
+            node = node(index);
+            Node<E> prev = node.prev;
+            Node<E> next = node.next;
+            prev.next = next;
+            next.prev = prev;
+            // 删除第一个元素，first指向新的原来next
+            if (index == 0) {
+                first = next;
+            }
+            // 删除最后一个元素, last指向原来的prev
+            if (index == (size - 1)) {
+                last = prev;
+            }
         }
         size--;
         return node.element;
@@ -81,25 +113,11 @@ public class CircleLinkedList<E> extends AbstractList<E> {
      */
     @Override
     public E get(int index) {
-        /**
-         * 需要通过node查找到前一个节点 可能一次找到，也可能需要遍历完整个链表
-         * 时间复杂度：
-         * 最好：O(1)
-         * 最坏：O(n)
-         * 平均：O(n)
-         */
         return node(index).element;
     }
 
     @Override
     public E set(int index, E element) {
-        /**
-         * 需要通过node查找到前一个节点 可能一次找到，也可能需要遍历完整个链表
-         * 时间复杂度：
-         * 最好：O(1)
-         * 最坏：O(n)
-         * 平均：O(n)
-         */
         // 获取当前索引对应的节点
         Node<E> node = node(index);
         // 获取当前节点的元素
@@ -113,6 +131,7 @@ public class CircleLinkedList<E> extends AbstractList<E> {
     public void clear() {
         size = 0;
         first = null;
+        last = null;
     }
 
     @Override
@@ -137,20 +156,21 @@ public class CircleLinkedList<E> extends AbstractList<E> {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("SingleLinkedList{size=").append(size).append(", elements=[");
+        sb.append("LinkedList{size=").append(size).append(", elements=[");
         Node<E> node = first;
         for (int i = 0; i < size; i++) {
             if (i != 0) {
                 sb.append(",");
             }
-            sb.append(node.element);
+            sb.append(node);
             node = node.next;
         }
         sb.append("]}");
         return sb.toString();
     }
+
     /**
      * 获取index的节点
      *
@@ -159,11 +179,22 @@ public class CircleLinkedList<E> extends AbstractList<E> {
      */
     private Node<E> node(int index) {
         rangeCheck(index);
-        // 从第一个开始往下找, 指定index的前一个的next 就是指定index对应的节点
-        Node<E> node = first;
-        for (int i = 0; i < index; i++) {
-            node = node.next;
+        Node<E> node;
+        // 如果index 大于等于链表长度的一半 则从右边开始查找节点会更快
+        if (index >= (size >> 1)) {
+            node = last;
+            // 从最后一个开始往前找
+            for (int i = size - 1; i > index; i--) {
+                node = node.prev;
+            }
+        } else {
+            // 从第一个开始往下找, index的next 就是指定index对应的节点
+            node = first;
+            for (int i = 0; i < index; i++) {
+                node = node.next;
+            }
         }
+
         return node;
     }
 
