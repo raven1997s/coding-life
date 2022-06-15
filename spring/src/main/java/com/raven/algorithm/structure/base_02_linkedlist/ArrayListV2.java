@@ -3,21 +3,22 @@ package com.raven.algorithm.structure.base_02_linkedlist;
 /**
  * Description:
  * date: 2022/4/30 10:39
- * 自定义 ArrayList
- * 进行了接口抽象 增加了缩容
+ * 1.自定义 ArrayList
+ * 2.进行了接口抽象
+ * 3.增加了缩容
  *
  * @author raven
  */
-public class ArrayList2<E> extends AbstractList<E> {
+public class ArrayListV2<E> extends AbstractList<E> {
     private E[] elements;
     private static final int DEFAULT_CAPACITY = 16;
 
-    public ArrayList2(int capaticy) {
+    public ArrayListV2(int capaticy) {
         capaticy = capaticy <= 0 ? DEFAULT_CAPACITY : capaticy;
         elements = (E[]) new Object[capaticy];
     }
 
-    public ArrayList2() {
+    public ArrayListV2() {
         this(DEFAULT_CAPACITY);
     }
 

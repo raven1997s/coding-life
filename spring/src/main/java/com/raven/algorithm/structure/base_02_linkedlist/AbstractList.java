@@ -24,11 +24,6 @@ public abstract class AbstractList<E>  implements List<E>{
     }
 
     @Override
-    public E remove(E element) {
-        return remove(indexOf(element));
-    }
-
-    @Override
     public boolean isEmpty() {
         return size == 0;
     }

@@ -13,6 +13,8 @@ public class CircleLinkedList<E> extends AbstractList<E> {
 
     private Node<E> first;
     private Node<E> last;
+    // 处理约瑟夫问题 增加新的指针 指向当前节点
+    private Node<E> current;
 
     static class Node<E> {
         public Node<E> next;
@@ -81,23 +83,32 @@ public class CircleLinkedList<E> extends AbstractList<E> {
     public E remove(int index) {
         // index = 0 size = 0 时抛出异常
         rangeCheck(index);
-        Node<E> node = first;
+        // 删除指定index 的节点
+        return remove(node(index));
+    }
+
+    /**
+     * 删除指定节点
+     *
+     * @param node
+     * @return
+     */
+    private E remove(Node<E> node) {
         // 只有一个元素 进行删除 断开first和last
         if (size == 1) {
             first = null;
             last = null;
         } else {
-            node = node(index);
             Node<E> prev = node.prev;
             Node<E> next = node.next;
             prev.next = next;
             next.prev = prev;
             // 删除第一个元素，first指向新的原来next
-            if (index == 0) {
+            if (node == first) {
                 first = next;
             }
             // 删除最后一个元素, last指向原来的prev
-            if (index == (size - 1)) {
+            if (node == last) {
                 last = prev;
             }
         }
@@ -125,6 +136,48 @@ public class CircleLinkedList<E> extends AbstractList<E> {
         // 设置当前节点的元素为新的元素
         node.element = element;
         return old;
+    }
+
+    /**
+     * 让current指向头节点first
+     */
+    public void reset() {
+        current = first;
+    }
+
+    /**
+     * 让current往后走一步
+     *
+     * @return
+     */
+    public E next() {
+        if (current == null) {
+            return null;
+        }
+        current = current.next;
+        return current.element;
+    }
+
+    /**
+     * 删除current指向的节点,删除成功后让current指向下一个节点
+     *
+     * @return
+     */
+    public E remove() {
+        if (current == null) {
+            return null;
+        }
+        // 获取下一个节点
+        Node<E> next = current.next;
+        // 删除当前节点
+        E element = remove(current);
+        // 如果删除完节点个数为0 则current指向null 因为循环列表最后一个元素的next是指向自己的
+        if (size == 0){
+            current = null;
+        }else {
+            current = next;
+        }
+        return element;
     }
 
     @Override

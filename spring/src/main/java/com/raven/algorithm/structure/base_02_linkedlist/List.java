@@ -30,14 +30,12 @@ public interface List<E> {
      */
     void add(E element, int index);
 
+
     /**
-     * 删除一个元素
-     *
-     * @param element
+     * 删除指定索引位置的元素
+     * @param index
      * @return
      */
-    E remove(E element);
-
     E remove(int index);
 
     /**
