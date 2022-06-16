@@ -27,14 +27,18 @@ public class BackAndForwardTest {
         inputDomain("1");
         inputDomain("2");
         inputDomain("3");
+        // ONE 1 2 3
+        System.out.println(back()); // one 1 2 two 3
+        System.out.println(back()); // one 1  two 3 2
+        System.out.println(forward()); // one 1 2 two 3
+        inputDomain("4"); // 4
+        // ONE 1 2 4 two 0
+        System.out.println(one.top() == "4"); // 4
         System.out.println(back());
-        System.out.println(back());
-        System.out.println(forward());
-        inputDomain("4");
-        System.out.println(one.pop());
-        System.out.println(two.isEmpty());
-        inputDomain("5");
-
+        // one 1 2 tow 4
+        System.out.println( "two.isEmpty()" + two.isEmpty());
+        System.out.println( "one.size()" + one.size());
+        System.out.println(two.size() == 1);
     }
 
 
@@ -44,13 +48,9 @@ public class BackAndForwardTest {
      * @param domain
      */
     private void inputDomain(String domain) {
-        // 如果网址曾经访问过，则清除记录two
-        if (!domainList.contains(domain)) {
-            while (!two.isEmpty()) {
-                two.pop();
-            }
+        while (!two.isEmpty()) {
+            two.pop();
         }
-        domainList.add(domain);
         one.push(domain);
     }
 

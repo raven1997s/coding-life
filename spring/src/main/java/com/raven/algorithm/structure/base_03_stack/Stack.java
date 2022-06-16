@@ -15,6 +15,9 @@ public class Stack<E> {
         list.add(element);
     }
 
+    public void clear(){
+        list.clear();
+    }
     public E pop() {
         return list.remove(list.size - 1);
     }
