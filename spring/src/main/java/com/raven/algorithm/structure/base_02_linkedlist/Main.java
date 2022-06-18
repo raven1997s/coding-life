@@ -38,7 +38,7 @@ public class Main {
     }
 
     static void testCircleSingleLinkedList() {
-        List<Integer> linkedList = new CircleSingleLinkedList<>();
+        List<Integer> linkedList = new CircleLinkedList<>();
         linkedList.add(1);
         System.out.println(linkedList);
         linkedList.add(2, 1);
