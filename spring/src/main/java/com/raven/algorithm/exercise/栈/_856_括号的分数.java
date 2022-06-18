@@ -66,34 +66,4 @@ public class _856_括号的分数 {
         return sum;
     }
 
-    public static int scoreOfParentheses2(String S) {
-        Stack<String> stack = new Stack<>();
-        for (int i = 0; i < S.length(); i++) {
-            char ch = S.charAt(i);
-            String ch2 = Character.toString(ch);
-            if ("(".equals(ch2)) {
-                stack.push("(");
-            } else if (")".equals(ch2)) {
-                if ("(".equals(Character.toString(S.charAt(i - 1)))) {
-                    stack.pop();
-                    stack.push("1");
-                } else {
-                    String a = stack.pop();
-                    int temp = 0;
-                    while (!("(".equals(a))) {
-                        temp += Integer.parseInt(a);
-                        a = stack.pop();
-                    }
-                    stack.push(Integer.toString(2 * temp));
-                }
-            }
-        }
-        int sum = 0;
-        while (!stack.empty()) {
-
-            sum += Integer.parseInt(stack.pop());
-        }
-        return sum;
-    }
-
 }
