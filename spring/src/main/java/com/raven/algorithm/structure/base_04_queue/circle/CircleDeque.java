@@ -20,6 +20,14 @@ public class CircleDeque<E> {
 
     private static final int DEFAULT_CAPACITY = 10;
 
+    public void clear() {
+        for (int i = 0; i < size; i++) {
+            elements[index(i)] = null;
+        }
+        size = 0;
+        front = 0;
+    }
+
     public CircleDeque() {
         elements = (E[]) new Object[DEFAULT_CAPACITY];
     }
@@ -139,7 +147,10 @@ public class CircleDeque<E> {
         if (index < 0) {
             return index + elements.length;
         }
-        return index % elements.length;
+        return index - (index >= elements.length ? elements.length : 0);
+        // index >= elements.length  index < 2 * elements.length
+        // index % elements.length ==> index - (index >= elements.length ? elements.length : 0)
+        //return index % elements.length;
     }
 
     @Override

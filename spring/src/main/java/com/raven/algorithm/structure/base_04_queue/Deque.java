@@ -21,6 +21,10 @@ public class Deque<E> {
         return list.isEmpty();
     }
 
+    public void clear() {
+        list.clear();
+    }
+
     /**
      * 从队头入队
      *

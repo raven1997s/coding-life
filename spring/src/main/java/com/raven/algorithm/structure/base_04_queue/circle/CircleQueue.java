@@ -9,6 +9,7 @@ import java.util.Arrays;
  *
  * @author raven
  */
+@SuppressWarnings("unchecked")
 public class CircleQueue<E> {
     private int size;
     private E[] elements;
@@ -42,7 +43,7 @@ public class CircleQueue<E> {
         // 因为front指向的首个元素的位置可能并不在数组的首个元素，所以入队往队尾插入元素时 需要插入到（数组个数+首个元素的索引位置 % 数组的容量）的位置
         // 将之前的索引转换为真实队列中的索引
         elements[index(size)] = element;
-        size ++;
+        size++;
     }
 
     /**
@@ -53,7 +54,7 @@ public class CircleQueue<E> {
         elements[front] = null;
         // 队头元素的位置应该为原队头元素位置+1 再与数组长度取莫
         front = index(1);
-        size --;
+        size--;
         return frontElement;
     }
 
@@ -64,6 +65,14 @@ public class CircleQueue<E> {
      */
     public E front() {
         return elements[front];
+    }
+
+    public void clear() {
+        for (int i = 0; i < size; i++) {
+            elements[index(i)] = null;
+        }
+        size = 0;
+        front = 0;
     }
 
     /**
@@ -94,12 +103,15 @@ public class CircleQueue<E> {
 
     /**
      * 之前的索引映射到现在循环数组的真实索引
+     *
      * @param index
      * @return
      */
-    public int index(int index){
-        return (index + front) % elements.length;
+    public int index(int index) {
+        index += front;
+        return index - (index >= elements.length ? elements.length : 0);
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

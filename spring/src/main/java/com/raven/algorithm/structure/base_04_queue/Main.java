@@ -13,6 +13,8 @@ public class Main {
 
     public static void main(String[] args) {
         circleDeque();
+        System.out.println("=====");
+        circleQueue();
     }
 
     private static void circleDeque() {

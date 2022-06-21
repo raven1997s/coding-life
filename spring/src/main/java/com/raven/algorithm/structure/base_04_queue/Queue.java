@@ -20,8 +20,13 @@ public class Queue<E> {
         return list.isEmpty();
     }
 
+    public void clear() {
+        list.clear();
+    }
+
     /**
      * 入队
+     *
      * @param e
      */
     public void enQueue(E e) {
@@ -30,6 +35,7 @@ public class Queue<E> {
 
     /**
      * 出队
+     *
      * @return
      */
     public E deQueue() {
@@ -38,6 +44,7 @@ public class Queue<E> {
 
     /**
      * 获取队头元素
+     *
      * @return
      */
     public E front() {
