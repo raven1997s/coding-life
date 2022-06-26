@@ -8,7 +8,7 @@ import com.raven.algorithm.structure.utils.printer.BinaryTreeInfo;
  * 继承comparable接口 规范树的范型的对象必须自定义实现比较函数
  * @author raven
  */
-public class BinarySearchTreeExtentComparable<E extends Comparable<E> > implements BinaryTreeInfo {
+public class BinarySearchTreeExtendComparable<E extends Comparable<E> > implements BinaryTreeInfo {
 
     private int size;
     // 根节点
@@ -94,17 +94,17 @@ public class BinarySearchTreeExtentComparable<E extends Comparable<E> > implemen
 
     @Override
     public Object left(Object node) {
-        return ((BinarySearchTreeExtentComparable.Node<E>) node).left;
+        return ((BinarySearchTreeExtendComparable.Node<E>) node).left;
     }
 
     @Override
     public Object right(Object node) {
-        return ((BinarySearchTreeExtentComparable.Node<E>) node).right;
+        return ((BinarySearchTreeExtendComparable.Node<E>) node).right;
     }
 
     @Override
     public Object string(Object node) {
-        return ((BinarySearchTreeExtentComparable.Node<E>) node).element;
+        return ((BinarySearchTreeExtendComparable.Node<E>) node).element;
     }
     // 1 : e1 > e2  0 : e1 = e2  -1 : e1 < e2
 

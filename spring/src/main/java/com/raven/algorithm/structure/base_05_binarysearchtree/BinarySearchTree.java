@@ -8,9 +8,13 @@ import java.util.*;
  * Description:
  * date: 2022/6/23 20:29
  * 实现 BinaryTreeInfo 便于打印树
- *
+ * 构造自定义比较器，可使用对象默认的比较器 ，也可再构建树的时候使用自定义的比较器
+ * 定义遍历的接口，交与外界遍历时自定义实现 （抽象类的方式实现）
+ * 判断二叉树是否时完全二叉树
+ * 层序遍历计算高度
  * @author raven
  */
+@SuppressWarnings("unchecked")
 public class BinarySearchTree<E> implements BinaryTreeInfo {
 
     private int size;
@@ -45,6 +49,24 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         public Node(E element, Node<E> parent) {
             this.element = element;
             this.parent = parent;
+        }
+
+        /**
+         * 左子节点 和右子节点都为空的时候为叶子节点
+         *
+         * @return
+         */
+        public boolean isLeaf() {
+            return left == null && right == null;
+        }
+
+        /**
+         * 左子节点 和右子节点都不为空的时候为叶子节点
+         *
+         * @return
+         */
+        public boolean hasTwoChildren() {
+            return left != null && right != null;
         }
     }
 
@@ -137,6 +159,130 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         return myNode.element + str;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        toString(root, sb, "");
+        return sb.toString();
+    }
+
+    private void toString(Node<E> node, StringBuilder sb, String prefix) {
+        // 中序遍历打印数据
+        if (node == null) {
+            return;
+        }
+        toString(node.left, sb, prefix + "L--");
+        // 拼接当前节点
+        sb.append(prefix).append(node.element).append(System.lineSeparator());
+        toString(node.right, sb, prefix + "R--");
+    }
+
+    /**
+     * 判断二叉树是否时完全二叉树(利用队列进行层序遍历)
+     * 完全二叉树: 叶子结点只能出现在最下层和次下层，且最下层的叶子结点集中在树的左部
+     *
+     * @return
+     */
+    public boolean isComplete() {
+        // 如果根节点为空，认为不是完全二叉树
+        if (root == null) {
+            return false;
+        }
+
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+        boolean leafFlag = false;
+        while (!queue.isEmpty()) {
+            Node<E> node = queue.poll();
+            if (leafFlag && !node.isLeaf()) {
+                return false;
+            }
+
+            if (node.left != null) {
+                queue.offer(node.left);
+            } else {
+                // node.left == null && node.right != null
+                // 完全二叉树的节点必须靠左对齐，所以如果节点拥有右子节点但没有左子节点时，则一定不是完全二叉树
+                if (node.right != null) { //
+                    return false;
+                }
+            }
+
+            if (node.right != null) {
+                queue.offer(node.right);
+            } else {
+                // 剩下俩种可能 node.right == null && (node.left == null  || node.left != null )
+                // 接下来的节点一定是叶子节点。
+                leafFlag = true;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 层序遍历计算高度 有多少层高度就是多少
+     *
+     * @return
+     */
+    public int height() {
+        if (root == null) {
+            return 0;
+        }
+        // 树的高度
+        int height = 0;
+        // 记录每一层的元素个数
+        int levelSize = 1;
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            Node<E> node = queue.poll();
+            // 取出元素时，该层剩余元素减一
+            levelSize--;
+            Node<E> left = node.left;
+            if (left != null) {
+                queue.offer(left);
+            }
+            Node<E> right = node.right;
+            if (right != null) {
+                queue.offer(right);
+            }
+            // 该层剩余元素为0时，这一层元素已经走完
+            if (levelSize == 0) {
+                // 此时队列中的元素个数就是下一层元素的个数
+                levelSize = queue.size();
+                // 一层结束 层数加一
+                height++;
+            }
+        }
+        return height;
+    }
+
+
+    /**
+     * 树的高度就是根节点度高度
+     * 递归计算树的高度
+     *
+     * @return
+     */
+    public int heightByRecursion() {
+        return height(root);
+    }
+
+    /**
+     * 计算指定节点度高度（递归计算）
+     * 每一次度高度都等于他下一次层节点度高度+1
+     *
+     * @param node
+     * @return
+     */
+    private int height(Node<E> node) {
+        // 节点为空时，证明他到达根节点(left or right)
+        if (node == null) {
+            return 0;
+        }
+        return 1 + Math.max(height(node.left), height(node.right));
+    }
+
     /**
      * 前序遍历
      * 先遍历root节点 再遍历左子节点 再遍历右子节点，遵循这一原则遍历完所有元素
@@ -217,21 +363,124 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         }
     }
 
-    /**
-     * @param node
-     */
-    private void levelOrderTraversal(Node<E> node) {
 
+    public void postorder(Visitor<E> visitor) {
+        if (visitor == null) {
+            return;
+        }
+        postorder(visitor, root);
+    }
+
+    private void postorder(Visitor<E> visitor, Node<E> node) {
+        // 减少收到终止命令后多余的递归调用
+        if (node == null || visitor.stop) {
+            return;
+        }
+
+        postorder(visitor, node.left);
+        postorder(visitor, node.right);
+        // 收到终止条件 停止递归遍历 停止处理元素
+        if (visitor.stop) {
+            return;
+        }
+        // 指向完毕后返回是否停止终止的标识 并记录到抽象类中
+        visitor.stop = visitor.visit(node.element);
     }
 
 
+    public void inorder(Visitor<E> visitor) {
+        if (visitor == null) {
+            return;
+        }
+        inorder(visitor, root);
+    }
+
+    private void inorder(Visitor<E> visitor, Node<E> node) {
+        // 如果节点为空或者收到终止条件 停止递归遍历
+        if (node == null || visitor.stop) {
+            return;
+        }
+
+        inorder(visitor, node.left);
+        // 收到终止条件 停止递归遍历 防止左子树已经返回停止继续处理元素
+        if (visitor.stop) {
+            return;
+        }
+        // 指向完毕后返回是否停止终止的标识 并记录到抽象类中
+        visitor.stop = visitor.visit(node.element);
+        inorder(visitor, node.right);
+    }
+
+    public void preorder(Visitor<E> visitor) {
+        if (visitor == null) {
+            return;
+        }
+        preorder(visitor, root);
+    }
+
+    private void preorder(Visitor<E> visitor, Node<E> node) {
+        // 如果节点为空或者收到终止条件 停止递归遍历
+        if (node == null || visitor.stop) {
+            return;
+        }
+
+        visitor.stop = visitor.visit(node.element);
+        preorder(visitor, node.left);
+        preorder(visitor, node.right);
+    }
+
+    /**
+     * 层序遍历
+     *
+     * @param visitor 遍历的行为接口，外界自定义处理逻辑
+     */
+    public void levelOrder(Visitor<E> visitor) {
+        if (root == null || visitor == null) {
+            return;
+        }
+
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            Node<E> node = queue.poll();
+            if (visitor.stop) {
+                return;
+            }
+            visitor.stop = visitor.visit(node.element);
+            Node<E> left = node.left;
+            if (left != null) {
+                queue.offer(left);
+            }
+            Node<E> right = node.right;
+            if (right != null) {
+                queue.offer(right);
+            }
+        }
+    }
+
+    /**
+     * 处理遍历元素抽象类
+     *
+     * @param <E>
+     */
+    public abstract static class Visitor<E> {
+
+        public boolean stop;
+
+        /**
+         * 遍历时处理元素的函数
+         *
+         * @param element 元素
+         */
+        public abstract boolean visit(E element);
+    }
     // 1 : e1 > e2  0 : e1 = e2  -1 : e1 < e2
 
     /**
      * 对象比较方式：
      * planA：写死比较方式 pass 比较的纬度和方式时不确定的，不能使用简单的固定的数值类型的的比较
      * planB：定义接口comparable  BinarySearchTree继承接口 所有的树创建时指定比较方式  pass  同一对象不能右多种 比较的方式
-     * planC: 定义接口comparator   BinarySearchTree 实现接口 compartore 创建树对象时，比较器由外部提供
+     * planC: 定义接口comparator   BinarySearchTree 实现接口 compartor 创建树对象时，比较器由外部提供
      * 1 : e1 > e2  0 : e1 = e2  -1 : e1 < e2
      *
      * @param e1
