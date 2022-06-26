@@ -13,9 +13,9 @@ import java.util.Comparator;
 public class Main {
 
     public static void main(String[] args) {
-        //compareInteger();
+        compareInteger();
         //comparable();
-        comparator();
+        //comparator();
     }
 
     private static void compareInteger() {
@@ -28,6 +28,10 @@ public class Main {
         }
 
         BinaryTrees.println(tree);
+        //tree.levelOrderTraversal();
+        //tree.preOrderTraversal();
+        //tree.inOrderTraversal();
+        tree.postOrderTraversal();
     }
 
     static void comparable() {
@@ -47,14 +51,17 @@ public class Main {
         BinarySearchTree<Order> orderIdCompareTree = new BinarySearchTree<>(new OrderIdComparator());
         BinarySearchTree<Order> orderTypeCompareTree = new BinarySearchTree<>(new OrderTypeComparator());
 
-        orderBinarySearchTree.add(new Order(16));
-        orderBinarySearchTree.add(new Order(11));
-        orderBinarySearchTree.add(new Order(9));
-        orderBinarySearchTree.add(new Order(12));
-        orderBinarySearchTree.add(new Order(8));
-        orderBinarySearchTree.add(new Order(17));
-        orderBinarySearchTree.add(new Order(13));
+        orderBinarySearchTree.add(new Order(16,0));
+        orderBinarySearchTree.add(new Order(11,0));
+        orderBinarySearchTree.add(new Order(9,0));
+        orderBinarySearchTree.add(new Order(12,0));
+        orderBinarySearchTree.add(new Order(8,0));
+        orderBinarySearchTree.add(new Order(17,0));
+        orderBinarySearchTree.add(new Order(13,0));
         BinaryTrees.println(orderBinarySearchTree);
+        orderBinarySearchTree.add(new Order(13,1));
+        BinaryTrees.println(orderBinarySearchTree);
+
 
     }
 

@@ -2,7 +2,7 @@ package com.raven.algorithm.structure.base_05_binarysearchtree;
 
 import com.raven.algorithm.structure.utils.printer.BinaryTreeInfo;
 
-import java.util.Comparator;
+import java.util.*;
 
 /**
  * Description:
@@ -88,7 +88,8 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             } else if (result < 0) {
                 node = node.left;
             } else {
-                // 节点元素和树上元素相等
+                // 节点元素和树上元素相等 重新赋值
+                node.element = element;
                 return;
             }
         }
@@ -126,8 +127,103 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 
     @Override
     public Object string(Object node) {
-        return ((Node<E>) node).element;
+        Node<E> myNode = (Node<E>) node;
+        String str;
+        if (myNode.parent == null) {
+            str = "_p(null)";
+        } else {
+            str = "_p(" + myNode.parent.element + ")";
+        }
+        return myNode.element + str;
     }
+
+    /**
+     * 前序遍历
+     * 先遍历root节点 再遍历左子节点 再遍历右子节点，遵循这一原则遍历完所有元素
+     */
+    public void preOrderTraversal() {
+        preOrderTraversal(root);
+    }
+
+    private void preOrderTraversal(Node<E> node) {
+        if (node == null) {
+            return;
+        }
+        System.out.println(node.element);
+        preOrderTraversal(node.left);
+        preOrderTraversal(node.right);
+    }
+
+    /**
+     * 中序遍历
+     * 先遍历左子节点 再遍历parent(root)节点 最后遍历右子节点
+     * 二叉搜索树进行中序遍历会从小到大输出元素
+     */
+    public void inOrderTraversal() {
+        inOrderTraversal(root);
+    }
+
+    private void inOrderTraversal(Node<E> node) {
+        if (node == null) {
+            return;
+        }
+        inOrderTraversal(node.left);
+        System.out.println(node.element);
+        inOrderTraversal(node.right);
+    }
+
+    /**
+     * 后序遍历
+     * 先遍历左子节点 再遍历右子节点，再遍历root节点 遵循这一原则遍历完所有元素
+     */
+    public void postOrderTraversal() {
+        postOrderTraversal(root);
+    }
+
+    private void postOrderTraversal(Node<E> node) {
+        if (node == null) {
+            return;
+        }
+        postOrderTraversal(node.left);
+        postOrderTraversal(node.right);
+        System.out.println(node.element);
+    }
+
+    /**
+     * 层序遍历
+     * 从根节点开始，一层一层从左到右挨个遍历元素
+     */
+    public void levelOrderTraversal() {
+        if (root == null) {
+            return;
+        }
+        // 层序遍历 利用队列存储元素顺序，将元素逐层挨个放入队列，后逐个取出。
+        Queue<Node<E>> queue = new LinkedList<>();
+        // 将根节点入队
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            // 取出节点输出
+            Node<E> top = queue.poll();
+            System.out.println(top.element);
+            // 存储下一层元素 不为空才需要存储
+            Node<E> left = top.left;
+            if (left != null) {
+                queue.add(left);
+            }
+            Node<E> right = top.right;
+            if (right != null) {
+                queue.add(right);
+            }
+        }
+    }
+
+    /**
+     * @param node
+     */
+    private void levelOrderTraversal(Node<E> node) {
+
+    }
+
 
     // 1 : e1 > e2  0 : e1 = e2  -1 : e1 < e2
 
