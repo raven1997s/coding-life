@@ -1,7 +1,6 @@
 package com.raven.algorithm.exercise.二叉树;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Description:
@@ -11,7 +10,7 @@ import java.util.List;
  */
 public class _590_N叉树的后序遍历 {
     public List<Integer> postorder(Node root) {
-        List<Integer> result = new LinkedList<>();
+        LinkedList<Integer> result = new LinkedList<>();
         postorder(root, result);
         return result;
     }

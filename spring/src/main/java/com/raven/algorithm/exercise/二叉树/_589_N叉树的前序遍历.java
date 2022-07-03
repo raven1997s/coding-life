@@ -3,6 +3,7 @@ package com.raven.algorithm.exercise.二叉树;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 /**
  * Description:
@@ -44,9 +45,9 @@ public class _589_N叉树的前序遍历 {
         stack.push(root);
         while (!stack.isEmpty()){
             Node node = stack.pop();
-            List<Node> children = node.children;
-            int size = children.size();
-            for (int i = size -1 ; i < size; i--) {
+            result.add(node.val);
+            int size = node.children.size();
+            for (int i = size -1 ; i >= 0; i--) {
                 stack.push(node.children.get(i));
             }
         }
