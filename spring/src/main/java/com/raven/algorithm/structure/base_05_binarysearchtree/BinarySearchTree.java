@@ -12,6 +12,10 @@ import java.util.*;
  * 定义遍历的接口，交与外界遍历时自定义实现 （抽象类的方式实现）
  * 判断二叉树是否时完全二叉树
  * 层序遍历计算高度
+ * 获取节点的前驱节点
+ * 获取节点的后继节点
+ * 删除指定节点
+ *
  * @author raven
  */
 @SuppressWarnings("unchecked")
@@ -124,8 +128,70 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         size++;
     }
 
-    public E remove() {
+    public void remove(E e) {
+        remove(node(e));
+    }
+
+    /**
+     * 根据节点元素获取节点
+     *
+     * @param e 元素
+     * @return 返回元素对应的节点
+     */
+    private Node<E> node(E e) {
+        Node<E> node = root;
+        // 从根节点开始查找节点对应的元素
+        while (node != null) {
+            // 如果节点元素和传入的元素相同 则返回节点
+            int cmr = compare(node.element, e);
+            if (cmr == 0) {
+                return node;
+            } else if (cmr > 0) {
+                // 节点元素 大于 传入的元素 则从节点的左子树中寻找元素对应的节点
+                node = node.left;
+            } else {
+                // 节点元素 小 传入的元素 则从节点的右子树中寻找元素对应的节点
+                node = node.right;
+            }
+        }
+        // 查找完整棵树，都未找到传入元素对应的节点，则返回null
         return null;
+    }
+
+    private void remove(Node<E> node) {
+        // 如果节点不存在，则不需要删除，直接返回
+        if (node == null) {
+            return;
+        }
+
+        // 树的元素个数减一
+        size--;
+        // 如果被删除的节点度为二，删除节点需要 则找到节点的前驱节点 或者后继节点 ，将值替换到节点中。然后删除前驱(后继节点)，在保持树结构不变的情况下，删除元素
+        if (node.hasTwoChildren()) {
+            Node<E> preNode = predecessor(node);
+            // 因为节点的度为2，所以节点的前驱节点or后继节点一定不为null
+            // 将前驱节点的值替换到节点中
+            node.element = preNode.element;
+            // 删除前驱节点 todo：待理解一些
+            node = preNode;
+        }
+
+        /**
+         * 删除度为一或者度为0的节点
+         * 如果被删除的节点度为一，需要用要被删除节点的子节点替换被删除的节点
+         * 需要判断要被删除的节点是父节点的左子树还是右子树，如果要被删除节点是父节点的左子树，则需要让父节点的left指向要被删除的子节点，并且维护子节点的parent为要被删除节点的parent
+         * 需要判断子节点是node的左子树还是右子树，如果是左子树，则用左节点来取代他，如果是右子树，则用右节点来取代他
+         */
+        // 判断由哪个子节点来取代要被删除的node节点
+        Node<E> replacement = node.left != null ? node.left : node.right;
+        // 如果子节点不为null 则需要用
+        // TODO(raven): 2022/7/4 明天再战！！
+        if (replacement != null){ //度为1的节点
+
+        }else if (node.parent == null){
+
+        }
+
     }
 
     public boolean contains(E e) {
@@ -474,7 +540,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
          */
         public abstract boolean visit(E element);
     }
-    // 1 : e1 > e2  0 : e1 = e2  -1 : e1 < e2
 
     /**
      * 对象比较方式：
@@ -485,7 +550,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
      *
      * @param e1
      * @param e2
-     * @return
+     * @return // 1 : e1 > e2  0 : e1 = e2  -1 : e1 < e2
      */
     private int compare(E e1, E e2) {
         if (comparator != null) {
@@ -499,5 +564,73 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         if (element == null) {
             throw new IllegalArgumentException("element must not be null");
         }
+    }
+
+    /**
+     * 前驱节点：中序遍历时的前一个节点
+     * 获取指定节点的前驱节点
+     *
+     * @param node
+     * @return
+     */
+    private Node<E> predecessor(Node<E> node) {
+        // 如果节点是空的，则没有前驱节点
+        if (node == null) {
+            return null;
+        }
+
+        // 先从左子树中寻找前驱节点
+        Node<E> p = node.left;
+        // 如果节点的左子树不为null ，则通过node.left.right.right.right 寻找前驱节点，直到right为null
+        if (p != null) {
+            while (p.right != null) {
+                p = p.right;
+            }
+            // 找到前驱节点
+            return p;
+        }
+
+        // 如果节点的左子树为null的，则通过node.parent.parent.parent 寻找前驱节点，直到节点是parent的右子树
+        while (node.parent != null && node == node.parent.left) {
+            node = node.parent;
+        }
+
+        // 循环终止后，存在俩种可能
+        // node.parent == null  node节点的父节点(祖父节点)为空，证明节点没有前驱节点，返回null 或node.parent都可以
+        // node ==  node.parent.right node节点是node.parent的右子树，所以node的前驱节点为node.right(通过循环赋值后，此时的node.right可能是node的祖父辈节点)
+        return node.parent;
+    }
+
+    /**
+     * 后继节点：中序遍历的后一个节点
+     *
+     * @param node
+     * @return
+     */
+    private Node<E> successor(Node<E> node) {
+        if (node == null) {
+            return null;
+        }
+
+        // 如果节点的右子树不为空，后继节点就在node的右子树中，则通过node.right.left.left.left寻找节点的后继节点，直到节点的left为null
+        Node<E> s = node.right;
+        if (s != null) {
+            // 寻找node节点右子树中最左的节点
+            while (s.left != null) {
+                s = s.left;
+            }
+            // 找到后继节点
+            return s;
+        }
+
+        // 如果节点右子树为null，则从节点的父节点中寻找节点的后继节点。node.parent.parent.parent 直到节点是parent的左子树。
+        // 节点的父节点不为空并且节点是父节点的右子树，继续往上，直到节点是父节点的左子树或者直到找到节点的父节点为null
+        while (node.parent != null && node == node.parent.right) {
+            node = node.parent;
+        }
+
+        // node.parent == null 找到节点的父节点也未找到后继节点
+        // node == node.parent.left 节点为父节点的左子树，后继节点为node.parent
+        return node.parent;
     }
 }
