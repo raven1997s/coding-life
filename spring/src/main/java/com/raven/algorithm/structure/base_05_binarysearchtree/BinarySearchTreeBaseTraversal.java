@@ -225,7 +225,7 @@ public class BinarySearchTreeBaseTraversal<E> implements BinaryTreeInfo {
      * 对象比较方式：
      * planA：写死比较方式 pass 比较的纬度和方式时不确定的，不能使用简单的固定的数值类型的的比较
      * planB：定义接口comparable  BinarySearchTree继承接口 所有的树创建时指定比较方式  pass  同一对象不能右多种 比较的方式
-     * planC: 定义接口comparator   BinarySearchTree 实现接口 compartore 创建树对象时，比较器由外部提供
+     * planC: 定义接口comparator   BST 实现接口 compartore 创建树对象时，比较器由外部提供
      * 1 : e1 > e2  0 : e1 = e2  -1 : e1 < e2
      *
      * @param e1

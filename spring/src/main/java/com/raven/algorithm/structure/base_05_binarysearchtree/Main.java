@@ -19,7 +19,30 @@ public class Main {
         //comparable();
         //comparator();
         //height();
-        isComplete();
+        //isComplete();
+        remove();
+    }
+
+    private static void remove() {
+        Integer[] intArray = new Integer[]{
+                7, 4, 9, 2, 5, 8, 11, 3, 1
+        };
+
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        for (Integer num : intArray) {
+            tree.add(num);
+        }
+
+        BinaryTrees.println(tree);
+        tree.remove(4);
+        System.out.println("===========");
+        BinaryTrees.println(tree);
+        tree.remove(2);
+        System.out.println("===========");
+        BinaryTrees.println(tree);
+        tree.remove(7);
+        System.out.println("===========");
+        BinaryTrees.println(tree);
     }
 
     private static void isComplete() {
