@@ -1,10 +1,5 @@
-package com.raven.algorithm.structure.base_05_binarysearchtree.restructure;
-
-import com.raven.algorithm.structure.utils.printer.BinaryTreeInfo;
-
+package com.raven.algorithm.structure.base_06_tree.restructure;
 import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * Description:

@@ -1,4 +1,4 @@
-package com.raven.algorithm.structure.base_05_binarysearchtree.restructure;
+package com.raven.algorithm.structure.base_06_tree.restructure;
 
 import com.raven.algorithm.structure.utils.printer.BinaryTreeInfo;
 
