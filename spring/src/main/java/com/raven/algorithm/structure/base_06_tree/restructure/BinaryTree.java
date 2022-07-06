@@ -22,6 +22,7 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         Node<E> parent;
         Node<E> left;
         Node<E> right;
+        // 给节点添加height元素，记录节点的高度，但高度只有avl树需要，普通的二叉树并不需要，所以进行抽象
 
         public Node(E element, Node<E> parent) {
             this.element = element;
@@ -44,6 +45,24 @@ public class BinaryTree<E> implements BinaryTreeInfo {
          */
         public boolean hasTwoChildren() {
             return left != null && right != null;
+        }
+
+        /**
+         * 返回当前节点是否为父节点的左子树
+         *
+         * @return
+         */
+        public boolean isLeftChild() {
+            return parent != null && this == parent.left;
+        }
+
+        /**
+         * 返回当前节点是否为父节点的右子树
+         *
+         * @return
+         */
+        public boolean isRightChild() {
+            return parent != null && this == parent.right;
         }
     }
 

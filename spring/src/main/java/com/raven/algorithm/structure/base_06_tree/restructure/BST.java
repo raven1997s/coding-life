@@ -43,8 +43,11 @@ public class BST<E> extends BinaryTree<E> {
 
         // 添加第一个节点
         if (root == null) {
-            root = new Node<>(element, null);
+            // 根据不同的树，创建不同类型的节点，如BST创建Node，AVL创建AVLNode
+            root = createNode(element, null);
             size++;
+            // 添加完元素后，如果是AVL树判断是否需要旋转平衡节点
+            afterAdd(root);
             return;
         }
 
@@ -71,12 +74,34 @@ public class BST<E> extends BinaryTree<E> {
             }
         }
 
+        // 根据不同的树，创建不同类型的节点，如BST创建Node，AVL创建AVLNode
+        Node<E> newNode = createNode(element, parent);
         if (result > 0) {
-            parent.right = new Node<>(element, parent);
+            parent.right = newNode;
         } else {
-            parent.left = new Node<>(element, parent);
+            parent.left = newNode;
         }
         size++;
+        // 添加完节点后的操作，如果是AVL树需要判断是否需要旋转平衡节点
+        afterAdd(newNode);
+    }
+
+    /**
+     * 添加完元素后的操作,如果是AVL树需要判断是否需要旋转平衡节点
+     * 方法抽象，因为二叉搜索树是不需要进行调整平衡节点的
+     */
+    protected void afterAdd(Node<E> node) {
+    }
+
+    /**
+     * 提供方法模板，创建节点时通过模板创建，子类可根据需要自定义创建需要的节点
+     *
+     * @param element
+     * @param parent
+     * @return
+     */
+    protected Node<E> createNode(E element, Node<E> parent) {
+        return new Node<>(element, parent);
     }
 
     public void remove(E e) {
