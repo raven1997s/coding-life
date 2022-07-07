@@ -1,4 +1,5 @@
 package com.raven.algorithm.structure.base_06_tree.restructure;
+
 import java.util.Comparator;
 
 /**
@@ -94,6 +95,15 @@ public class BST<E> extends BinaryTree<E> {
     }
 
     /**
+     * 删除元素后可能会导致树失去平衡，如果是AVL树则要平衡节点
+     * 方法抽象。
+     *
+     * @param node
+     */
+    protected void afterRemove(Node<E> node) {
+    }
+
+    /**
      * 提供方法模板，创建节点时通过模板创建，子类可根据需要自定义创建需要的节点
      *
      * @param element
@@ -174,9 +184,11 @@ public class BST<E> extends BinaryTree<E> {
             } else if (node == node.parent.right) {
                 node.parent.right = replacement;
             }
+            afterRemove(node);
         } else if (node.parent == null) { //node是度为0的节点，并且是root节点
             // 删除root节点
             root = null;
+            afterRemove(node);
         } else { // node是度为0的节点，并且不是root节点
             // 如果node是node父节点的左子树，则将副节点的左子树设置为null
             if (node == node.parent.left) {
@@ -184,8 +196,8 @@ public class BST<E> extends BinaryTree<E> {
             } else {
                 node.parent.right = null;
             }
+            afterRemove(node);
         }
-
     }
 
     public boolean contains(E e) {

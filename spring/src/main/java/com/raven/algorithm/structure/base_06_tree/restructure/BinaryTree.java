@@ -456,14 +456,7 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 
     @Override
     public Object string(Object node) {
-        Node<E> myNode = (Node<E>) node;
-        String str;
-        if (myNode.parent == null) {
-            str = "_p(null)";
-        } else {
-            str = "_p(" + myNode.parent.element + ")";
-        }
-        return myNode.element + str;
+        return node;
     }
 
     protected void elementNotNullCheck(E element) {

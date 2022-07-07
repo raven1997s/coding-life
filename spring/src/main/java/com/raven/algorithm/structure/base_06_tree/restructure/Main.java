@@ -13,7 +13,8 @@ import org.apache.commons.lang3.RandomUtils;
 public class Main {
 
     public static void main(String[] args) {
-        remove();
+        rotate();
+        //remove();
     }
 
     private static void remove() {
@@ -39,4 +40,22 @@ public class Main {
     }
 
 
+    private static void rotate() {
+        Integer[] intArray = new Integer[]{
+                4, 8, 12, 14, 16, 23, 26, 34, 38, 47, 49, 64, 67, 68, 74, 77, 80, 81, 88, 89, 92, 97
+        };
+
+        AVLTree<Integer> tree2 = new AVLTree<>();
+        for (Integer num : intArray) {
+            tree2.add(num);
+        }
+        BinaryTrees.println(tree2);
+        for (Integer num : intArray) {
+            tree2.remove(num);
+            BinaryTrees.println(tree2);
+            System.out.println("==============================================");
+        }
+
+
+    }
 }
