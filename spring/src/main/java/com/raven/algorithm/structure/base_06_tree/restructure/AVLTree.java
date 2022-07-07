@@ -50,17 +50,18 @@ public class AVLTree<E> extends BST<E> {
         if (parent.isLeftChild()) {
             // node是parent的左子树
             if (node.isLeftChild()) { //LL 需要右旋Grand节点
-
+                rotateRight(grand);
             } else { //LR 需要先RR左旋parent节点 再LL右旋grand节点
-
+                rotateLeft(parent);
+                rotateRight(grand);
             }
-
         } else {
             // node是parent的右子树
             if (node.isRightChild()) {// RR 左旋grand节点
-
+                rotateLeft(grand);
             } else { // RL 需要先LL右旋parent节点， 再RR左旋grand节点
-
+                rotateRight(parent);
+                rotateLeft(grand);
             }
         }
     }
