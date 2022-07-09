@@ -33,16 +33,23 @@ public class Main {
             tree.add(num);
         }
 
-        BinaryTrees.println(tree);
-        tree.remove(4);
-        System.out.println("===========");
-        BinaryTrees.println(tree);
-        tree.remove(2);
-        System.out.println("===========");
-        BinaryTrees.println(tree);
-        tree.remove(7);
-        System.out.println("===========");
-        BinaryTrees.println(tree);
+        tree.postorder(new BinarySearchTree.Visitor<Integer>() {
+            @Override
+            public boolean visit(Integer element) {
+                System.out.println(element);
+                return false;
+            }
+        });
+        BinaryTrees.println(tree);        //BinaryTrees.println(tree);
+        //tree.remove(4);
+        //System.out.println("===========");
+        //BinaryTrees.println(tree);
+        //tree.remove(2);
+        //System.out.println("===========");
+        //BinaryTrees.println(tree);
+        //tree.remove(7);
+        //System.out.println("===========");
+        //BinaryTrees.println(tree);
     }
 
     private static void isComplete() {

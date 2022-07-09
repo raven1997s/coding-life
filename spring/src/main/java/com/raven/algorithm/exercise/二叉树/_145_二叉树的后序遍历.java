@@ -2,10 +2,7 @@ package com.raven.algorithm.exercise.二叉树;
 
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Description:
@@ -36,27 +33,23 @@ public class _145_二叉树的后序遍历 {
         result.add(node.val);
     }
 
-    /**
-     * 迭代方式
-     *
-     * @param root
-     * @return
-     */
-    private void postorderTraversal1(TreeNode root, LinkedList<Integer> result) {
-        if (root == null) {
-            return;
+    public List<Integer> postorderTraversal1(TreeNode root) {
+        Deque<TreeNode> deque = new LinkedList<>();
+        LinkedList<Integer> result = new LinkedList<>();
+        if (null == root) {
+            return result;
         }
-        // TODO(raven): 2022/6/29 待理解
-        Stack<TreeNode> stack = new Stack<>();
-        while (!stack.isEmpty() || root != null) {
-            if (root != null) {
-                stack.push(root);
-                result.addFirst(root.val);
-                root = root.right;
-            } else {
-                root = stack.pop();
-                root = root.left;
+        deque.addFirst(root);
+        while (!deque.isEmpty()) {
+            TreeNode node = deque.removeFirst();
+            result.addFirst(node.val);
+            if (null != node.left) {
+                deque.addFirst(node.left);
+            }
+            if (null != node.right) {
+                deque.addFirst(node.right);
             }
         }
+        return result;
     }
 }
