@@ -1,6 +1,7 @@
 package com.raven.algorithm.structure.base_06_tree.restructure;
 
 import com.raven.algorithm.structure.utils.printer.BinaryTreeInfo;
+import org.w3c.dom.Node;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -63,6 +64,20 @@ public class BinaryTree<E> implements BinaryTreeInfo {
          */
         public boolean isRightChild() {
             return parent != null && this == parent.right;
+        }
+
+        /**
+         * 返回当前节点的兄弟节点
+         * @return
+         */
+        public Node<E> sibling(){
+            if (isRightChild()){
+                return parent.left;
+            }
+            if (isLeftChild()){
+                return parent.right;
+            }
+            return null;
         }
     }
 
