@@ -13,10 +13,27 @@ import org.apache.commons.lang3.RandomUtils;
 public class Main {
 
     public static void main(String[] args) {
-        rotate();
+        //rotate();
         //remove();
+        testRBTree();
     }
 
+    private static void testRBTree(){
+        Integer[] intArray = new Integer[]{
+                58, 27, 39, 85, 19, 99, 66, 57, 14, 16, 97, 1, 29, 73, 4, 25, 40, 79, 18
+        };
+
+        RBTree<Integer> tree2 = new RBTree<>();
+        for (Integer num : intArray) {
+            tree2.add(num);
+        }
+        BinaryTrees.println(tree2);
+        //for (Integer num : intArray) {
+        //    tree2.remove(num);
+        //    BinaryTrees.println(tree2);
+        //    System.out.println("==============================================");
+        //}
+    }
     private static void remove() {
         Integer[] intArray = new Integer[]{
                 7, 4, 9, 2, 5, 8, 11, 3, 1
