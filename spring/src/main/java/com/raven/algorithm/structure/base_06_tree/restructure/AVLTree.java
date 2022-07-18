@@ -11,6 +11,7 @@ import java.util.Comparator;
  * 左旋，右旋（LL，LR，RR，LL）的理解
  * 统一旋转
  * 删除元素后平衡二叉树
+ *
  * @author raven
  */
 public class AVLTree<E> extends BBST<E> {
@@ -24,6 +25,7 @@ public class AVLTree<E> extends BBST<E> {
 
     /**
      * 添加可能会让所以祖父节点失衡
+     *
      * @param node
      */
     @Override
@@ -45,10 +47,11 @@ public class AVLTree<E> extends BBST<E> {
 
     /**
      * 删除只可能会让父节点或祖先节点失衡
+     *
      * @param node
      */
     @Override
-    protected void afterRemove(Node<E> node) {
+    protected void afterRemove(Node<E> node, Node<E> replacement) {
         // 从节点循环向上，逐个判断当前节点是否失衡，如果失衡，则进行恢复平衡
         while ((node = node.parent) != null) {
             // 如果是平衡节点
@@ -120,6 +123,7 @@ public class AVLTree<E> extends BBST<E> {
 
     /**
      * AVL树在旋转后需要更新高度
+     *
      * @param grand  祖父节点
      * @param parent 父节点
      * @param child  子节点
@@ -134,6 +138,7 @@ public class AVLTree<E> extends BBST<E> {
 
     /**
      * AVL树在旋转后需要更新高度
+     *
      * @param r 子树的根节点
      * @param a
      * @param b

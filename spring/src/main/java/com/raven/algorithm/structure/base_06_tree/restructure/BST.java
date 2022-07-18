@@ -99,8 +99,9 @@ public class BST<E> extends BinaryTree<E> {
      * 方法抽象。
      *
      * @param node
+     * @param replacement
      */
-    protected void afterRemove(Node<E> node) {
+    protected void afterRemove(Node<E> node, Node<E> replacement) {
     }
 
     /**
@@ -184,11 +185,11 @@ public class BST<E> extends BinaryTree<E> {
             } else if (node == node.parent.right) {
                 node.parent.right = replacement;
             }
-            afterRemove(node);
+            afterRemove(node, replacement);
         } else if (node.parent == null) { //node是度为0的节点，并且是root节点
             // 删除root节点
             root = null;
-            afterRemove(node);
+            afterRemove(node, null);
         } else { // node是度为0的节点，并且不是root节点
             // 如果node是node父节点的左子树，则将副节点的左子树设置为null
             if (node == node.parent.left) {
@@ -196,7 +197,7 @@ public class BST<E> extends BinaryTree<E> {
             } else {
                 node.parent.right = null;
             }
-            afterRemove(node);
+            afterRemove(node, null);
         }
     }
 

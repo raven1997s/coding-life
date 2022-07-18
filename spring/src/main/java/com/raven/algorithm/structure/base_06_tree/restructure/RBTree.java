@@ -151,8 +151,22 @@ public class RBTree<E> extends BBST<E> {
     }
 
     @Override
-    protected void afterRemove(Node<E> node) {
-        super.afterRemove(node);
+    protected void afterRemove(Node<E> node, Node<E> replacement) {
+        // 如果要被删除的节点为红色，则直接删除即可
+        if (isRed(node)) {
+            return;
+        }
+
+        // 删除拥有一个red节点的黑色节点  用以替代的子节点是红色
+        // 将被替换的节点染为黑色
+        if (isRed(replacement)) {
+            black(replacement);
+            return;
+        }
+
+
+        // 删除黑色叶子节点
+
     }
 
     /**
@@ -177,7 +191,7 @@ public class RBTree<E> extends BBST<E> {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder(String.valueOf(element));
-            if (color == RED){
+            if (color == RED) {
                 sb.append("_red");
             }
             return sb.toString();
