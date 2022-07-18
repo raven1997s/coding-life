@@ -164,8 +164,70 @@ public class RBTree<E> extends BBST<E> {
             return;
         }
 
+        Node<E> parent = node.parent;
+        // 删除的是根节点
+        if (parent == null) {
+            return;
+        }
 
         // 删除黑色叶子节点
+        // 找到被删除节点的兄弟
+        // 不能通过下面的方式获取节点的兄弟节点 因为是通过isRightChild 来判断是不是兄弟节点，即（this == parent.right;）
+        //Node<E> sibling = node.sibling();
+        // 但是在删除的时候已经通过下面的代码将节点和parent断掉了
+        // 如果node是node父节点的左子树，则将副节点的左子树设置为null
+        /* if (node == node.parent.left) {
+            node.parent.left = null;
+        } else {
+            node.parent.right = null;
+        }*/
+        // 如果被删除的节点是左，则兄弟节点就是右边
+        boolean left = parent.left == null;
+        Node<E> sibling = left ? parent.right : parent.left;
+        if (left) { //被删除的节点在左边，兄弟节点在右边
+
+        } else {//  被删除的节点在右边，兄弟节点在右左
+            // 如果兄弟节点是红色，先把他转为黑色,parent变为黑色，再把parentLL右旋
+            if (isRed(sibling)) {
+                black(sibling);
+                red(parent);
+                rotateRight(parent);
+                // 更新兄弟节点。此时的兄弟节点已经变为parent的left
+                sibling = parent.left;
+            }
+
+            // 如果兄弟节点是黑色。看兄弟节点是否有至少一个红色节点可以借
+            if (isBlack(sibling.left) && isBlack(sibling.right)) {
+                // 兄弟节点没有一个红色子节点，父节点要向下和兄弟节点合并 将父节点染为黑色，兄弟节点染为红色
+                boolean parentBlack = isBlack(parent);
+                black(parent);
+                red(sibling);
+                // 如果父节点是黑色，把父节点当成被删除的节点处理
+                if (parentBlack) {
+                    afterRemove(parent, null);
+                }
+
+            } else {
+                // 兄弟节点至少有一个红色子节点，向兄弟节点借元素
+                // 如果兄弟节点的左边是黑色，兄弟要先RR左旋转，
+                //
+                if (isBlack(sibling.left)){
+                    rotateLeft(sibling);
+                    //  左旋后，兄弟节点变为了父节点的左边
+                    sibling = parent.left;
+                }
+                // 将兄弟节点染为之前父节点的颜色
+                // 兄弟节点的左边染为黑色
+                // 父节点染为黑色
+                color(sibling,colorOf(parent));
+                black(sibling.left);
+                black(parent);
+                // 父节点LL右旋转
+                rotateRight(parent);
+            }
+
+        }
+
 
     }
 
