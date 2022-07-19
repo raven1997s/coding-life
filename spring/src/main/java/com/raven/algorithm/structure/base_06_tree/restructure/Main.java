@@ -15,7 +15,27 @@ public class Main {
     public static void main(String[] args) {
         //rotate();
         //remove();
-        testRBTree();
+        //testRBTree();
+        removeRBTree();
+    }
+
+    private static void removeRBTree() {
+        Integer[] intArray = new Integer[]{
+                66, 56, 31, 78, 3, 96, 4, 50, 2, 8, 34, 40, 73, 24, 99, 83, 46, 22, 80, 17
+        };
+
+        RBTree<Integer> tree2 = new RBTree<>();
+        for (Integer num : intArray) {
+            tree2.add(num);
+        }
+        BinaryTrees.println(tree2);
+        System.out.println("========before===================");
+        for (Integer integer : intArray) {
+            tree2.remove(integer);
+            System.out.println("==========remove "+integer+" after =================");
+            BinaryTrees.println(tree2);
+        }
+
     }
 
     private static void testRBTree(){

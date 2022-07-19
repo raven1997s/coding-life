@@ -7,7 +7,16 @@ import java.util.Comparator;
 /**
  * Description:
  * date: 2022/7/14 21:35
- *
+ * 红黑树也是一种自平衡的二叉搜索树
+ * 以前也叫做平衡二叉B树 (Symmetric Binary B-tree)
+ * 红黑树必须满足以下 5条性质
+ * 1. 节点是 RED 或者 BLACK
+ * 2. 根节点是 BLACK
+ * 3. 叶子节点（外部节点，空节点）都是 BLACK
+ * 4. RED 节点的子节点都是 BLACK
+ * 4.1RED 节点的 parent 都是 BLACK
+ * 4.2从根节点到叶子节点的所有路径上不能有2 个连续的RED 节点
+ * 5.从任一节点到叶子节点的所有路径都包含相同数目的 BLACK 节点
  * @author raven
  */
 public class RBTree<E> extends BBST<E> {
@@ -124,11 +133,13 @@ public class RBTree<E> extends BBST<E> {
         // 叔父节点是黑色,不需要上溢(类比四阶b树此时超级节点元素<3 )
         if (parent.isLeftChild()) {// L
             if (node.isLeftChild()) { //LL
-                // 父节点染为黑色 祖父节点染为红色（上面已经统一处理）
+                // 父节点染为黑色
+                // 祖父节点染为红色（上面已经统一处理）
                 // 祖父节点右旋 父节点变为超级节点中的parent
                 black(parent);
             } else { //LR
-                // 自己染为黑色 //祖父节点染为红色（上面已经统一处理）
+                // 自己染为黑色
+                // 祖父节点染为红色（上面已经统一处理）
                 // 先将父节点RR左旋，再将祖父节点LL右旋
                 black(node);
                 rotateLeft(parent);
@@ -136,7 +147,8 @@ public class RBTree<E> extends BBST<E> {
             rotateRight(grand);
         } else { //R
             if (node.isRightChild()) { // RR
-                // 父节点染为黑色 祖父节点染为红色 （上面已经统一处理）
+                // 父节点染为黑色
+                // 祖父节点染为红色 （上面已经统一处理）
                 // 祖父节点RR左旋
                 black(parent);
             } else { //RL
@@ -149,18 +161,20 @@ public class RBTree<E> extends BBST<E> {
         }
 
     }
-
+    //传递一个个参数
     @Override
-    protected void afterRemove(Node<E> node, Node<E> replacement) {
+    protected void afterRemove(Node<E> node) {
         // 如果要被删除的节点为红色，则直接删除即可
-        if (isRed(node)) {
-            return;
-        }
+        //if (isRed(node)) {
+        //    return;
+        //}
 
-        // 删除拥有一个red节点的黑色节点  用以替代的子节点是红色
+        // 俩种情况
+        // 1.删除拥有一个red节点的黑色节点  用以替代的子节点是红色
         // 将被替换的节点染为黑色
-        if (isRed(replacement)) {
-            black(replacement);
+        // 2.删除红色的叶子节点，复用代码
+        if (isRed(node)) {
+            black(node);
             return;
         }
 
@@ -182,10 +196,47 @@ public class RBTree<E> extends BBST<E> {
             node.parent.right = null;
         }*/
         // 如果被删除的节点是左，则兄弟节点就是右边
-        boolean left = parent.left == null;
+        // node.isLeftChild() 防止下溢时递归调用。此时不会断掉父节点指向下溢节点的线，所以要通过node.isLeftChild()判断
+        boolean left = parent.left == null || node.isLeftChild();
         Node<E> sibling = left ? parent.right : parent.left;
         if (left) { //被删除的节点在左边，兄弟节点在右边
+            // 如果兄弟节点是红色，先把他转为黑色,parent变为黑色，再把parentRR左旋
+            if (isRed(sibling)) {
+                black(sibling);
+                red(parent);
+                rotateLeft(parent);
+                // 更新兄弟节点。此时的兄弟节点已经变为parent的right
+                sibling = parent.right;
+            }
 
+            // 如果兄弟节点是黑色。看兄弟节点是否有至少一个红色节点可以借
+            if (isBlack(sibling.left) && isBlack(sibling.right)) {
+                // 兄弟节点没有一个红色子节点，父节点要向下和兄弟节点合并 将父节点染为黑色，兄弟节点染为红色
+                boolean parentBlack = isBlack(parent);
+                black(parent);
+                red(sibling);
+                // 如果父节点是黑色，把父节点当成被删除的节点处理 （下溢）
+                if (parentBlack) {
+                    afterRemove(parent);
+                }
+
+            } else {
+                // 兄弟节点至少有一个红色子节点，向兄弟节点借元素
+                // 如果兄弟节点的右边是黑色，兄弟要先LL右旋转，
+                if (isBlack(sibling.right)){
+                    rotateRight(sibling);
+                    //  右旋后，兄弟节点变为了父节点的右边
+                    sibling = parent.right;
+                }
+                // 将兄弟节点染为之前父节点的颜色
+                // 兄弟节点的右边染为黑色
+                // 父节点染为黑色
+                color(sibling,colorOf(parent));
+                black(sibling.right);
+                black(parent);
+                // 父节点RR左旋转
+                rotateLeft(parent);
+            }
         } else {//  被删除的节点在右边，兄弟节点在右左
             // 如果兄弟节点是红色，先把他转为黑色,parent变为黑色，再把parentLL右旋
             if (isRed(sibling)) {
@@ -204,7 +255,7 @@ public class RBTree<E> extends BBST<E> {
                 red(sibling);
                 // 如果父节点是黑色，把父节点当成被删除的节点处理
                 if (parentBlack) {
-                    afterRemove(parent, null);
+                    afterRemove(parent);
                 }
 
             } else {
@@ -230,6 +281,125 @@ public class RBTree<E> extends BBST<E> {
 
 
     }
+
+    // 传递俩个参数
+    //@Override
+    //protected void afterRemove(Node<E> node, Node<E> replacement) {
+    //    // 如果要被删除的节点为红色，则直接删除即可
+    //    if (isRed(node)) {
+    //        return;
+    //    }
+    //
+    //    // 删除拥有一个red节点的黑色节点  用以替代的子节点是红色
+    //    // 将被替换的节点染为黑色
+    //    if (isRed(replacement)) {
+    //        black(replacement);
+    //        return;
+    //    }
+    //
+    //    Node<E> parent = node.parent;
+    //    // 删除的是根节点
+    //    if (parent == null) {
+    //        return;
+    //    }
+    //
+    //    // 删除黑色叶子节点
+    //    // 找到被删除节点的兄弟
+    //    // 不能通过下面的方式获取节点的兄弟节点 因为是通过isRightChild 来判断是不是兄弟节点，即（this == parent.right;）
+    //    //Node<E> sibling = node.sibling();
+    //    // 但是在删除的时候已经通过下面的代码将节点和parent断掉了
+    //    // 如果node是node父节点的左子树，则将副节点的左子树设置为null
+    //    /* if (node == node.parent.left) {
+    //        node.parent.left = null;
+    //    } else {
+    //        node.parent.right = null;
+    //    }*/
+    //    // 如果被删除的节点是左，则兄弟节点就是右边
+    //    // node.isLeftChild() 防止下溢时递归调用。此时不会断掉父节点指向下溢节点的线，所以要通过node.isLeftChild()判断
+    //    boolean left = parent.left == null || node.isLeftChild();
+    //    Node<E> sibling = left ? parent.right : parent.left;
+    //    if (left) { //被删除的节点在左边，兄弟节点在右边
+    //        // 如果兄弟节点是红色，先把他转为黑色,parent变为黑色，再把parentRR左旋
+    //        if (isRed(sibling)) {
+    //            black(sibling);
+    //            red(parent);
+    //            rotateLeft(parent);
+    //            // 更新兄弟节点。此时的兄弟节点已经变为parent的right
+    //            sibling = parent.right;
+    //        }
+    //
+    //        // 如果兄弟节点是黑色。看兄弟节点是否有至少一个红色节点可以借
+    //        if (isBlack(sibling.left) && isBlack(sibling.right)) {
+    //            // 兄弟节点没有一个红色子节点，父节点要向下和兄弟节点合并 将父节点染为黑色，兄弟节点染为红色
+    //            boolean parentBlack = isBlack(parent);
+    //            black(parent);
+    //            red(sibling);
+    //            // 如果父节点是黑色，把父节点当成被删除的节点处理 （下溢）
+    //            if (parentBlack) {
+    //                afterRemove(parent, null);
+    //            }
+    //
+    //        } else {
+    //            // 兄弟节点至少有一个红色子节点，向兄弟节点借元素
+    //            // 如果兄弟节点的右边是黑色，兄弟要先LL右旋转，
+    //            if (isBlack(sibling.right)){
+    //                rotateRight(sibling);
+    //                //  右旋后，兄弟节点变为了父节点的右边
+    //                sibling = parent.right;
+    //            }
+    //            // 将兄弟节点染为之前父节点的颜色
+    //            // 兄弟节点的右边染为黑色
+    //            // 父节点染为黑色
+    //            color(sibling,colorOf(parent));
+    //            black(sibling.right);
+    //            black(parent);
+    //            // 父节点RR左旋转
+    //            rotateLeft(parent);
+    //        }
+    //    } else {//  被删除的节点在右边，兄弟节点在右左
+    //        // 如果兄弟节点是红色，先把他转为黑色,parent变为黑色，再把parentLL右旋
+    //        if (isRed(sibling)) {
+    //            black(sibling);
+    //            red(parent);
+    //            rotateRight(parent);
+    //            // 更新兄弟节点。此时的兄弟节点已经变为parent的left
+    //            sibling = parent.left;
+    //        }
+    //
+    //        // 如果兄弟节点是黑色。看兄弟节点是否有至少一个红色节点可以借
+    //        if (isBlack(sibling.left) && isBlack(sibling.right)) {
+    //            // 兄弟节点没有一个红色子节点，父节点要向下和兄弟节点合并 将父节点染为黑色，兄弟节点染为红色
+    //            boolean parentBlack = isBlack(parent);
+    //            black(parent);
+    //            red(sibling);
+    //            // 如果父节点是黑色，把父节点当成被删除的节点处理
+    //            if (parentBlack) {
+    //                afterRemove(parent, null);
+    //            }
+    //
+    //        } else {
+    //            // 兄弟节点至少有一个红色子节点，向兄弟节点借元素
+    //            // 如果兄弟节点的左边是黑色，兄弟要先RR左旋转，
+    //            //
+    //            if (isBlack(sibling.left)){
+    //                rotateLeft(sibling);
+    //                //  左旋后，兄弟节点变为了父节点的左边
+    //                sibling = parent.left;
+    //            }
+    //            // 将兄弟节点染为之前父节点的颜色
+    //            // 兄弟节点的左边染为黑色
+    //            // 父节点染为黑色
+    //            color(sibling,colorOf(parent));
+    //            black(sibling.left);
+    //            black(parent);
+    //            // 父节点LL右旋转
+    //            rotateRight(parent);
+    //        }
+    //
+    //    }
+    //
+    //
+    //}
 
     /**
      * 二叉树添加节点时指定添加的节点为红黑树节点

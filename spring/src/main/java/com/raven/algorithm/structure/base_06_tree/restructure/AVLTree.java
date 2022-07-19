@@ -51,7 +51,7 @@ public class AVLTree<E> extends BBST<E> {
      * @param node
      */
     @Override
-    protected void afterRemove(Node<E> node, Node<E> replacement) {
+    protected void afterRemove(Node<E> node) {
         // 从节点循环向上，逐个判断当前节点是否失衡，如果失衡，则进行恢复平衡
         while ((node = node.parent) != null) {
             // 如果是平衡节点
