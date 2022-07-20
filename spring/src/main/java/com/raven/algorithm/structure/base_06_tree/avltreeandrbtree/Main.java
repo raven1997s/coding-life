@@ -1,8 +1,6 @@
-package com.raven.algorithm.structure.base_06_tree.restructure;
+package com.raven.algorithm.structure.base_06_tree.avltreeandrbtree;
 
-import com.raven.algorithm.structure.base_05_binarysearchtree.*;
 import com.raven.algorithm.structure.utils.printer.BinaryTrees;
-import org.apache.commons.lang3.RandomUtils;
 
 /**
  * Description:

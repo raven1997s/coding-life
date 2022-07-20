@@ -1,7 +1,6 @@
-package com.raven.algorithm.structure.base_06_tree.restructure;
+package com.raven.algorithm.structure.base_06_tree.avltreeandrbtree;
 
 import com.raven.algorithm.structure.utils.printer.BinaryTreeInfo;
-import org.w3c.dom.Node;
 
 import java.util.LinkedList;
 import java.util.Queue;

@@ -1,4 +1,4 @@
-package com.raven.algorithm.structure.base_06_tree.restructure;
+package com.raven.algorithm.structure.base_06_tree.avltreeandrbtree;
 
 import java.util.Comparator;
 
