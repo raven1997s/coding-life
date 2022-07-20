@@ -1,4 +1,4 @@
-package com.raven.algorithm.structure.base_06_tree.avltreeandrbtree;
+package com.raven.algorithm.structure.base_09_listset.tree;
 
 import java.util.Comparator;
 
@@ -8,7 +8,7 @@ import java.util.Comparator;
  * 平衡二叉搜索树
  * @author raven
  */
-public class BBST<E>  extends BST<E>{
+public class BBST<E>  extends BST<E> {
     public BBST() {
     }
 

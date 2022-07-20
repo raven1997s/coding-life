@@ -1,4 +1,4 @@
-package com.raven.algorithm.structure.base_06_tree.avltreeandrbtree;
+package com.raven.algorithm.structure.base_09_listset.tree;
 
 import com.raven.algorithm.structure.utils.printer.BinaryTreeInfo;
 

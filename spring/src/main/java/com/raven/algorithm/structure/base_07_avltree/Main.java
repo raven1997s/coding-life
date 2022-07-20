@@ -1,5 +1,6 @@
-package com.raven.algorithm.structure.base_06_tree.avltreeandrbtree;
+package com.raven.algorithm.structure.base_07_avltree;
 
+import com.raven.algorithm.structure.base_08_rbtree.RBTree;
 import com.raven.algorithm.structure.utils.printer.BinaryTrees;
 
 /**

@@ -1,4 +1,4 @@
-package com.raven.algorithm;
+package com.raven.algorithm.structure.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

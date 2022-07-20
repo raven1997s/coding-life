@@ -3,7 +3,7 @@ package com.raven.algorithm.structure.base_01_dynamicarray;
 /**
  * Description:
  * date: 2022/4/30 10:39
- * 自定义 ArrayList (正数版)
+ * 自定义 ArrayList
  *
  * @author raven
  */
