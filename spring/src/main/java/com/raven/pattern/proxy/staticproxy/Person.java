@@ -1,6 +1,8 @@
 package com.raven.pattern.proxy.staticproxy;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @PackageName: com.raven.proxy.staticproxy
@@ -10,6 +12,8 @@ import lombok.Data;
  * @Description:
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Person implements Human {
     private String name;
     private int age;
