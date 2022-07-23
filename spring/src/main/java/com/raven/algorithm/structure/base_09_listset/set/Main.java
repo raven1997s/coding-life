@@ -1,6 +1,9 @@
 package com.raven.algorithm.structure.base_09_listset.set;
 
+import com.raven.algorithm.structure.utils.FileInfo;
+import com.raven.algorithm.structure.utils.Files;
 import com.raven.algorithm.structure.utils.Times;
+import com.raven.algorithm.structure.utils.executor.Executors;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.util.Random;
@@ -14,9 +17,11 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
         //listSet();
+        //testThread();
+        readFile();
     }
 
-    static void treeSet(){
+    static void treeSet() {
         // 从小到大有序大遍历
         TreeSet<Integer> listSet = new TreeSet<>();
         listSet.add(13);
@@ -35,6 +40,7 @@ public class Main {
         });
 
     }
+
     static void listSet() {
         Set<Integer> listSet = new ListSet<>();
         listSet.add(10);
@@ -51,6 +57,44 @@ public class Main {
                 return false;
             }
         });
+    }
 
+    static void testThread(){
+        Executors.execute( () -> {
+            System.out.println("1111");
+        });
+    }
+    static void readFile() {
+        FileInfo fileInfo = Files.read("/Users/raven/Documents/devlop", new String[]{"java"});
+        System.out.println("文件个数：" + fileInfo.getFiles());
+        System.out.println("文件行数:" + fileInfo.getLines());
+        String[] words = fileInfo.words();
+        System.out.println("单词个数:" + words.length);
+
+        //Times.test("listSet", () -> {
+        //    ListSet<String> set = new ListSet<>();
+        //    for (String word : words) {
+        //        set.add(word);
+        //    }
+        //    for (String word : words) {
+        //        set.contains(word);
+        //    }
+        //    for (String word : words) {
+        //        set.remove(word);
+        //    }
+        //});
+
+        Times.test("treeSet", () -> {
+            TreeSet<String> set = new TreeSet<>();
+            for (String word : words) {
+                set.add(word);
+            }
+            for (String word : words) {
+                set.contains(word);
+            }
+            for (String word : words) {
+                set.remove(word);
+            }
+        });
     }
 }
