@@ -1,7 +1,7 @@
-package com.raven.algorithm.structure.base_10_map.set;
+package com.raven.algorithm.structure.base_10_treemap.set;
 
-import com.raven.algorithm.structure.base_10_map.map.Map;
-import com.raven.algorithm.structure.base_10_map.map.TreeMap;
+import com.raven.algorithm.structure.base_10_treemap.map.Map;
+import com.raven.algorithm.structure.base_10_treemap.map.TreeMap;
 
 /**
  * Description:

@@ -1,14 +1,9 @@
 package com.raven.stream.function;
 
 import com.google.common.collect.Lists;
-import com.raven.algorithm.structure.base_10_map.map.TreeMap;
-import com.raven.pattern.factory.GoCourse;
 import com.raven.pattern.proxy.staticproxy.Person;
-import org.springframework.util.Assert;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Description:

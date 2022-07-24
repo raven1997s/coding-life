@@ -1,4 +1,4 @@
-package com.raven.algorithm.structure.base_10_map.map;
+package com.raven.algorithm.structure.base_10_treemap.map;
 
 
 import java.util.Comparator;
