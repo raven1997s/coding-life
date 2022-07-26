@@ -16,10 +16,12 @@ public class Main {
 
     static void testKey(){
         HashMap<Object, Integer> map = new HashMap<>();
-        for (int i = 1; i <= 9; i++) {
+        for (int i = 1; i <= 19; i++) {
             map.put(new Key(i),i);
         }
-        System.out.println(map.containsKey(new Key(1)));
+        System.out.println(map.get(new Key(1)));
+        System.out.println(map.get(new Key(2)));
+        System.out.println(map.get(new Key(3)));
         map.print();
     }
 

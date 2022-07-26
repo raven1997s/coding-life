@@ -183,8 +183,8 @@ public class HashMap<K, V> implements Map<K, V> {
 
     }
 
-    public void print(){
-        if (size == 0){
+    public void print() {
+        if (size == 0) {
             return;
         }
         for (int i = 0; i < table.length; i++) {
@@ -198,12 +198,12 @@ public class HashMap<K, V> implements Map<K, V> {
 
                 @Override
                 public Object left(Object node) {
-                    return ((HashMap.Node<K, V>)node).left;
+                    return ((HashMap.Node<K, V>) node).left;
                 }
 
                 @Override
                 public Object right(Object node) {
-                    return ((HashMap.Node<K, V>)node).right;
+                    return ((HashMap.Node<K, V>) node).right;
                 }
 
                 @Override
@@ -276,17 +276,43 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     private Node<K, V> node(K key) {
+        // 找到key在哈希表桶数组的索引。通过索引找到root节点 从根节点开始遍历查找整个红黑树
+        Node<K, V> root = table[index(key)];
+        return node(key, root);
+    }
+
+    private Node<K, V> node(K k1, Node<K, V> node) {
         // 找到key在哈希表桶数组的索引。通过索引找到root节点
-        Node<K, V> node = table[index(key)];
-        int h1 = key == null ? 0 : key.hashCode();
+        int h1 = k1 == null ? 0 : k1.hashCode();
+        Node<K,V> result;
         while (node != null) {
-            int result = compare(key, node.key, h1, node.hash);
-            if (result == 0) {
-                return node;
-            } else if (result > 0) {
+            K k2 = node.key;
+            int h2 = node.hash;
+            // 直接比较hash值大小，防止做差比较溢出
+            if (h1 > h2) {
                 node = node.right;
-            } else {
+            } else if (h1 < h2) {
                 node = node.left;
+            } else if (Objects.equals(k1, k2)) {
+                // hash值相等，equals比较是否是同一对象
+                return node;
+            } else if (k1 != null && k2 != null && k1.getClass() == k2.getClass() && k1 instanceof Comparable) {
+                // hash值相等 equals不等 具有可比较性通过Comparable进行比较
+                int cmp = ((Comparable) k1).compareTo(k2);
+                if (cmp > 0) {
+                    node = node.right;
+                } else if (cmp < 0) {
+                    node = node.left;
+                } else {
+                    return node;
+                }
+            } else if (node.right != null && ((result = node(k1,node.right)) != null)){
+                // hash值相等 equals不等，不具备可比较性 递归从红黑树的右边查找比较 如果找到则直接返回
+                return result;
+            } else if (node.left != null && ((result = node(k1,node.left)) != null)){
+                return result;
+            }else {
+                return null;
             }
         }
         // 遍历结束未找到节点。证明key不存在
@@ -830,7 +856,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder(key + String.valueOf(value));
+            StringBuilder sb = new StringBuilder("key_" + key + "_value_" + value);
             if (color == RED) {
                 sb.append("_red");
             }
