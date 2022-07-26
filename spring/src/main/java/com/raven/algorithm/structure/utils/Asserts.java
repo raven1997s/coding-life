@@ -1,4 +1,4 @@
-package com.raven.algorithm.structure.base_01_dynamicarray;
+package com.raven.algorithm.structure.utils;
 
 /**
  * Description:
@@ -6,7 +6,7 @@ package com.raven.algorithm.structure.base_01_dynamicarray;
  *
  * @author raven
  */
-public class Assert {
+public class Asserts {
 
     public static void test(boolean condition){
         if (!condition){

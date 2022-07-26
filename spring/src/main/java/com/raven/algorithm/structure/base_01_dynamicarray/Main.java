@@ -23,11 +23,11 @@ public class Main {
         //System.out.println(list);
         //list.add(10,0);
         //System.out.println(list);
-        ////Assert.test(list.contains(88));
-        //Assert.test(list.contains(99));
-        //Assert.test(list.size() == 4);
-        ////Assert.test(list.size() == 4);
-        //Assert.test(list.get(0) == 10);
+        ////Asserts.test(list.contains(88));
+        //Asserts.test(list.contains(99));
+        //Asserts.test(list.size() == 4);
+        ////Asserts.test(list.size() == 4);
+        //Asserts.test(list.get(0) == 10);
         ////System.out.println(list.get(0));
         //for (int i = 0; i < 50; i++) {
         //    list.add(i);

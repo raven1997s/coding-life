@@ -67,19 +67,51 @@ public class HashMap<K, V> implements Map<K, V> {
         // 添加的不是第一个节点
         Node<K, V> parent;
         Node<K, V> node = root;
+        Node<K, V> result;
+        // 是否已经在树上搜索过元素
+        boolean searched = false;
         // 记录比较结果，确定元素添加到父节点的那个方向
-        int result;
+        int cmp;
         int h1 = key == null ? 0 : key.hashCode();
+        K k1 = key;
         // 当节点元素比较到叶子节点，叶子节点没有子节点，比较结束，叶子节点为节点元素节点的父节点
         do {
             // 用节点元素和树上的节点元素比较大小
             // 如果节点元素大于树上的节点元素，则继续和节点元素的右节点进行比较
-            result = compare(key, node.key, h1, node.hash);
+            K k2 = node.key;
+            int h2 = node.hash;
+            if (h1 > h2) {
+                cmp = 1;
+            } else if (h1 < h2) {
+                cmp = -1;
+            } else if (Objects.equals(k1, k2)) {
+                cmp = 0;
+            } else if (k1 != null && k2 != null
+                    && k1.getClass() == k2.getClass()
+                    && k1 instanceof Comparable
+                    // compareTo 代表俩个对象的大小相当，但不能认为他们对象相当
+                    && (cmp = ((Comparable) k1).compareTo(k2)) != 0) {
+                // hash值相等 equals不等 key具有可比较性
+            } else if (searched) {// searched = true 已经搜索过，不需要继续搜索树上是否存在该key
+                cmp = System.identityHashCode(k1) - System.identityHashCode(k2);
+            } else {
+                // hash值相等 equals不等 key不具备可比性
+                // 在左右子树上遍历查找key是否存在
+                if ((node.right != null && (result = node(k1, node.right)) != null) ||
+                        (node.left != null && (result = node(k1, node.left)) != null)) {
+                    // 将找到的节点赋值给node 后面统一处理
+                    node = result;
+                    cmp = 1;
+                } else {
+                    searched = true;
+                    cmp = System.identityHashCode(k1) - System.identityHashCode(k2);
+                }
+            }
             // 比较前记录父节点 创建节点时使用
             parent = node;
-            if (result > 0) {
+            if (cmp > 0) {
                 node = node.right;
-            } else if (result < 0) {
+            } else if (cmp < 0) {
                 node = node.left;
             } else {
                 // 节点元素和树上元素相等 重新赋值
@@ -92,7 +124,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
         // 根据不同的树，创建不同类型的节点，如BST创建Node，AVL创建AVLNode
         Node<K, V> newNode = createNode(key, value, parent);
-        if (result > 0) {
+        if (cmp > 0) {
             parent.right = newNode;
         } else {
             parent.left = newNode;
@@ -284,7 +316,9 @@ public class HashMap<K, V> implements Map<K, V> {
     private Node<K, V> node(K k1, Node<K, V> node) {
         // 找到key在哈希表桶数组的索引。通过索引找到root节点
         int h1 = k1 == null ? 0 : k1.hashCode();
-        Node<K,V> result;
+        // 用来存储从红黑树左右子树中查出来的结果数据
+        Node<K, V> result;
+        int cmp;
         while (node != null) {
             K k2 = node.key;
             int h2 = node.hash;
@@ -296,74 +330,74 @@ public class HashMap<K, V> implements Map<K, V> {
             } else if (Objects.equals(k1, k2)) {
                 // hash值相等，equals比较是否是同一对象
                 return node;
-            } else if (k1 != null && k2 != null && k1.getClass() == k2.getClass() && k1 instanceof Comparable) {
+            } else if (k1 != null && k2 != null
+                    && k1.getClass() == k2.getClass()
+                    && k1 instanceof Comparable
+                    // compareTo相当不能认为是同一对象 equals比较是否是同一对象
+                    && (cmp = ((Comparable) k1).compareTo(k2)) != 0) {
                 // hash值相等 equals不等 具有可比较性通过Comparable进行比较
-                int cmp = ((Comparable) k1).compareTo(k2);
-                if (cmp > 0) {
-                    node = node.right;
-                } else if (cmp < 0) {
-                    node = node.left;
-                } else {
-                    return node;
-                }
-            } else if (node.right != null && ((result = node(k1,node.right)) != null)){
+                node = cmp > 0 ? node.right : node.left;
+            } else if (node.right != null && ((result = node(k1, node.right)) != null)) {
                 // hash值相等 equals不等，不具备可比较性 递归从红黑树的右边查找比较 如果找到则直接返回
                 return result;
-            } else if (node.left != null && ((result = node(k1,node.left)) != null)){
-                return result;
-            }else {
-                return null;
+            } else {
+                node = node.left;
             }
+            //} else if (node.left != null && ((result = node(k1, node.left)) != null)) {
+            //    return result;
+            //} else {
+            //    return null;
+            //}
         }
         // 遍历结束未找到节点。证明key不存在
         return null;
     }
 
-
-    /**
-     * 比较key的大小
-     *
-     * @param k1
-     * @param k2
-     * @param h1 key1的hashCode
-     * @param h2 key2的hashCode
-     * @return
-     */
-    private int compare(K k1, K k2, int h1, int h2) {
-        // 比较hashCode 如果hashCode不相等直接返回,继续和其他节点比较大小
-        int result = h1 - h2;
-        if (result != 0) {
-            return result;
-        }
-
-        // h1 = h2 hashCode相等 比较equals
-        if (Objects.equals(k1, k2)) {
-            // 如果equals相等，则证明俩个对象相等
-            return 0;
-        }
-
-        // hashCode相等 ， equals不等
-        if (k1 != null && k2 != null) {
-            // 根据类名长度进行比较
-            String key1Cls = k1.getClass().getName();
-            String key2Cls = k2.getClass().getName();
-            result = key1Cls.compareTo(key2Cls);
-            if (result != 0) {
-                return result;
-            }
-
-            // 如果是同一种类型并且具有可比较性 通过比较器进行比较
-            if (k1 instanceof Comparable) {
-                return ((Comparable) k1).compareTo(k2);
-            }
-        }
-
-        // 同一种类型 哈希值相等，但是不具备可比较性
-        // key1为null && key2不为空
-        // key1不为空 && key2为空
-        // 通过内存地址对应的hashCode比较
-        return System.identityHashCode(k1) - System.identityHashCode(k2);
-    }
+    //
+    ///**
+    // * 比较key的大小
+    // *
+    // * @param k1
+    // * @param k2
+    // * @param h1 key1的hashCode
+    // * @param h2 key2的hashCode
+    // * @return
+    // */
+    //private int compare(K k1, K k2, int h1, int h2) {
+    //    // 比较hashCode 如果hashCode不相等直接返回,继续和其他节点比较大小
+    //    int result = h1 - h2;
+    //    if (result != 0) {
+    //        return result;
+    //    }
+    //
+    //    // h1 = h2 hashCode相等 比较equals
+    //    if (Objects.equals(k1, k2)) {
+    //        // 如果equals相等，则证明俩个对象相等
+    //        return 0;
+    //    }
+    //
+    //    // hashCode相等 ， equals不等
+    //    if (k1 != null && k2 != null) {
+    //        // 根据类名长度进行比较
+    //        String key1Cls = k1.getClass().getName();
+    //        String key2Cls = k2.getClass().getName();
+    //        result = key1Cls.compareTo(key2Cls);
+    //        if (result != 0) {
+    //            return result;
+    //        }
+    //
+    //        // 如果是同一种类型并且具有可比较性 通过比较器进行比较
+    //        if (k1 instanceof Comparable) {
+    //            return ((Comparable) k1).compareTo(k2);
+    //        }
+    //    }
+    //
+    //    // 同一种类型 哈希值相等，但是不具备可比较性
+    //    // key1为null && key2不为空
+    //    // key1不为空 && key2为空
+    //    // 通过内存地址对应的hashCode比较
+    //    return System.identityHashCode(k1) - System.identityHashCode(k2);
+    //}
 
     private void afterPut(Node<K, V> node) {
         Node<K, V> parent = node.parent;
