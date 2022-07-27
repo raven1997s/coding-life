@@ -28,7 +28,7 @@ public class Key {
 
     @Override
     public int hashCode() {
-        return value / 20;
+        return value / 10;
     }
 
     @Override

@@ -72,8 +72,8 @@ public class HashMap<K, V> implements Map<K, V> {
         boolean searched = false;
         // 记录比较结果，确定元素添加到父节点的那个方向
         int cmp;
-        int h1 = key == null ? 0 : key.hashCode();
         K k1 = key;
+        int h1 = hash(k1);
         // 当节点元素比较到叶子节点，叶子节点没有子节点，比较结束，叶子节点为节点元素节点的父节点
         do {
             // 用节点元素和树上的节点元素比较大小
@@ -101,7 +101,7 @@ public class HashMap<K, V> implements Map<K, V> {
                         (node.left != null && (result = node(k1, node.left)) != null)) {
                     // 将找到的节点赋值给node 后面统一处理
                     node = result;
-                    cmp = 1;
+                    cmp = 0;
                 } else {
                     searched = true;
                     cmp = System.identityHashCode(k1) - System.identityHashCode(k2);
@@ -262,6 +262,7 @@ public class HashMap<K, V> implements Map<K, V> {
             // 将前驱节点的值替换到节点中
             node.key = preNode.key;
             node.value = preNode.value;
+            node.hash = preNode.hash;
             // 删除前驱节点 将前驱节点赋值给node，复用删除度为一的节点的代码
             node = preNode;
         }
@@ -315,7 +316,8 @@ public class HashMap<K, V> implements Map<K, V> {
 
     private Node<K, V> node(K k1, Node<K, V> node) {
         // 找到key在哈希表桶数组的索引。通过索引找到root节点
-        int h1 = k1 == null ? 0 : k1.hashCode();
+        // hashcode 扰动计算
+        int h1 = hash(k1);
         // 用来存储从红黑树左右子树中查出来的结果数据
         Node<K, V> result;
         int cmp;
@@ -581,6 +583,18 @@ public class HashMap<K, V> implements Map<K, V> {
      * @return
      */
     private int index(K key) {
+        // 获取hashCode的高16位 ，让高16位与低16位进行异或运算，确保生成的索引在数组中位置更均匀
+        // 使用最后的hash值与数组的长度-1进行与运算，获取索引位置(类似% 但是更高效)
+        return hash(key) & (table.length - 1);
+    }
+
+    /**
+     * 扰动计算hashCode
+     *
+     * @param key
+     * @return
+     */
+    private int hash(K key) {
         if (key == null) {
             return 0;
         }
@@ -588,11 +602,12 @@ public class HashMap<K, V> implements Map<K, V> {
         int hash = key.hashCode();
         // 获取hashCode的高16位 ，让高16位与低16位进行异或运算，确保生成的索引在数组中位置更均匀
         // 使用最后的hash值与数组的长度-1进行与运算，获取索引位置(类似% 但是更高效)
-        return (hash ^ (hash >>> 16)) & (table.length - 1);
+        return hash ^ (hash >>> 16);
     }
 
     private int index(Node<K, V> node) {
-        return (node.hash ^ (node.hash >>> 16)) & (table.length - 1);
+        // 内部已经使用高32位与低32位扰动计算 这里不需要实时位运算了
+        return node.hash & (table.length - 1);
     }
 
     // ================================================节点遍历相关start========================================================
@@ -832,7 +847,9 @@ public class HashMap<K, V> implements Map<K, V> {
 
         public Node(K key, V value, Node<K, V> parent) {
             this.key = key;
-            this.hash = key == null ? 0 : key.hashCode();
+            // 因为key是不变的 hashCode()计算逻辑也是不变的，所以可以提前算好hash值，不需要每次都实时位运算
+            int hash = key == null ? 0 : key.hashCode();
+            this.hash = (hash ^ (hash >>> 16));
             this.value = value;
             this.parent = parent;
         }
