@@ -1,5 +1,7 @@
 package com.raven.algorithm.structure.base_10_map.linkedhashmap.map;
 
+import org.w3c.dom.Node;
+
 /**
  * Description:
  * date: 2022/7/27 21:41
@@ -21,17 +23,26 @@ public class LinkedHashMap<K, V> extends HashMap<K, V> {
     /**
      * 删除节点后将维护的链表线断掉
      *
-     * @param node
+     * @param removeNode
      */
     @Override
-    protected void afterRemove(Node<K, V> node) {
-        if (node == null) {
+    protected void afterRemove(Node<K, V> willNode, Node<K, V> removeNode) {
+        if (removeNode == null) {
             return;
         }
 
+        LinkedNode<K, V> willLinkedNode = (LinkedNode<K, V>) willNode;
+        LinkedNode<K, V> removeLinkedNode = (LinkedNode<K, V>) removeNode;
+
+        // 删除度为二的节点时，真正删除的节点时前驱or后继节点，需要修复他们在链表中的位置
+        if (willLinkedNode != removeLinkedNode){
+            Node<K,V> tempNode;
+
+        }
+
         //  获取节点前一个节点 以及后一个节点
-        LinkedNode<K, V> prev = ((LinkedNode<K, V>) node).prev;
-        LinkedNode<K, V> next = ((LinkedNode<K, V>) node).next;
+        LinkedNode<K, V> prev = removeLinkedNode.prev;
+        LinkedNode<K, V> next = removeLinkedNode.next;
 
         // 如果前一个节点为null 说明删除的是链表的首节点
         if (prev == null) {

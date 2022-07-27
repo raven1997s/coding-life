@@ -363,6 +363,7 @@ public class HashMap<K, V> implements Map<K, V> {
             return null;
         }
 
+        Node<K, V> willNode = node;
         // 树的元素个数减一
         size--;
         V oldValue = node.value;
@@ -416,14 +417,21 @@ public class HashMap<K, V> implements Map<K, V> {
             }
             fixAfterRemove(node);
         }
-        afterRemove(node);
+        afterRemove(willNode, node);
         return oldValue;
     }
 
 
-    protected void afterRemove(Node<K,V> node){
+    /**
+     * 删除节点后的行为
+     *
+     * @param willNode   期望被删除的节点
+     * @param removeNode 真正被删除的节点
+     */
+    protected void afterRemove(Node<K, V> willNode, Node<K, V> removeNode) {
 
     }
+
     private Node<K, V> node(K key) {
         // 找到key在哈希表桶数组的索引。通过索引找到root节点 从根节点开始遍历查找整个红黑树
         Node<K, V> root = table[index(key)];
