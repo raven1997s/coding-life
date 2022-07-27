@@ -11,13 +11,15 @@ import java.util.Queue;
 /**
  * Description:
  * date: 2022/7/24 21:17
- *
+ * hash值扰动计算
+ * 支持扩容
  * @author raven
  */
 public class HashMap<K, V> implements Map<K, V> {
     private static final boolean RED = false;
     private static final boolean BLACK = true;
     private static final int DEFAULT_CAPACITY = 1 << 4;
+    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
     private int size;
     // 哈希表 每个元素都是一颗红黑树的root节点，
     private Node<K, V>[] table;
@@ -49,6 +51,8 @@ public class HashMap<K, V> implements Map<K, V> {
 
     @Override
     public V put(K key, V value) {
+        // 添加元素时判断是否需要扩容
+        resize();
         int index = index(key);
         // 获取index位置的红黑树根节点
         Node<K, V> root = table[index];
@@ -244,6 +248,113 @@ public class HashMap<K, V> implements Map<K, V> {
                 }
             });
         }
+    }
+
+    /**
+     * 扩容
+     */
+    private void resize() {
+        //当节点总数量 / 哈希表数组长度 > 负载因子，则需要扩容
+        if ((size / table.length) <= DEFAULT_LOAD_FACTOR){
+            return;
+        }
+
+        // 构建新的哈希表桶数组
+        Node<K, V>[] oldTable = table;
+        table = new Node[oldTable.length << 1];
+
+        // 遍历旧的桶数据，将节点逐个挪动到新的数组中
+        Queue<Node<K, V>> queue = new LinkedList<>();
+        for (int i = 0; i < oldTable.length; i++) {
+            Node<K, V> root = oldTable[i];
+            if (root == null) {
+                continue;
+            }
+            queue.offer(root);
+            while (!queue.isEmpty()) {
+                Node<K, V> node = queue.poll();
+
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+                // 挪动节点  放最后是因为挪动时是把节点当成新的节点插入到新的桶数组中，right left parent 等关系需要断掉
+                moveNode(node);
+            }
+        }
+    }
+
+    private void moveNode(Node<K, V> newNode) {
+        // 断掉节点和其他节点的关系
+        newNode.parent = null;
+        newNode.left = null;
+        newNode.right = null;
+        newNode.color = RED;
+
+        int index = index(newNode.key);
+        // 获取index位置的红黑树根节点
+        Node<K, V> root = table[index];
+        // 如果index位置元素位空，则该位置没有元素 将传进来的节点放到根节点的位置
+        if (root == null) {
+            root = newNode;
+            // 将红黑树放到该索引位置
+            table[index] = root;
+            // 将根节点染黑
+            afterPut(root);
+            return;
+        }
+
+        // 添加新的节点到红黑树上
+        // 添加的不是第一个节点
+        Node<K, V> parent;
+        Node<K, V> node = root;
+        Node<K, V> result;
+        // 是否已经在树上搜索过元素
+        boolean searched = false;
+        // 记录比较结果，确定元素添加到父节点的那个方向
+        int cmp;
+        K k1 = newNode.key;
+        int h1 = newNode.hash;
+        // 当节点元素比较到叶子节点，叶子节点没有子节点，比较结束，叶子节点为节点元素节点的父节点
+        do {
+            // 用节点元素和树上的节点元素比较大小
+            // 如果节点元素大于树上的节点元素，则继续和节点元素的右节点进行比较
+            K k2 = node.key;
+            int h2 = node.hash;
+            if (h1 > h2) {
+                cmp = 1;
+            } else if (h1 < h2) {
+                cmp = -1;
+            } else if (k1 != null && k2 != null
+                    && k1.getClass() == k2.getClass()
+                    && k1 instanceof Comparable
+                    // compareTo 代表俩个对象的大小相当，但不能认为他们对象相当
+                    && (cmp = ((Comparable) k1).compareTo(k2)) != 0) {
+                // hash值相等 equals不等 key具有可比较性
+            } else  {// searched = true 已经搜索过，不需要继续搜索树上是否存在该key
+                cmp = System.identityHashCode(k1) - System.identityHashCode(k2);
+            }
+            // 比较前记录父节点 创建节点时使用
+            parent = node;
+            if (cmp > 0) {
+                node = node.right;
+            } else if (cmp < 0) {
+                node = node.left;
+            }
+        } while (node != null);
+
+        if (cmp > 0) {
+            parent.right = newNode;
+        } else {
+            parent.left = newNode;
+        }
+        // 重新设置节点的parent属性
+        newNode.parent = parent;
+        // 添加完节点后的操作，如果是AVL树需要判断是否需要旋转平衡节点
+        afterPut(newNode);
     }
 
     private V remove(Node<K, V> node) {
