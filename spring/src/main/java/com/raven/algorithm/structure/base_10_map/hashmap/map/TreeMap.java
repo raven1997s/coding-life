@@ -1,4 +1,4 @@
-package com.raven.algorithm.structure.base_11_hashmap.map;
+package com.raven.algorithm.structure.base_10_map.hashmap.map;
 
 
 import java.util.Comparator;

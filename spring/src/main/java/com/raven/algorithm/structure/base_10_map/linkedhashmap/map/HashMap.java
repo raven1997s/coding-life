@@ -1,8 +1,7 @@
-package com.raven.algorithm.structure.base_11_hashmap.map;
+package com.raven.algorithm.structure.base_10_map.linkedhashmap.map;
 
 import com.raven.algorithm.structure.utils.printer.BinaryTreeInfo;
 import com.raven.algorithm.structure.utils.printer.BinaryTrees;
-import org.w3c.dom.Node;
 
 import java.util.LinkedList;
 import java.util.Objects;
@@ -13,6 +12,7 @@ import java.util.Queue;
  * date: 2022/7/24 21:17
  * hash值扰动计算
  * 支持扩容
+ *
  * @author raven
  */
 public class HashMap<K, V> implements Map<K, V> {
@@ -58,12 +58,12 @@ public class HashMap<K, V> implements Map<K, V> {
         Node<K, V> root = table[index];
         // 如果index位置元素位空，则该位置没有元素，直接插入
         if (root == null) {
-            root = new Node<>(key, value, null);
+            root = createNode(key, value, null);
             // 将红黑树放到该索引位置
             table[index] = root;
             size++;
             // 将根节点染黑
-            afterPut(root);
+            fixAfterPut(root);
             return null;
         }
 
@@ -135,7 +135,7 @@ public class HashMap<K, V> implements Map<K, V> {
         }
         size++;
         // 添加完节点后的操作，如果是AVL树需要判断是否需要旋转平衡节点
-        afterPut(newNode);
+        fixAfterPut(newNode);
         return null;
     }
 
@@ -255,7 +255,7 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     private void resize() {
         //当节点总数量 / 哈希表数组长度 > 负载因子，则需要扩容
-        if ((size / table.length) <= DEFAULT_LOAD_FACTOR){
+        if ((size / table.length) <= DEFAULT_LOAD_FACTOR) {
             return;
         }
 
@@ -303,7 +303,7 @@ public class HashMap<K, V> implements Map<K, V> {
             // 将红黑树放到该索引位置
             table[index] = root;
             // 将根节点染黑
-            afterPut(root);
+            fixAfterPut(root);
             return;
         }
 
@@ -334,7 +334,7 @@ public class HashMap<K, V> implements Map<K, V> {
                     // compareTo 代表俩个对象的大小相当，但不能认为他们对象相当
                     && (cmp = ((Comparable) k1).compareTo(k2)) != 0) {
                 // hash值相等 equals不等 key具有可比较性
-            } else  {// searched = true 已经搜索过，不需要继续搜索树上是否存在该key
+            } else {// searched = true 已经搜索过，不需要继续搜索树上是否存在该key
                 cmp = System.identityHashCode(k1) - System.identityHashCode(k2);
             }
             // 比较前记录父节点 创建节点时使用
@@ -354,10 +354,10 @@ public class HashMap<K, V> implements Map<K, V> {
         // 重新设置节点的parent属性
         newNode.parent = parent;
         // 添加完节点后的操作，如果是AVL树需要判断是否需要旋转平衡节点
-        afterPut(newNode);
+        fixAfterPut(newNode);
     }
 
-    private V remove(Node<K, V> node) {
+    protected V remove(Node<K, V> node) {
         // 如果节点不存在，则不需要删除，直接返回
         if (node == null) {
             return null;
@@ -402,11 +402,11 @@ public class HashMap<K, V> implements Map<K, V> {
                 node.parent.right = replacement;
             }
             // 传入replacement 不会影响AVL树和红黑树的平衡处理
-            afterRemove(replacement);
+            fixAfterRemove(replacement);
         } else if (node.parent == null) { //node是度为0的节点，并且是root节点
             // 删除root节点
             table[index] = null;
-            afterRemove(node);
+            fixAfterRemove(node);
         } else { // node是度为0的节点，并且不是root节点
             // 如果node是node父节点的左子树，则将副节点的左子树设置为null
             if (node == node.parent.left) {
@@ -414,11 +414,16 @@ public class HashMap<K, V> implements Map<K, V> {
             } else {
                 node.parent.right = null;
             }
-            afterRemove(node);
+            fixAfterRemove(node);
         }
+        afterRemove(node);
         return oldValue;
     }
 
+
+    protected void afterRemove(Node<K,V> node){
+
+    }
     private Node<K, V> node(K key) {
         // 找到key在哈希表桶数组的索引。通过索引找到root节点 从根节点开始遍历查找整个红黑树
         Node<K, V> root = table[index(key)];
@@ -512,7 +517,7 @@ public class HashMap<K, V> implements Map<K, V> {
     //    return System.identityHashCode(k1) - System.identityHashCode(k2);
     //}
 
-    private void afterPut(Node<K, V> node) {
+    private void fixAfterPut(Node<K, V> node) {
         Node<K, V> parent = node.parent;
         // 如果parent为null，添加的是根节点或者上溢到达了根节点
         if (parent == null) {
@@ -535,7 +540,7 @@ public class HashMap<K, V> implements Map<K, V> {
             black(parent);
             black(uncle);
             // 祖父节点向上溢出(染为红色，当成新的节点加入处理)（上面已经统一处理）
-            afterPut(grand);
+            fixAfterPut(grand);
             return;
         }
 
@@ -571,7 +576,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
     }
 
-    private void afterRemove(Node<K, V> node) {
+    private void fixAfterRemove(Node<K, V> node) {
         // 如果要被删除的节点为红色，则直接删除即可
         //if (isRed(node)) {
         //    return;
@@ -625,7 +630,7 @@ public class HashMap<K, V> implements Map<K, V> {
                 red(sibling);
                 // 如果父节点是黑色，把父节点当成被删除的节点处理 （下溢）
                 if (parentBlack) {
-                    afterRemove(parent);
+                    fixAfterRemove(parent);
                 }
 
             } else {
@@ -663,7 +668,7 @@ public class HashMap<K, V> implements Map<K, V> {
                 red(sibling);
                 // 如果父节点是黑色，把父节点当成被删除的节点处理
                 if (parentBlack) {
-                    afterRemove(parent);
+                    fixAfterRemove(parent);
                 }
 
             } else {
@@ -943,11 +948,11 @@ public class HashMap<K, V> implements Map<K, V> {
 
 
     // ================================================节点内部相关start========================================================
-    private Node<K, V> createNode(K key, V value, Node<K, V> parent) {
+    protected Node<K, V> createNode(K key, V value, Node<K, V> parent) {
         return new Node<>(key, value, parent);
     }
 
-    private static class Node<K, V> {
+    protected static class Node<K, V> {
         private boolean color = RED;
         int hash;
         K key;

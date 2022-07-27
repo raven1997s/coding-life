@@ -1,11 +1,11 @@
-package com.raven.algorithm.structure.base_11_hashmap.entity;
+package com.raven.algorithm.structure.base_10_map.hashmap.entity;
 
-public class SubKey2 extends Key {
+public class SubKey1 extends Key {
 
-	public SubKey2(int value) {
+	public SubKey1(int value) {
 		super(value);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) return true;

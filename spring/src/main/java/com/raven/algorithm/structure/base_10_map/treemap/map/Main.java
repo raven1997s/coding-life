@@ -1,4 +1,4 @@
-package com.raven.algorithm.structure.base_10_treemap.map;
+package com.raven.algorithm.structure.base_10_map.treemap.map;
 
 import com.raven.algorithm.structure.utils.FileInfo;
 import com.raven.algorithm.structure.utils.Files;

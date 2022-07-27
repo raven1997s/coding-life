@@ -1,6 +1,4 @@
-package com.raven.algorithm.structure.base_11_hashmap.entity;
-
-import java.util.Objects;
+package com.raven.algorithm.structure.base_10_map.hashmap.entity;
 
 /**
  * Description:

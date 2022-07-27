@@ -1,15 +1,13 @@
-package com.raven.algorithm.structure.base_11_hashmap.map;
+package com.raven.algorithm.structure.base_10_map.linkedhashmap.map;
 
-import com.raven.algorithm.structure.base_11_hashmap.entity.Key;
-import com.raven.algorithm.structure.base_11_hashmap.entity.Person;
-import com.raven.algorithm.structure.base_11_hashmap.entity.SubKey1;
-import com.raven.algorithm.structure.base_11_hashmap.entity.SubKey2;
+import com.raven.algorithm.structure.base_10_map.hashmap.entity.Key;
+import com.raven.algorithm.structure.base_10_map.hashmap.entity.Person;
+import com.raven.algorithm.structure.base_10_map.hashmap.entity.SubKey1;
+import com.raven.algorithm.structure.base_10_map.hashmap.entity.SubKey2;
 import com.raven.algorithm.structure.utils.Asserts;
 import com.raven.algorithm.structure.utils.FileInfo;
 import com.raven.algorithm.structure.utils.Files;
 import com.raven.algorithm.structure.utils.Times;
-
-import java.util.LinkedHashMap;
 
 /**
  * Description:
@@ -19,17 +17,17 @@ import java.util.LinkedHashMap;
  */
 public class Main {
     public static void main(String[] args) {
-        testKey();
-        keyEqualsTest();
-        test2(new HashMap<>());
-        test3(new HashMap<>());
-        test4(new HashMap<>());
-        test5(new HashMap<>());
-        test1();
+        //testKey();
+        //keyEqualsTest();
+        //test2(new HashMap<>());
+        //test3(new HashMap<>());
+        test4(new LinkedHashMap<>());
+        //test5(new HashMap<>());
+        //test1();
     }
 
     static void test1() {
-        String filepath = "/Users/raven/Documents/devlop/coding-life";
+        String filepath = "/Users/raven/Documents/devlop/mall-master";
         FileInfo fileInfo = Files.read(filepath, null);
         String[] words = fileInfo.words();
 
@@ -37,7 +35,7 @@ public class Main {
         System.out.println("单词总数：" + words.length);
         System.out.println("-------------------------------------");
 
-        //test1Map(new TreeMap<>(), words);
+        test1Map(new TreeMap<>(), words);
         test1Map(new HashMap<>(), words);
         //test1Map(new LinkedHashMap<>(), words);
     }
@@ -115,19 +113,10 @@ public class Main {
         for (int i = 1; i <= 3; i++) {
             map.put(new Key(i), i + 5);
         }
-        Asserts.test(map.size() == 19);
-        Asserts.test(map.get(new Key(1)) == 6);
-        Asserts.test(map.get(new Key(2)) == 7);
-        Asserts.test(map.get(new Key(3)) == 8);
-        Asserts.test(map.get(new Key(4)) == 4);
-        Asserts.test(map.get(new Key(5)) == null);
-        Asserts.test(map.get(new Key(6)) == null);
-        Asserts.test(map.get(new Key(7)) == null);
-        Asserts.test(map.get(new Key(8)) == 8);
         map.traversal(new Map.Visitor<Object, Integer>() {
             @Override
             public boolean visit(Object key, Integer value) {
-                //System.out.println(key + "_" + value);
+                System.out.println(key + "_" + value);
                 return false;
             }
         });

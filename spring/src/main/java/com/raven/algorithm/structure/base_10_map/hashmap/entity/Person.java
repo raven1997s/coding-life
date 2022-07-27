@@ -1,4 +1,4 @@
-package com.raven.algorithm.structure.base_11_hashmap.entity;
+package com.raven.algorithm.structure.base_10_map.hashmap.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

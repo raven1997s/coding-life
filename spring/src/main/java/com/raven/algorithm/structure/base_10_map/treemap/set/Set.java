@@ -1,4 +1,4 @@
-package com.raven.algorithm.structure.base_10_treemap.set;
+package com.raven.algorithm.structure.base_10_map.treemap.set;
 
 /**
  * Description:
