@@ -1,4 +1,4 @@
-package com.raven.algorithm.structure.base_10_map.linkedhashmap.map;
+package com.raven.algorithm.structure.base_10_map.linkedhashmap;
 
 import com.raven.algorithm.structure.base_10_map.hashmap.entity.Key;
 import com.raven.algorithm.structure.base_10_map.hashmap.entity.Person;

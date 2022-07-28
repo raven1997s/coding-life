@@ -1,4 +1,4 @@
-package com.raven.algorithm.structure.base_10_map.linkedhashmap.map;
+package com.raven.algorithm.structure.base_10_map.linkedhashmap;
 
 /**
  * Description:

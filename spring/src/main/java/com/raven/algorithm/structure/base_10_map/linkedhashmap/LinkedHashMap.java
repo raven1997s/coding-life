@@ -1,6 +1,4 @@
-package com.raven.algorithm.structure.base_10_map.linkedhashmap.map;
-
-import org.w3c.dom.Node;
+package com.raven.algorithm.structure.base_10_map.linkedhashmap;
 
 import java.util.Objects;
 
