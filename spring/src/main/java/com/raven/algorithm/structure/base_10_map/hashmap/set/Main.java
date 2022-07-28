@@ -82,25 +82,25 @@ public class Main {
         });
     }
     static void readFile() {
-        FileInfo fileInfo = Files.read("/Users/raven/Documents/devlop/mall-master", new String[]{"java"});
+        FileInfo fileInfo = Files.read("/Users/raven/Documents/devlop", new String[]{"java"});
         System.out.println("文件个数：" + fileInfo.getFiles());
         System.out.println("文件行数:" + fileInfo.getLines());
         String[] words = fileInfo.words();
         System.out.println("单词个数:" + words.length);
 
-        Times.test("listSet", () -> {
-            ListSet<String> set = new ListSet<>();
-            for (String word : words) {
-                set.add(word);
-            }
-            for (String word : words) {
-                set.contains(word);
-            }
-            for (String word : words) {
-                set.remove(word);
-            }
-        });
-        System.out.println("=============================================");
+        //Times.test("listSet", () -> {
+        //    ListSet<String> set = new ListSet<>();
+        //    for (String word : words) {
+        //        set.add(word);
+        //    }
+        //    for (String word : words) {
+        //        set.contains(word);
+        //    }
+        //    for (String word : words) {
+        //        set.remove(word);
+        //    }
+        //});
+        //
         Times.test("treeSet", () -> {
             TreeSet<String> set = new TreeSet<>();
             for (String word : words) {
@@ -113,9 +113,20 @@ public class Main {
                 set.remove(word);
             }
         });
-        System.out.println("=============================================");
         Times.test("HashSet", () -> {
             HashSet<String> set = new HashSet<>();
+            for (String word : words) {
+                set.add(word);
+            }
+            for (String word : words) {
+                set.contains(word);
+            }
+            for (String word : words) {
+                set.remove(word);
+            }
+        });
+        Times.test("LinkedHashSet", () -> {
+            LinkedHashSet<String> set = new LinkedHashSet<>();
             for (String word : words) {
                 set.add(word);
             }
