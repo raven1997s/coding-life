@@ -2,6 +2,8 @@ package com.raven.algorithm.structure.base_10_map.linkedhashmap.map;
 
 import org.w3c.dom.Node;
 
+import java.util.Objects;
+
 /**
  * Description:
  * date: 2022/7/27 21:41
@@ -31,18 +33,49 @@ public class LinkedHashMap<K, V> extends HashMap<K, V> {
             return;
         }
 
-        LinkedNode<K, V> willLinkedNode = (LinkedNode<K, V>) willNode;
-        LinkedNode<K, V> removeLinkedNode = (LinkedNode<K, V>) removeNode;
+        LinkedNode<K, V> node1 = (LinkedNode<K, V>) willNode;
+        LinkedNode<K, V> node2 = (LinkedNode<K, V>) removeNode;
 
         // 删除度为二的节点时，真正删除的节点时前驱or后继节点，需要修复他们在链表中的位置
-        if (willLinkedNode != removeLinkedNode){
-            Node<K,V> tempNode;
+        if (node1 != node2) {
+            // 交换prev
+            // 存储想要被删除节点的前一个节点
+            LinkedNode<K, V> tempNode = node1.prev;
+            // 将想要被删除的节点的prev 指向要被删除节点的prev
+            node1.prev = node2.prev;
+            // 将要被删除节点的前一个prev 指向想要被删除节点的prev
+            node2.prev = tempNode;
+            // 如果想要被删除节点的前一个为null 则他为first
+            if (node1.prev == null) {
+                first = node1;
+            } else {
+                node1.prev.next = node1;
+            }
+            if (node2.prev == null) {
+                first = node1;
+            } else {
+                node2.prev.next = node1;
+            }
 
+            // 交换next
+            tempNode = node1.next;
+            node1.next = node2.next;
+            node2.next = tempNode;
+            if (node1.next == null) {
+                last = node1;
+            } else {
+                node1.next.prev = node1;
+            }
+            if (node2.next == null) {
+                last = node1;
+            } else {
+                node2.next.prev = node2;
+            }
         }
 
         //  获取节点前一个节点 以及后一个节点
-        LinkedNode<K, V> prev = removeLinkedNode.prev;
-        LinkedNode<K, V> next = removeLinkedNode.next;
+        LinkedNode<K, V> prev = node2.prev;
+        LinkedNode<K, V> next = node2.next;
 
         // 如果前一个节点为null 说明删除的是链表的首节点
         if (prev == null) {
@@ -59,6 +92,24 @@ public class LinkedHashMap<K, V> extends HashMap<K, V> {
             // 将下一个节点的prev 指向之前的prev
             next.prev = prev;
         }
+    }
+
+    /**
+     * 重写containsValue 通过 链表遍历按照添加顺序寻找
+     *
+     * @param value
+     * @return
+     */
+    @Override
+    public boolean containsValue(V value) {
+        LinkedNode<K, V> node = first;
+        while (node != null) {
+            if (Objects.equals(node.value, value)) {
+                return true;
+            }
+            node = node.next;
+        }
+        return false;
     }
 
     /**

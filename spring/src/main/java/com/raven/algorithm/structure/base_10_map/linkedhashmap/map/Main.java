@@ -18,12 +18,12 @@ import com.raven.algorithm.structure.utils.Times;
 public class Main {
     public static void main(String[] args) {
         //testKey();
-        //keyEqualsTest();
-        //test2(new HashMap<>());
-        //test3(new HashMap<>());
+        keyEqualsTest();
+        test2(new LinkedHashMap<>());
+        test3(new LinkedHashMap<>());
         test4(new LinkedHashMap<>());
-        //test5(new HashMap<>());
-        //test1();
+        test5(new LinkedHashMap<>());
+        test1();
     }
 
     static void test1() {
@@ -35,9 +35,9 @@ public class Main {
         System.out.println("单词总数：" + words.length);
         System.out.println("-------------------------------------");
 
-        test1Map(new TreeMap<>(), words);
-        test1Map(new HashMap<>(), words);
-        //test1Map(new LinkedHashMap<>(), words);
+        //test1Map(new TreeMap<>(), words);
+        //test1Map(new HashMap<>(), words);
+        test1Map(new LinkedHashMap<>(), words);
     }
 
 
@@ -133,7 +133,7 @@ public class Main {
     }
 
     static void keyEqualsTest(){
-        HashMap<Object, Integer> map = new HashMap<>();
+        HashMap<Object, Integer> map = new LinkedHashMap<>();
         SubKey1 subKey1 = new SubKey1(10);
         SubKey2 subKey2 = new SubKey2(10);
         map.put(subKey1,1);
