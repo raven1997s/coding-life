@@ -16,6 +16,26 @@ public class Main {
         //listSet();
         //testThread();
         readFile();
+        //hashSet();
+    }
+    static void hashSet() {
+        // 从小到大有序大遍历
+        HashSet<Integer> hashSet = new HashSet<>();
+        hashSet.add(13);
+        hashSet.add(10);
+        hashSet.add(11);
+        hashSet.add(10);
+        hashSet.add(12);
+        hashSet.add(12);
+
+        hashSet.traversal(new Set.Visitor<Integer>() {
+            @Override
+            public boolean visit(Integer element) {
+                System.out.println(element);
+                return false;
+            }
+        });
+
     }
 
     static void treeSet() {
@@ -62,27 +82,40 @@ public class Main {
         });
     }
     static void readFile() {
-        FileInfo fileInfo = Files.read("/Users/raven/Documents/devlop", new String[]{"java"});
+        FileInfo fileInfo = Files.read("/Users/raven/Documents/devlop/mall-master", new String[]{"java"});
         System.out.println("文件个数：" + fileInfo.getFiles());
         System.out.println("文件行数:" + fileInfo.getLines());
         String[] words = fileInfo.words();
         System.out.println("单词个数:" + words.length);
 
-        //Times.test("listSet", () -> {
-        //    ListSet<String> set = new ListSet<>();
-        //    for (String word : words) {
-        //        set.add(word);
-        //    }
-        //    for (String word : words) {
-        //        set.contains(word);
-        //    }
-        //    for (String word : words) {
-        //        set.remove(word);
-        //    }
-        //});
-
+        Times.test("listSet", () -> {
+            ListSet<String> set = new ListSet<>();
+            for (String word : words) {
+                set.add(word);
+            }
+            for (String word : words) {
+                set.contains(word);
+            }
+            for (String word : words) {
+                set.remove(word);
+            }
+        });
+        System.out.println("=============================================");
         Times.test("treeSet", () -> {
             TreeSet<String> set = new TreeSet<>();
+            for (String word : words) {
+                set.add(word);
+            }
+            for (String word : words) {
+                set.contains(word);
+            }
+            for (String word : words) {
+                set.remove(word);
+            }
+        });
+        System.out.println("=============================================");
+        Times.test("HashSet", () -> {
+            HashSet<String> set = new HashSet<>();
             for (String word : words) {
                 set.add(word);
             }
