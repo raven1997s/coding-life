@@ -21,6 +21,20 @@ public class Main {
         heap.add(16);
         heap.add(48);
         heap.add(13);
+        heap.add(40);
+        heap.add(33);
+        heap.add(63);
+        heap.add(28);
+        heap.add(1);
+        BinaryTrees.println(heap);
+
+        System.out.println("==========>" + heap.remove());
+        BinaryTrees.println(heap);
+
+        System.out.println("==========>" + heap.remove());
+        BinaryTrees.println(heap);
+
+        System.out.println("==========>" + heap.remove());
         BinaryTrees.println(heap);
     }
 

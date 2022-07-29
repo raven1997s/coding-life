@@ -65,9 +65,27 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
         return elements[0];
     }
 
+    /**
+     * 删除堆顶元素
+     *
+     * @return
+     */
     @Override
     public E remove() {
-        return null;
+        // 堆为null校验
+        emptyCheck();
+        // 把堆顶元素和最后一个元素交换，然后删除最后一个元素(这样删除能够降低算法复杂度)
+        // 删除元素 size-1 并拿到最后一个索引
+        int lastIndex = --size;
+        E root = elements[0];
+        // 把最后一个元素元素放到堆顶
+        elements[0] = elements[lastIndex];
+        // 删除最后一个元素
+        elements[lastIndex] = null;
+        // 元素下滤和子节点比较交换位置
+        siftDown(0);
+        // 返回被删除堆堆顶元素
+        return root;
     }
 
     @Override
@@ -101,6 +119,46 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
         return elements[(int) node];
     }
 
+
+    private void siftDown(int index) {
+        // 获取要下滤的元素
+        E element = elements[index];
+
+        // 如果元素有子节点，则和子节点比较，判断是否需要交换
+        // 从第一个叶子节点开始，后续的节点都是叶子节点，也没有字节点
+        // 获取第一个叶子节点的索引 第一个叶子节点的索引 = 非叶子节点的数量
+        int half = size >> 1;
+        // 没有子节点就停止比较下滤
+        while (index < half) {
+            // 二叉堆是完全二叉树，index的节点只有俩种情况
+            // 1。有左子节点
+            // 2。有左子节点也有右子节点
+            // 默认和左子节点比较，如果有右子节点，选出子节点中更大的哪个
+            // 左子节点的索引为 2i+1
+            int childIndex = (index << 1) + 1;
+            E childElement = elements[childIndex];
+            // 右子节点的索引为 2i+2
+            int rightIndex = childIndex + 1;
+            // 如果存在右子节点 并且右子节点还大于左子节点，则替换childIndex 和childElement
+            if (rightIndex < size && compare(elements[rightIndex], childElement) > 0) {
+                childIndex = rightIndex;
+                childElement = elements[rightIndex];
+            }
+
+            // 节点元素和子节点进行比较，如果大于等于子节点 则不再需要下滤
+            if (compare(element, childElement) >= 0) {
+                break;
+            }
+
+            // 把子节点放到index 的位置
+            elements[index] = childElement;
+            // 把子节点的索引给到节点 循环结束后把元素放到index 的位置
+            index = childIndex;
+        }
+
+        elements[index] = element;
+    }
+
     /**
      * 将指定索引到元素上滤
      *
@@ -117,7 +175,7 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
 
             // 如果元素小于等于父元素 则结束交换
             if (compare(element, parentElement) <= 0) {
-                return;
+                break;
             }
             // 将父元素移到当前位置
             elements[index] = parentElement;
