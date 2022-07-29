@@ -28,14 +28,16 @@ public class Main {
         heap.add(1);
         BinaryTrees.println(heap);
 
-        System.out.println("==========>" + heap.remove());
+        System.out.println(heap.replace(90));
         BinaryTrees.println(heap);
-
-        System.out.println("==========>" + heap.remove());
-        BinaryTrees.println(heap);
-
-        System.out.println("==========>" + heap.remove());
-        BinaryTrees.println(heap);
+        //System.out.println("==========>" + heap.remove());
+        //BinaryTrees.println(heap);
+        //
+        //System.out.println("==========>" + heap.remove());
+        //BinaryTrees.println(heap);
+        //
+        //System.out.println("==========>" + heap.remove());
+        //BinaryTrees.println(heap);
     }
 
 }

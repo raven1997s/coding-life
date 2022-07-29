@@ -90,7 +90,20 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
 
     @Override
     public E replace(E e) {
-        return null;
+        elementNotNullCheck(e);
+
+        E root = null;
+        if (size == 0) {
+            elements[0] = e;
+            size++;
+        } else {
+            // 获取之前的堆顶元素
+            root = elements[0];
+            // 将新的元素放到堆顶 然后进行下滤操作
+            elements[0] = e;
+            siftDown(0);
+        }
+        return root;
     }
 
     // 返回堆顶索引
