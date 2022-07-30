@@ -31,12 +31,52 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
     private static final int DEFAULT_CAPACITY = 1 << 4;
 
     public BinaryHeap() {
-        this(null);
+        this(null, null);
     }
 
     public BinaryHeap(Comparator<E> comparator) {
+        this(comparator, null);
+    }
+
+    public BinaryHeap(E[] elements) {
+        this(null,elements);
+    }
+    /**
+     * 批量建堆
+     * @param comparator
+     * @param elements
+     */
+    public BinaryHeap(Comparator<E> comparator, E[] elements) {
         super(comparator);
-        elements = (E[]) new Object[DEFAULT_CAPACITY];
+        if (elements == null || elements.length == 0) {
+            this.elements = (E[]) new Object[DEFAULT_CAPACITY];
+        } else {
+            size = elements.length;
+            int capacity = Math.max(DEFAULT_CAPACITY,elements.length);
+            // copy一份数据，并进行批量建堆
+            this.elements = (E[]) new Object[capacity];
+            for (int i = 0; i < elements.length; i++) {
+                this.elements[i] = elements[i];
+            }
+
+            heapify();
+
+        }
+    }
+
+    /**
+     * 批量建堆
+     */
+    private void heapify() {
+        //// 自上而下的上滤
+        //for (int i = 1; i < size; i++) {
+        //    siftUp(i);
+        //}
+        // 自下而上的下滤
+        // 从最后一个非叶子节点索引开始
+        for (int i = (size >> 1) - 1; i >= 0; i--) {
+            siftDown(i);
+        }
     }
 
     @Override

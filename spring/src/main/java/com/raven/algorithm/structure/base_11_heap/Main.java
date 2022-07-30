@@ -11,7 +11,14 @@ import com.raven.algorithm.structure.utils.printer.BinaryTrees;
  */
 public class Main {
     public static void main(String[] args) {
-        crudTest();
+        //crudTest();
+        heapify();
+    }
+
+    static void heapify() {
+        Integer[] integers = new Integer[]{10, 20, 23, 11, 44, 20, 1, 3, 26};
+        BinaryHeap<Integer> heap = new BinaryHeap<>(integers);
+        BinaryTrees.println(heap);
     }
 
     static void crudTest() {
