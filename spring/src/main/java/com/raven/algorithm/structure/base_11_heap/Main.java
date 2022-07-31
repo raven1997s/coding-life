@@ -1,6 +1,5 @@
 package com.raven.algorithm.structure.base_11_heap;
 
-import com.raven.algorithm.structure.utils.printer.BinaryTreeInfo;
 import com.raven.algorithm.structure.utils.printer.BinaryTrees;
 
 /**
