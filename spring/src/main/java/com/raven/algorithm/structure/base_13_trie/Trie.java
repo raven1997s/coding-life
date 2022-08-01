@@ -8,7 +8,7 @@ import java.util.HashMap;
 /**
  * Description:
  * date: 2022/8/1 13:10
- *
+ * 字典树 前缀树
  * @author raven
  */
 public class Trie<V> {

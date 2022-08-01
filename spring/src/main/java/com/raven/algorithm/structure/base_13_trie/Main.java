@@ -20,6 +20,9 @@ public class Main {
         trie.add("catalog", 3);
         trie.add("cast", 4);
         trie.add("小码哥", 5);
+        System.out.println(trie.get("cat"));
+        System.out.println(trie.get("dog"));
+        System.out.println(trie.get("小码哥"));
         Asserts.test(trie.contains("cat"));
         Asserts.test(!trie.isEmpty());
         Asserts.test(trie.size() == 5);
