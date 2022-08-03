@@ -26,12 +26,12 @@ public class Main {
         Asserts.test(trie.contains("cat"));
         Asserts.test(!trie.isEmpty());
         Asserts.test(trie.size() == 5);
-        //Asserts.test(trie.startsWith("do"));
-        //Asserts.test(trie.startsWith("c"));
-        //Asserts.test(trie.startsWith("ca"));
-        //Asserts.test(trie.startsWith("cat"));
-        //Asserts.test(trie.startsWith("cata"));
-        //Asserts.test(!trie.startsWith("hehe"));
+        Asserts.test(trie.startsWith("do"));
+        Asserts.test(trie.startsWith("c"));
+        Asserts.test(trie.startsWith("ca"));
+        Asserts.test(trie.startsWith("cat"));
+        Asserts.test(trie.startsWith("cata"));
+        Asserts.test(!trie.startsWith("hehe"));
         Asserts.test(trie.get("小码哥") == 5);
         //Asserts.test(trie.remove("cat") == 1);
         //Asserts.test(trie.remove("catalog") == 3);
