@@ -1,8 +1,5 @@
 package com.raven.algorithm.structure.base_13_trie;
 
-import com.raven.stream.function.VUtils;
-import org.w3c.dom.Node;
-
 import java.util.HashMap;
 
 /**
@@ -54,7 +51,7 @@ public class Trie<V> {
             // 2。把新节点和字符添加到节点映射集中
             if (childrenNode == null) {
                 childrenNode = new Node<>(node);
-                node.character = c;
+                childrenNode.character = c;
                 node.children = childrenEmpty ? new HashMap<>() : node.children;
                 node.children.put(c, childrenNode);
             }
@@ -67,12 +64,12 @@ public class Trie<V> {
             V oldValue = node.value;
             node.value = value;
             return oldValue;
-        } else {
-            // 之前不存在单词新建节点
-            node.word = true;
-            node.value = value;
-            size++;
         }
+
+        // 之前不存在单词新建节点
+        node.word = true;
+        node.value = value;
+        size++;
         return null;
     }
 
@@ -83,6 +80,7 @@ public class Trie<V> {
         if (lastNode == null || !lastNode.word) {
             return null;
         }
+        size --;
         V oldValue = lastNode.value;
         // 最后一个节点存在并且key也存在
         // 如果最后一个节点有子节点，并且子节点不为空，则只需要修改子节点中的单词为不存在即可
@@ -138,9 +136,6 @@ public class Trie<V> {
             char c = key.charAt(i);
             // 获取节点对应的节点映射集
             node = node.children.get(c);
-            if (node == null) {
-                return null;
-            }
         }
         // 看字符串是否已经存在，还是只是其他字符串的一部分
         return node;
