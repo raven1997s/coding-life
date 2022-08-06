@@ -1,4 +1,4 @@
-package com.raven.data_structures_and_algorithms.structure.utils.printer;
+package com.raven.utils.printer;
 
 public interface BinaryTreeInfo {
 	/**

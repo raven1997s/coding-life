@@ -1,9 +1,9 @@
 package com.raven.data_structures_and_algorithms.structure.base_10_map.hashmap.set;
 
-import com.raven.data_structures_and_algorithms.structure.utils.FileInfo;
-import com.raven.data_structures_and_algorithms.structure.utils.Files;
-import com.raven.data_structures_and_algorithms.structure.utils.Times;
-import com.raven.data_structures_and_algorithms.structure.utils.executor.Executors;
+import com.raven.utils.FileInfo;
+import com.raven.utils.Files;
+import com.raven.utils.Times;
+import com.raven.utils.executor.Executors;
 
 /**
  * Description:

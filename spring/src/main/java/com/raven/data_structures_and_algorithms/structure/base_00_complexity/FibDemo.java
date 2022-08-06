@@ -1,6 +1,6 @@
 package com.raven.data_structures_and_algorithms.structure.base_00_complexity;
 
-import com.raven.data_structures_and_algorithms.structure.utils.Times;
+import com.raven.utils.Times;
 
 /**
  * Description:

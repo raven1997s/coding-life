@@ -1,6 +1,6 @@
 package com.raven.data_structures_and_algorithms.structure.base_13_trie;
 
-import com.raven.data_structures_and_algorithms.structure.utils.Asserts;
+import com.raven.utils.Asserts;
 
 /**
  * Description:

@@ -1,7 +1,7 @@
 package com.raven.data_structures_and_algorithms.structure.base_10_map.hashmap.map;
 
-import com.raven.data_structures_and_algorithms.structure.utils.printer.BinaryTreeInfo;
-import com.raven.data_structures_and_algorithms.structure.utils.printer.BinaryTrees;
+import com.raven.utils.printer.BinaryTreeInfo;
+import com.raven.utils.printer.BinaryTrees;
 
 import java.util.LinkedList;
 import java.util.Objects;

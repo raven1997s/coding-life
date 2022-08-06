@@ -1,8 +1,8 @@
 package com.raven.data_structures_and_algorithms.structure.base_10_map.treemap.map;
 
-import com.raven.data_structures_and_algorithms.structure.utils.FileInfo;
-import com.raven.data_structures_and_algorithms.structure.utils.Files;
-import com.raven.data_structures_and_algorithms.structure.utils.Times;
+import com.raven.utils.FileInfo;
+import com.raven.utils.Files;
+import com.raven.utils.Times;
 import com.raven.stream.function.VUtils;
 
 /**

@@ -1,6 +1,6 @@
 package com.raven.data_structures_and_algorithms.structure.base_11_heap;
 
-import com.raven.data_structures_and_algorithms.structure.utils.printer.BinaryTrees;
+import com.raven.utils.printer.BinaryTrees;
 
 import java.util.Comparator;
 

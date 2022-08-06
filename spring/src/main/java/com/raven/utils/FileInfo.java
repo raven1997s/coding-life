@@ -1,4 +1,4 @@
-package com.raven.data_structures_and_algorithms.structure.utils;
+package com.raven.utils;
 
 public class FileInfo {
 	private int lines;

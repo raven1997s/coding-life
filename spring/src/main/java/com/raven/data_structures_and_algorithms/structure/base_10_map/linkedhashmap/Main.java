@@ -4,10 +4,10 @@ import com.raven.data_structures_and_algorithms.structure.base_10_map.hashmap.en
 import com.raven.data_structures_and_algorithms.structure.base_10_map.hashmap.entity.Person;
 import com.raven.data_structures_and_algorithms.structure.base_10_map.hashmap.entity.SubKey1;
 import com.raven.data_structures_and_algorithms.structure.base_10_map.hashmap.entity.SubKey2;
-import com.raven.data_structures_and_algorithms.structure.utils.Asserts;
-import com.raven.data_structures_and_algorithms.structure.utils.FileInfo;
-import com.raven.data_structures_and_algorithms.structure.utils.Files;
-import com.raven.data_structures_and_algorithms.structure.utils.Times;
+import com.raven.utils.Asserts;
+import com.raven.utils.FileInfo;
+import com.raven.utils.Files;
+import com.raven.utils.Times;
 
 /**
  * Description:

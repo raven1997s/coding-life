@@ -1,7 +1,7 @@
 package com.raven.data_structures_and_algorithms.structure.base_14_tree_traversal;
 
-import com.raven.data_structures_and_algorithms.structure.utils.Asserts;
-import com.raven.data_structures_and_algorithms.structure.utils.printer.BinaryTrees;
+import com.raven.utils.Asserts;
+import com.raven.utils.printer.BinaryTrees;
 
 /**
  * Description:

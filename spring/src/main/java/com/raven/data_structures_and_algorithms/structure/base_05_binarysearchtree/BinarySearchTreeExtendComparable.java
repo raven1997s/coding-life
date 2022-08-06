@@ -1,6 +1,6 @@
 package com.raven.data_structures_and_algorithms.structure.base_05_binarysearchtree;
 
-import com.raven.data_structures_and_algorithms.structure.utils.printer.BinaryTreeInfo;
+import com.raven.utils.printer.BinaryTreeInfo;
 
 /**
  * Description:

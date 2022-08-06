@@ -1,6 +1,6 @@
 package com.raven.data_structures_and_algorithms.structure.base_08_rbtree;
 
-import com.raven.data_structures_and_algorithms.structure.utils.printer.BinaryTrees;
+import com.raven.utils.printer.BinaryTrees;
 
 /**
  * Description:

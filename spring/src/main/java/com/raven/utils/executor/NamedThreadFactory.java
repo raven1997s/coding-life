@@ -1,4 +1,4 @@
-package com.raven.data_structures_and_algorithms.structure.utils.executor;
+package com.raven.utils.executor;
 
 import java.util.Locale;
 import java.util.concurrent.ThreadFactory;

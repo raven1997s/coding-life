@@ -1,7 +1,7 @@
 package com.raven.data_structures_and_algorithms.structure.base_07_avltree;
 
 import com.raven.data_structures_and_algorithms.structure.base_08_rbtree.RBTree;
-import com.raven.data_structures_and_algorithms.structure.utils.printer.BinaryTrees;
+import com.raven.utils.printer.BinaryTrees;
 
 /**
  * Description:

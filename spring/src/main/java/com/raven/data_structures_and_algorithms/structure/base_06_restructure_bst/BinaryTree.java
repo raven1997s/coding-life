@@ -1,6 +1,6 @@
 package com.raven.data_structures_and_algorithms.structure.base_06_restructure_bst;
 
-import com.raven.data_structures_and_algorithms.structure.utils.printer.BinaryTreeInfo;
+import com.raven.utils.printer.BinaryTreeInfo;
 
 import java.util.LinkedList;
 import java.util.Queue;
