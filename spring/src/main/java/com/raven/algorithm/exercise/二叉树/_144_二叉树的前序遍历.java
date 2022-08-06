@@ -1,5 +1,7 @@
 package com.raven.algorithm.exercise.二叉树;
 
+import com.raven.algorithm.structure.base_14_tree_traversal.BinaryTree;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -56,6 +58,37 @@ public class _144_二叉树的前序遍历 {
                 stack.add(top.left);
             }
         }
+    }
+
+    /**
+     * 前序遍历
+     * 先遍历节点 并把右子树放入栈中 然后一路向左遍历  当没有左子树时弹出栈顶 继续遍历 直到栈中元素全部遍历完毕
+     *
+     */
+    public void preorder2(TreeNode node, List<Integer> result) {
+        if (node == null) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        while (true) {
+            if (node != null) {
+                // 访问节点
+                result.add(node.val);
+                // 右子树进栈
+                if (node.right != null) {
+                    stack.push(node.right);
+                }
+                // 向左走
+                node = node.left;
+            } else if (stack.isEmpty()) {
+                // 栈为null 遍历完毕
+                return;
+            } else {
+                // 节点没有左子树时访问栈顶元素
+                node = stack.pop();
+            }
+        }
+
     }
 
 }
