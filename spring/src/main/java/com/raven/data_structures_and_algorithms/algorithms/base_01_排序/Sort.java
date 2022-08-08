@@ -1,5 +1,7 @@
 package com.raven.data_structures_and_algorithms.algorithms.base_01_排序;
 
+import com.raven.data_structures_and_algorithms.algorithms.base_01_排序.entity.Stable;
+
 import java.text.DecimalFormat;
 
 /**
@@ -86,12 +88,32 @@ public abstract class Sort<E extends Comparable<E>>  implements Comparable<Sort<
         String timeStr = "耗时：" + (time / 1000.0) + "s(" + time + "ms)";
         String compareCountStr = "比较：" + numberString(cmpCount);
         String swapCountStr = "交换：" + numberString(swapCount);
+        String stableStr = "稳定性：" + isStable();
         return "【" + getClass().getSimpleName() + "】\n"
                 + timeStr + " \t"
+                + stableStr + " \t"
                 + compareCountStr + "\t "
                 + swapCountStr + "\n"
                 + "------------------------------------------------------------------";
 
+    }
+
+    /**
+     * 校验排序算饭是否具有稳定性
+     * @return
+     */
+    private boolean isStable() {
+        Stable[] stableArray = new Stable[20];
+        for (int i = 0; i < 20; i++) {
+            stableArray[i] = new Stable(i * 10 ,10);
+        }
+        sort((E[]) stableArray);
+        for (int i = 1; i < stableArray.length; i++) {
+            if ((stableArray[i].num - stableArray[i-1].num) != 10){
+                return false;
+            }
+        }
+        return true;
     }
 
 

@@ -12,7 +12,7 @@ import java.util.Arrays;
  *
  * @author raven
  */
-@SuppressWarnings({})
+@SuppressWarnings({"rawtypes","unchecked"})
 public class Main {
     public static void main(String[] args) {
         Integer[] array = Integers.random(10000, 1, 20000);
@@ -29,7 +29,9 @@ public class Main {
 
     static void testSorts(Integer[] array, Sort... sorts) {
         for (Sort sort : sorts) {
-            sort.sort(Integers.copy(array));
+            Integer[] copy = Integers.copy(array);
+            sort.sort(copy);
+            Asserts.test(Integers.isAscOrder(copy));
         }
         Arrays.sort(sorts);
         for (Sort sort : sorts) {
