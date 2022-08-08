@@ -1,7 +1,5 @@
 package com.raven.data_structures_and_algorithms.algorithms.base_01_排序;
 
-import com.raven.utils.Integers;
-import com.raven.utils.Times;
 
 /**
  * Description:
@@ -11,7 +9,7 @@ import com.raven.utils.Times;
  *
  * @author raven
  */
-public class BubbleSort2 extends Sort {
+public class BubbleSort2<E extends Comparable<E>> extends Sort<E> {
     @Override
     protected void sort() {
         // 外循环控制比较的次数

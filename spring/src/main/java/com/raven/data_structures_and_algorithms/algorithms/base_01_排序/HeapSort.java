@@ -8,7 +8,7 @@ package com.raven.data_structures_and_algorithms.algorithms.base_01_排序;
  *
  * @author raven
  */
-public class HeapSort extends Sort {
+public class HeapSort<E extends Comparable<E>> extends Sort<E> {
     private int heapSize;
 
     @Override
@@ -33,7 +33,7 @@ public class HeapSort extends Sort {
 
     private void siftDown(int index) {
         // 获取要下滤的元素
-        Integer element = array[index];
+        E element = array[index];
 
         // 如果元素有子节点，则和子节点比较，判断是否需要交换
         // 从第一个叶子节点开始，后续的节点都是叶子节点，也没有字节点
@@ -47,17 +47,17 @@ public class HeapSort extends Sort {
             // 默认和左子节点比较，如果有右子节点，选出子节点中更大的哪个
             // 左子节点的索引为 2i+1
             int childIndex = (index << 1) + 1;
-            Integer childElement = array[childIndex];
+            E childElement = array[childIndex];
             // 右子节点的索引为 2i+2
             int rightIndex = childIndex + 1;
             // 如果存在右子节点 并且右子节点还大于左子节点，则替换childIndex 和childElement
-            if (rightIndex < heapSize && cmpElement(array[rightIndex], childElement) > 0) {
+            if (rightIndex < heapSize && cmp(array[rightIndex], childElement) > 0) {
                 childIndex = rightIndex;
                 childElement = array[rightIndex];
             }
 
             // 节点元素和子节点进行比较，如果大于等于子节点 则不再需要下滤
-            if (cmpElement(element, childElement) >= 0) {
+            if (cmp(element, childElement) >= 0) {
                 break;
             }
 

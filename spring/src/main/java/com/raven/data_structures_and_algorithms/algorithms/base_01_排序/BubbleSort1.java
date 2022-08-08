@@ -1,7 +1,5 @@
 package com.raven.data_structures_and_algorithms.algorithms.base_01_排序;
 
-import com.raven.utils.Integers;
-import com.raven.utils.Times;
 
 /**
  * Description:
@@ -10,7 +8,7 @@ import com.raven.utils.Times;
  * 优化：如果数组已经全部有序，则提前结束循环
  * @author raven
  */
-public class BubbleSort1 extends Sort {
+public class BubbleSort1<E extends Comparable<E>> extends Sort<E> {
 
     @Override
     protected void sort() {

@@ -8,14 +8,14 @@ import java.text.DecimalFormat;
  *
  * @author raven
  */
-public abstract class Sort  implements Comparable<Sort>{
-    protected Integer[] array;
+public abstract class Sort<E extends Comparable<E>>  implements Comparable<Sort<E>>{
+    protected E[] array;
     private int cmpCount;
     private int swapCount;
     private long time;
     private final DecimalFormat fmt = new DecimalFormat("#.00");
 
-    public void sort(Integer[] array) {
+    public void sort(E[] array) {
         if (array == null || array.length < 2) {
             return;
         }
@@ -42,7 +42,7 @@ public abstract class Sort  implements Comparable<Sort>{
     protected int cmp(int i1, int i2) {
         // 记录比较次数
         cmpCount++;
-        return array[i1] - array[i2];
+        return array[i1].compareTo(array[i2]);
     }
 
     /**
@@ -52,16 +52,16 @@ public abstract class Sort  implements Comparable<Sort>{
      * @param v2
      * @return
      */
-    protected int cmpElement(Integer v1, Integer v2) {
+    protected int cmp(E v1, E v2) {
         // 记录比较次数
         cmpCount++;
-        return v1 - v2;
+        return v1.compareTo(v2);
     }
 
     protected void swap(int i1, int i2) {
         // 记录交换次数
         swapCount++;
-        Integer temp = array[i1];
+        E temp = array[i1];
         array[i1] = array[i2];
         array[i2] = temp;
     }

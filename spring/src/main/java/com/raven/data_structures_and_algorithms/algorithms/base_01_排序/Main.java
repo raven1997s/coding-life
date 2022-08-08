@@ -12,6 +12,7 @@ import java.util.Arrays;
  *
  * @author raven
  */
+@SuppressWarnings({})
 public class Main {
     public static void main(String[] args) {
         Integer[] array = Integers.random(10000, 1, 20000);

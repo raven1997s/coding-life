@@ -1,8 +1,5 @@
 package com.raven.data_structures_and_algorithms.algorithms.base_01_排序;
 
-import com.raven.utils.Asserts;
-import com.raven.utils.Integers;
-
 /**
  * Description:
  * date: 2022/8/7 17:48
@@ -10,7 +7,7 @@ import com.raven.utils.Integers;
  *
  * @author raven
  */
-public class SelectionSort extends Sort {
+public class SelectionSort<E extends Comparable<E>> extends Sort<E> {
 
     @Override
     protected void sort() {
