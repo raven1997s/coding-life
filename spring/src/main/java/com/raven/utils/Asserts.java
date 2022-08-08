@@ -8,9 +8,13 @@ package com.raven.utils;
  */
 public class Asserts {
 
-    public static void test(boolean condition){
-        if (!condition){
-            throw new IllegalArgumentException("无效的参数!");
+    public static void test(boolean condition) {
+        try {
+            if (!condition) {
+                throw new Exception("测试未通过");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
