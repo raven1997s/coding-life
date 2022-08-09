@@ -12,7 +12,7 @@ import java.util.Arrays;
  *
  * @author raven
  */
-@SuppressWarnings({"rawtypes","unchecked"})
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class Main {
     public static void main(String[] args) {
         Integer[] array = Integers.random(10000, 1, 20000);
@@ -24,7 +24,24 @@ public class Main {
         //selectionSortTest(array1);
         //bubbleSort2Test(array2);
 
-        testSorts(array, new BubbleSort2(), new SelectionSort(), new HeapSort(), new BubbleSort(), new BubbleSort1());
+        testSorts(array, new InsertionSort3(), new InsertionSort1(), new InsertionSort2(), new BubbleSort2(), new SelectionSort(), new HeapSort());
+        //testBinarySearchIndexOf();
+        //testBinarySearchSearch();
+    }
+
+    static void testBinarySearchSearch() {
+        Asserts.test(BinarySearch.search(new int[]{2, 4, 5, 6, 8, 10}, 2) == 1);
+        Asserts.test(BinarySearch.search(new int[]{2, 4, 5, 6, 8, 10}, 3) == 1);
+        Asserts.test(BinarySearch.search(new int[]{2, 4, 5, 6, 8, 10}, 10) == 6);
+        Asserts.test(BinarySearch.search(new int[]{2, 4, 5, 6, 8, 10}, 9) == 5);
+        Asserts.test(BinarySearch.search(new int[]{2, 4, 5, 6, 8, 10}, 11) == 6);
+    }
+
+    static void testBinarySearchIndexOf() {
+        Asserts.test(BinarySearch.indexOf(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}, 6) == 5);
+        Asserts.test(BinarySearch.indexOf(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}, 1) == 0);
+        Asserts.test(BinarySearch.indexOf(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}, 15) == 14);
+        Asserts.test(BinarySearch.indexOf(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16}, 15) == -1);
     }
 
     static void testSorts(Integer[] array, Sort... sorts) {
