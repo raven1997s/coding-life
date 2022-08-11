@@ -15,7 +15,7 @@ import java.util.Arrays;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class Main {
     public static void main(String[] args) {
-        Integer[] array = Integers.random(10000, 1, 20000);
+        Integer[] array = Integers.random(100000, 1, 100000);
         //Integer[] array = Integers.ascOrder( 1, 20000);
         //Integer[] array = Integers.tailAscOrder(1, 20000, 3000);
         //Integer[] array1 = Integers.copy(array);
@@ -24,7 +24,13 @@ public class Main {
         //selectionSortTest(array1);
         //bubbleSort2Test(array2);
 
-        testSorts(array, new MergeSort(), new InsertionSort3(), new BubbleSort2(), new SelectionSort(), new HeapSort());
+        testSorts(array,
+                new MergeSort(),
+                new QuickSort(),
+                new InsertionSort3(),
+                //new BubbleSort2(),
+                //new SelectionSort(),
+                new HeapSort());
         //testBinarySearchIndexOf();
         //testBinarySearchSearch();
     }
