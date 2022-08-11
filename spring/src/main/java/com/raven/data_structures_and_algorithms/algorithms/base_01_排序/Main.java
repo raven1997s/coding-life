@@ -24,7 +24,7 @@ public class Main {
         //selectionSortTest(array1);
         //bubbleSort2Test(array2);
 
-        testSorts(array, new InsertionSort3(), new InsertionSort1(), new InsertionSort2(), new BubbleSort2(), new SelectionSort(), new HeapSort());
+        testSorts(array, new MergeSort(), new InsertionSort3(), new BubbleSort2(), new SelectionSort(), new HeapSort());
         //testBinarySearchIndexOf();
         //testBinarySearchSearch();
     }
