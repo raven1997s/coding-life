@@ -1,4 +1,4 @@
-package com.raven.data_structures_and_algorithms.exercise.排序;
+package com.raven.data_structures_and_algorithms.exercise.数组;
 
 import java.util.Arrays;
 
