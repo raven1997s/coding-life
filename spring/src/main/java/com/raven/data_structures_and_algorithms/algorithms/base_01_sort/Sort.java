@@ -1,6 +1,6 @@
-package com.raven.data_structures_and_algorithms.algorithms.base_01_排序;
+package com.raven.data_structures_and_algorithms.algorithms.base_01_sort;
 
-import com.raven.data_structures_and_algorithms.algorithms.base_01_排序.entity.Stable;
+import com.raven.data_structures_and_algorithms.algorithms.base_01_sort.entity.Stable;
 
 import java.text.DecimalFormat;
 

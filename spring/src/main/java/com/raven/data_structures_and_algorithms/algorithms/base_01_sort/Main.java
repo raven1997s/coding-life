@@ -1,4 +1,4 @@
-package com.raven.data_structures_and_algorithms.algorithms.base_01_排序;
+package com.raven.data_structures_and_algorithms.algorithms.base_01_sort;
 
 import com.raven.utils.Asserts;
 import com.raven.utils.Integers;
