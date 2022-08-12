@@ -10,7 +10,7 @@ import java.text.DecimalFormat;
  *
  * @author raven
  */
-public abstract class Sort<E extends Comparable<E>>  implements Comparable<Sort<E>>{
+public abstract class Sort<E extends Comparable<E>> implements Comparable<Sort<E>> {
     protected E[] array;
     private int cmpCount;
     private int swapCount;
@@ -70,7 +70,7 @@ public abstract class Sort<E extends Comparable<E>>  implements Comparable<Sort<
 
     @Override
     public int compareTo(Sort o) {
-        int result = (int)(time - o.time);
+        int result = (int) (time - o.time);
         if (result != 0) {
             return result;
         }
@@ -100,16 +100,20 @@ public abstract class Sort<E extends Comparable<E>>  implements Comparable<Sort<
 
     /**
      * 校验排序算饭是否具有稳定性
+     *
      * @return
      */
     private boolean isStable() {
+        if (this instanceof ShellSort) {
+            return false;
+        }
         Stable[] stableArray = new Stable[20];
         for (int i = 0; i < 20; i++) {
-            stableArray[i] = new Stable(i * 10 ,10);
+            stableArray[i] = new Stable(i * 10, 10);
         }
         sort((E[]) stableArray);
         for (int i = 1; i < stableArray.length; i++) {
-            if ((stableArray[i].num - stableArray[i-1].num) != 10){
+            if ((stableArray[i].num - stableArray[i - 1].num) != 10) {
                 return false;
             }
         }

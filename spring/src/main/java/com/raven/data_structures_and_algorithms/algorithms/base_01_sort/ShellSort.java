@@ -2,6 +2,7 @@ package com.raven.data_structures_and_algorithms.algorithms.base_01_sort;
 
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class ShellSort<E extends Comparable<E>> extends Sort<E> {
     @Override
     protected void sort() {
         // 获取步长列表
-        List<Integer> stepSequenceList = shellStepSequence();
+        List<Integer> stepSequenceList = sedgewickStepSequence();
         // 将列表根据步长进行多次排序
         for (Integer step : stepSequenceList) {
             sort(step);
@@ -59,6 +60,28 @@ public class ShellSort<E extends Comparable<E>> extends Sort<E> {
         // length = 32  step = 16 8 4 2 1
         while ((step = step >> 1) > 0) {
             stepSequence.add(step);
+        }
+        return stepSequence;
+    }
+
+
+    private List<Integer> sedgewickStepSequence() {
+        List<Integer> stepSequence = new LinkedList<>();
+        int k = 0, step = 0;
+        while (true) {
+            if (k % 2 == 0) {
+                int pow = (int) Math.pow(2, k >> 1);
+                step = 1 + 9 * (pow * pow - pow);
+            } else {
+                int pow1 = (int) Math.pow(2, (k - 1) >> 1);
+                int pow2 = (int) Math.pow(2, (k + 1) >> 1);
+                step = 1 + 8 * pow1 * pow2 - 6 * pow2;
+            }
+            if (step >= array.length) {
+                break;
+            }
+            stepSequence.add(0, step);
+            k++;
         }
         return stepSequence;
     }
