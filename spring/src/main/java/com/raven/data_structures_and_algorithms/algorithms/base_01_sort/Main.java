@@ -15,7 +15,7 @@ import java.util.Arrays;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class Main {
     public static void main(String[] args) {
-        Integer[] array = Integers.random(100000, 1, 100000);
+        Integer[] array = Integers.random(50000, 1, 50000);
         //Integer[] array = Integers.ascOrder( 1, 20000);
         //Integer[] array = Integers.tailAscOrder(1, 20000, 3000);
         //Integer[] array1 = Integers.copy(array);
@@ -25,6 +25,8 @@ public class Main {
         //bubbleSort2Test(array2);
 
         testSorts(array,
+                new ShellSort(),
+                new ShellSort2(),
                 new MergeSort(),
                 new QuickSort(),
                 new InsertionSort3(),
