@@ -1,4 +1,4 @@
-package com.raven.data_structures_and_algorithms.algorithms.base_01_sort.entity;
+package com.raven.data_structures_and_algorithms.algorithms.sort.cmp_sort.entity;
 
 /**
  * Description:

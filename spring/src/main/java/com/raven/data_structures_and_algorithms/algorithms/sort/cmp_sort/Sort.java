@@ -1,6 +1,6 @@
-package com.raven.data_structures_and_algorithms.algorithms.base_01_sort;
+package com.raven.data_structures_and_algorithms.algorithms.sort.cmp_sort;
 
-import com.raven.data_structures_and_algorithms.algorithms.base_01_sort.entity.Stable;
+import com.raven.data_structures_and_algorithms.algorithms.sort.cmp_sort.entity.Stable;
 
 import java.text.DecimalFormat;
 
