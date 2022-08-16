@@ -1,6 +1,7 @@
 package com.raven.data_structures_and_algorithms.algorithms.sort.cmp_sort;
 
 import com.raven.data_structures_and_algorithms.algorithms.sort.CountingSort;
+import com.raven.data_structures_and_algorithms.algorithms.sort.RadixSort;
 import com.raven.data_structures_and_algorithms.algorithms.sort.cmp_sort.entity.Stable;
 
 import java.text.DecimalFormat;
@@ -105,8 +106,11 @@ public abstract class Sort<E extends Comparable<E>> implements Comparable<Sort<E
      * @return
      */
     private boolean isStable() {
-        if (this instanceof ShellSort || this instanceof CountingSort) {
+        if (this instanceof ShellSort) {
             return false;
+        }
+        if (this instanceof RadixSort || this instanceof CountingSort) {
+            return true;
         }
         Stable[] stableArray = new Stable[20];
         for (int i = 0; i < 20; i++) {

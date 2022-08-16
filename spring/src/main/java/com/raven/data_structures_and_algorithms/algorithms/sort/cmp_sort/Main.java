@@ -1,6 +1,7 @@
 package com.raven.data_structures_and_algorithms.algorithms.sort.cmp_sort;
 
 import com.raven.data_structures_and_algorithms.algorithms.sort.CountingSort;
+import com.raven.data_structures_and_algorithms.algorithms.sort.RadixSort;
 import com.raven.utils.Asserts;
 import com.raven.utils.Integers;
 import com.raven.utils.Times;
@@ -27,7 +28,8 @@ public class Main {
         //bubbleSort2Test(array2);
 
         testSorts(array,
-                new CountingSort()
+                new CountingSort(),
+                new RadixSort()
                 //new ShellSort2(),
                 //new MergeSort(),
                 //new QuickSort(),
