@@ -1,4 +1,4 @@
-package com.raven.selenium.demo;
+package com.raven.selenium.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -8,15 +8,17 @@ import com.raven.selenium.ocr.util.CalculateUtil;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.io.IOException;
 import java.util.Base64;
 import java.util.Objects;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -24,12 +26,13 @@ import java.util.regex.Pattern;
 
 /**
  * Description:
- * date: 2022/8/17 17:07
+ * date: 2022/8/18 17:06
  *
  * @author raven
  */
 @Slf4j
-public class Main {
+@Component
+public class AutoLoginService {
 
     public static int YZM_ERROR = -9999;
     public static final String LOGIN_URL = "https://dms.cnhtcerp.com:1443/#/login";
@@ -37,8 +40,7 @@ public class Main {
     public static final String YZM_INPUT_XPATH = "//*[@id=\"app\"]/section/main/div/form/div[3]/div/div[1]/input";
     public static final String LOGIN_BUTTON = "//*[@id=\"app\"]/section/main/div/form/div[4]/div/button";
 
-
-    public static void main(String[] args) {
+    public void autoLogin(String username, String password) {
         int retryCount = 10;
         boolean retryFlag = true;
         // cookie被踢了或者发送异常 重新登录
@@ -46,25 +48,25 @@ public class Main {
             try {
                 WebDriverManager.chromedriver().setup();
                 // 隐藏式启动
-                //ChromeOptions chromeOptions = new ChromeOptions();
-                ////设置 chrome 的无头模式，没有gui的时候必须要设置
-                ////很关键
-                //chromeOptions.addArguments("headless");
-                ////很关键
-                //chromeOptions.addArguments("no-sandbox");
-                //chromeOptions.addArguments("allow-running-insecure-content");
+                ChromeOptions chromeOptions = new ChromeOptions();
+                //设置 chrome 的无头模式，没有gui的时候必须要设置
+                //很关键
+                chromeOptions.addArguments("headless");
+                //很关键
+                chromeOptions.addArguments("no-sandbox");
+                chromeOptions.addArguments("allow-running-insecure-content");
 
                 //打开Chrome浏览器
                 WebDriver driver = new ChromeDriver();
                 driver.get(LOGIN_URL);
                 // 打开页面后等待一会
-                driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+                driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
                 // 中国重汽一线通 - 首页
                 log.info("title of current page is {}", driver.getTitle());
 
                 // 输入账户密码
-                driver.findElement(By.name("username")).sendKeys("");
-                driver.findElement(By.name("password")).sendKeys("");
+                driver.findElement(By.name("username")).sendKeys(username);
+                driver.findElement(By.name("password")).sendKeys(password);
                 // 获取验证码
                 int result = getYzm(driver);
                 // 填写验证码
@@ -72,16 +74,16 @@ public class Main {
                 // 登录
                 driver.findElement(By.xpath(LOGIN_BUTTON)).click();
 
+                TimeUnit.SECONDS.sleep(3);
                 // 销服一线通  登录成功发送cookie
-                TimeUnit.SECONDS.sleep(10);
                 String homePage = driver.getTitle();
                 log.info("title of current page is {}，login success ", homePage);
                 Set<Cookie> cookies = driver.manage().getCookies();
                 for (Cookie cookie : cookies) {
-                    log.info("cookie [ name:" + cookie.getName() + "  value:" + cookie.getValue() + " ]");
+                    log.info("name:" + cookie.getName() + "  value:" + cookie.getValue());
                 }
 
-                TimeUnit.SECONDS.sleep(10);
+                TimeUnit.SECONDS.sleep(3);
                 while (homePage.contains("销服一线通")) {
                     // 每隔一段时间刷新页面
                     driver.navigate().refresh();
@@ -100,7 +102,8 @@ public class Main {
         }
     }
 
-    private static int getYzm(WebDriver driver) throws InterruptedException {
+
+    private int getYzm(WebDriver driver) throws InterruptedException {
 
         int result = YZM_ERROR;
         String response;
@@ -117,10 +120,10 @@ public class Main {
             }
             TimeUnit.SECONDS.sleep(3);
         }
-        return result;
+        return 0;
     }
 
-    private static int parseOcrResult(String response) {
+    private int parseOcrResult(String response) {
         JSONObject jsonObject = JSON.parseObject(response);
         //
         Integer errorCode = jsonObject.getInteger("error_code");
@@ -146,17 +149,12 @@ public class Main {
         return parseResult(words);
     }
 
-    public static String getBase64Yzm(WebElement yzmElement) {
-        return yzmElement.getAttribute("src");
-
-    }
-
-    public static byte[] base64ToByteArray(String base64Str) {
+    private byte[] base64ToByteArray(String base64Str) {
         String imgBase64 = base64Str.replace("data:image/png;base64,", "");
         return Base64.getDecoder().decode(imgBase64);
     }
 
-    public static int parseResult(String words) {
+    private static int parseResult(String words) {
         String s = "^[0-9][-+*÷][0-9]";
         Pattern p = Pattern.compile(s);
         Matcher matcher = p.matcher(words);
@@ -165,6 +163,4 @@ public class Main {
         }
         return YZM_ERROR;
     }
-
-
 }
