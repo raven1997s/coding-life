@@ -60,17 +60,17 @@ public class AutoLoginService {
             try {
                 WebDriverManager.chromedriver().setup();
                 // 隐藏式启动
-                //ChromeOptions chromeOptions = new ChromeOptions();
-                ////设置 chrome 的无头模式，没有gui的时候必须要设置
-                ////很关键
-                //chromeOptions.addArguments("headless");
-                ////很关键
-                //chromeOptions.addArguments("no-sandbox");
-                //chromeOptions.addArguments("allow-running-insecure-content");
+                ChromeOptions chromeOptions = new ChromeOptions();
+                //设置 chrome 的无头模式，没有gui的时候必须要设置
+                //很关键
+                chromeOptions.addArguments("headless");
+                //很关键
+                chromeOptions.addArguments("no-sandbox");
+                chromeOptions.addArguments("allow-running-insecure-content");
 
                 //打开Chrome浏览器
-                //driver = new ChromeDriver(chromeOptions);
-                driver = new ChromeDriver();
+                driver = new ChromeDriver(chromeOptions);
+                //driver = new ChromeDriver();
                 driver.get(LOGIN_URL);
                 // 销服一线通
                 log.info(baseName + "title of current page is {}, ready to login !", driver.getTitle());
@@ -105,8 +105,8 @@ public class AutoLoginService {
                 while (driver.getTitle().contains("中国重汽一线通")) {
                     // 每隔一段时间刷新页面
                     driver.navigate().refresh();
-                    TimeUnit.SECONDS.sleep(10);
-                    //TimeUnit.MINUTES.sleep(RandomUtils.nextInt(5, 10));
+                    //TimeUnit.SECONDS.sleep(10);
+                    TimeUnit.MINUTES.sleep(RandomUtils.nextInt(5, 10));
                 }
 
                 // token被踢
