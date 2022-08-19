@@ -59,12 +59,12 @@ public class Main {
                 driver.get(LOGIN_URL);
                 // 打开页面后等待一会
                 driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-                // 中国重汽一线通 - 首页
+                // 销服一线通
                 log.info("title of current page is {}", driver.getTitle());
 
                 // 输入账户密码
-                driver.findElement(By.name("username")).sendKeys("");
-                driver.findElement(By.name("password")).sendKeys("");
+                driver.findElement(By.name("username")).sendKeys("YZ0011109");
+                driver.findElement(By.name("password")).sendKeys("edp@2021");
                 // 获取验证码
                 int result = getYzm(driver);
                 // 填写验证码
@@ -72,17 +72,14 @@ public class Main {
                 // 登录
                 driver.findElement(By.xpath(LOGIN_BUTTON)).click();
 
-                // 销服一线通  登录成功发送cookie
-                TimeUnit.SECONDS.sleep(10);
+                // 中国重汽一线通 - 首页  登录成功发送cookie
+                TimeUnit.SECONDS.sleep(5);
                 String homePage = driver.getTitle();
                 log.info("title of current page is {}，login success ", homePage);
-                Set<Cookie> cookies = driver.manage().getCookies();
-                for (Cookie cookie : cookies) {
-                    log.info("cookie [ name:" + cookie.getName() + "  value:" + cookie.getValue() + " ]");
-                }
+                Cookie cookie = driver.manage().getCookieNamed("jwt");
+                log.info("cookie [ name:" + cookie.getName() + "  value:" + cookie.getValue() + " ]");
 
-                TimeUnit.SECONDS.sleep(10);
-                while (homePage.contains("销服一线通")) {
+                while (homePage.contains("中国重汽一线通")) {
                     // 每隔一段时间刷新页面
                     driver.navigate().refresh();
                     TimeUnit.MINUTES.sleep(RandomUtils.nextInt(5, 10));

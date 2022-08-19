@@ -17,6 +17,6 @@ public class JiNanChangJiuAutoLogin implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        autoLoginService.autoLogin("BYZ0001106","edp@2021");
+        new Thread(() -> autoLoginService.autoLogin("JiNanChangJiu", "BYZ0001106", "edp@2021")).start();
     }
 }

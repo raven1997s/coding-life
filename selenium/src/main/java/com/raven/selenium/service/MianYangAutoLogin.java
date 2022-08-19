@@ -18,6 +18,6 @@ public class MianYangAutoLogin implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        autoLoginService.autoLogin("YZ0011122","edp@2021");
+        new Thread(() -> autoLoginService.autoLogin("MianYang", "YZ0011122", "edp@2021")).start();
     }
 }
