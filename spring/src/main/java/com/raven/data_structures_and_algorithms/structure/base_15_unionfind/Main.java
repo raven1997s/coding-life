@@ -10,7 +10,7 @@ import com.raven.utils.Times;
  * @author raven
  */
 public class Main {
-    public static final int count = 1000000;
+    public static final int count = 2000000;
 
     public static void main(String[] args) {
         //UnionFind uf = new QuickUnionUnionFind_Size(12);
@@ -20,7 +20,16 @@ public class Main {
         //unionFindTest(uf1);
         //unionFindTest(uf2);
 
+        unionFindTest(new QuickUnionUnionFind_Rank(12));
+        unionFindTest(new QuickUnionUnionFind_Size(12));
+        unionFindTest(new QuickUnionUnionFind_Rank_PathCompression(12));
+        unionFindTest(new QuickUnionUnionFind_Rank_PathSpilting(12));
+        unionFindTest(new QuickUnionUnionFind_Rank_PathHalving(12));
         testTime(new QuickUnionUnionFind_Size(count));
+        testTime(new QuickUnionUnionFind_Rank(count));
+        testTime(new QuickUnionUnionFind_Rank_PathCompression(count));
+        testTime(new QuickUnionUnionFind_Rank_PathSpilting(count));
+        testTime(new QuickUnionUnionFind_Rank_PathHalving(count));
         //testTime(new QuickUnionUnionFind(count));
         //testTime(new QuickFindUnionFind(count));
     }

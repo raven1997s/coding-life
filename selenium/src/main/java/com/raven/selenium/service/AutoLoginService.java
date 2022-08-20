@@ -99,7 +99,7 @@ public class AutoLoginService {
                 if (cookie == null) {
                     break;
                 }
-                redisTemplate.opsForHash().put(REDIS_KEY, baseName, JSON.toJSONString(CookieDTO.builder().name(cookie.getName()).value(cookie.getValue()).build()));
+                redisTemplate.opsForHash().put(REDIS_KEY, baseName, cookie.getName() + "=" + cookie.getValue());
                 log.info(REDIS_KEY + baseName + "cookie [ name:" + cookie.getName() + "  value:" + cookie.getValue() + " ]");
 
                 while (driver.getTitle().contains("中国重汽一线通")) {
@@ -121,7 +121,7 @@ public class AutoLoginService {
                 log.error(errorMsg, e);
                 HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(errorMsg + JSON.toJSONString(e)));
             } finally {
-                if (driver != null){
+                if (driver != null) {
                     driver.close();
                 }
             }
