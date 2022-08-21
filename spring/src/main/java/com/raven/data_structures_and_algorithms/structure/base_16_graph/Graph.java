@@ -33,16 +33,16 @@ public interface Graph<V, E> {
     /**
      * 添加一条边 并指定从哪个顶点到哪个顶点
      *
-     * @param from 从from顶点出发
-     * @param to   到to顶点
+     * @param from 从from顶点元素值出发
+     * @param to   到to顶点元素值
      */
     void addEdge(V from, V to);
 
     /**
      * 添加一条边 并指定从哪个顶点到哪个顶点 以及权值E
      *
-     * @param from   从from顶点出发
-     * @param to     到to顶点
+     * @param from   从from顶点元素值出发
+     * @param to     到to顶点元素值
      * @param weight 权值
      */
     void addEdge(V from, V to, E weight);
@@ -57,8 +57,20 @@ public interface Graph<V, E> {
     /**
      * 删除指定边
      *
-     * @param from 出发顶点
-     * @param to   到达顶点
+     * @param from 出发顶点元素值
+     * @param to   到达顶点元素值
      */
     void removeEdge(V from, V to);
+
+    /**
+     * 从指定元素出发进行广度优先搜索遍历
+     * @param begin
+     */
+    void bfs(V begin);
+
+    /**
+     * 从指定元素出发进行深度优先搜索遍历
+     * @param begin
+     */
+    void dfs(V begin);
 }
