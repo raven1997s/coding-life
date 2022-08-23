@@ -18,21 +18,32 @@ public class Main {
         dfs();
     }
 
-    public static void dfs(){
+    public static void dfs() {
         Graph<Object, Double> graph = directedGraph(Data.DFS_02);
-        graph.dfs("c");
+        graph.dfs("a", o -> {
+            System.out.println(o);
+            return o == "e";
+        });
+
+        System.out.println("=:-:-:-:-:-:-:-:-");
+        ListGraph<Object, Double> graph2 = (ListGraph<Object, Double>) directedGraph(Data.DFS_02);
+        graph2.dfs2("a");
     }
 
-    public static void testBsf(){
+    public static void testBsf() {
         Graph<Object, Double> graph = directedGraph(Data.BFS_02);
-        graph.bfs(7);
-    }
-    public static void bsf(String v){
-        ListGraph<String, Integer> graph = buildGraph();
-        graph.bfs(v);
+        graph.bfs(0, o -> {
+            System.out.println(o);
+            return Integer.parseInt(o.toString()) == 4;
+        });
     }
 
-    public static ListGraph<String, Integer> buildGraph(){
+    public static void bsf(String v) {
+        ListGraph<String, Integer> graph = buildGraph();
+        graph.bfs1(v);
+    }
+
+    public static ListGraph<String, Integer> buildGraph() {
         ListGraph<String, Integer> graph = new ListGraph<>();
         graph.addEdge("V0", "V4", 6);
         graph.addEdge("V1", "V0", 9);
@@ -43,7 +54,7 @@ public class Main {
         return graph;
     }
 
-    public static void baseTest(){
+    public static void baseTest() {
         ListGraph<String, Integer> graph = buildGraph();
         graph.removeVertex("V0");
         graph.print();
@@ -69,6 +80,7 @@ public class Main {
 
     /**
      * 无向图
+     *
      * @param data
      * @return
      */

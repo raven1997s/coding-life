@@ -154,13 +154,83 @@ public class ListGraph<V, E> implements Graph<V, E> {
         }
     }
 
+    @Override
+    public void bfs(V begin, VertexVisitor<V> visitor) {
+        if (visitor == null) {
+            return;
+        }
+        Vertex<V, E> beginVertex = vertices.get(begin);
+        if (beginVertex == null) {
+            return;
+        }
+
+        Set<Vertex<V, E>> visitedVertices = new HashSet<>();
+        Deque<Vertex<V, E>> queue = new LinkedList<>();
+        queue.offer(beginVertex);
+        visitedVertices.add(beginVertex);
+        while (!queue.isEmpty()) {
+            Vertex<V, E> vertex = queue.poll();
+            if (visitor.visitor(vertex.value)) {
+                return;
+            }
+            // 获取veVertex 出发的所有边的到达顶点放入队列
+            vertex.outEdges.forEach(edge -> {
+                if (visitedVertices.contains(edge.to)) {
+                    return;
+                }
+                queue.offer(edge.to);
+                visitedVertices.add(edge.to);
+            });
+        }
+    }
+
+    @Override
+    public void dfs(V begin, VertexVisitor<V> visitor) {
+        if (visitor == null) {
+            return;
+        }
+
+        Vertex<V, E> beginVertex = vertices.get(begin);
+        if (beginVertex == null) {
+            return;
+        }
+        // 记录已经遍历过的顶点
+        Set<Vertex<V, E>> visitedVertices = new HashSet<>();
+        // 通过栈实现模拟递归
+        Stack<Vertex<V, E>> stack = new Stack<>();
+        if (visitor.visitor(beginVertex.value)) {
+            return;
+        }
+        visitedVertices.add(beginVertex);
+        stack.push(beginVertex);
+
+        while (!stack.isEmpty()) {
+            // 获取栈顶顶点
+            Vertex<V, E> vertex = stack.pop();
+            // 获取所有从该顶点出发的边 选择一条边进行访问
+            for (Edge<V, E> edge : vertex.outEdges) {
+                // 如果访问过就换下一条边
+                if (visitedVertices.contains(edge.to)) {
+                    continue;
+                }
+                // 访问并记录
+                if (visitor.visitor(edge.to.value)) {
+                    return;
+                }
+                visitedVertices.add(edge.to);
+                stack.push(edge.from);
+                stack.push(edge.to);
+                break;
+            }
+        }
+    }
+
     /**
      * 从指定元素出发进行广度优先搜索遍历
      *
      * @param begin
      */
-    @Override
-    public void bfs(V begin) {
+    public void bfs1(V begin) {
         Vertex<V, E> beginVertex = vertices.get(begin);
         if (beginVertex == null) {
             return;
@@ -186,33 +256,71 @@ public class ListGraph<V, E> implements Graph<V, E> {
 
     /**
      * 从指定元素出发进行深度优先搜索遍历
+     * 迭代实现方案
      *
      * @param begin
      */
-    @Override
-    public void dfs(V begin) {
+    public void dfs1(V begin) {
         Vertex<V, E> beginVertex = vertices.get(begin);
         if (beginVertex == null) {
             return;
         }
         // 记录已经遍历过的顶点
-        dfs(beginVertex, new HashSet<>());
+        Set<Vertex<V, E>> visitedVertices = new HashSet<>();
+        // 通过栈实现模拟递归
+        Stack<Vertex<V, E>> stack = new Stack<>();
+        System.out.println(beginVertex.value);
+        visitedVertices.add(beginVertex);
+        stack.push(beginVertex);
+
+        while (!stack.isEmpty()) {
+            // 获取栈顶顶点
+            Vertex<V, E> vertex = stack.pop();
+            // 获取所有从该顶点出发的边 选择一条边进行访问
+            for (Edge<V, E> edge : vertex.outEdges) {
+                // 如果访问过就换下一条边
+                if (visitedVertices.contains(edge.to)) {
+                    continue;
+                }
+                // 访问并记录
+                System.out.println(edge.to.value);
+                visitedVertices.add(edge.to);
+                stack.push(edge.from);
+                stack.push(edge.to);
+                break;
+            }
+        }
+    }
+
+    /**
+     * 深度优先搜索图 递归实现方案
+     *
+     * @param begin
+     */
+    public void dfs2(V begin) {
+        Vertex<V, E> beginVertex = vertices.get(begin);
+        if (beginVertex == null) {
+            return;
+        }
+        // 记录已经遍历过的顶点
+        dfs2(beginVertex, new HashSet<>());
     }
 
     /**
      * 递归深度优先遍历访问顶点元素
-     * @param vertex 顶点
+     *
+     * @param vertex          顶点
      * @param visitedVertices 已经访问过的顶点
      */
-    private void dfs(Vertex<V, E> vertex, Set<Vertex<V, E>> visitedVertices) {
+    private void dfs2(Vertex<V, E> vertex, Set<Vertex<V, E>> visitedVertices) {
         // 记录已经访问过的顶点
         visitedVertices.add(vertex);
         System.out.println(vertex.value);
         for (Edge<V, E> edge : vertex.outEdges) {
-            if (visitedVertices.contains(edge.to)){
+            if (visitedVertices.contains(edge.to)) {
                 continue;
             }
-            dfs(edge.to,visitedVertices);
+            dfs2(edge.to, visitedVertices);
         }
     }
 

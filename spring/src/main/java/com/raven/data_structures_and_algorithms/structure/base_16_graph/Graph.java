@@ -64,13 +64,19 @@ public interface Graph<V, E> {
 
     /**
      * 从指定元素出发进行广度优先搜索遍历
+     *
      * @param begin
      */
-    void bfs(V begin);
+    void bfs(V begin, VertexVisitor<V> visitor);
 
     /**
      * 从指定元素出发进行深度优先搜索遍历
+     *
      * @param begin
      */
-    void dfs(V begin);
+    void dfs(V begin, VertexVisitor<V> visitor);
+
+    interface VertexVisitor<V> {
+        boolean visitor(V v);
+    }
 }
