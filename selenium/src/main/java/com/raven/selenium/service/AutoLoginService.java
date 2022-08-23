@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
-import com.raven.selenium.dto.CookieDTO;
+import com.raven.selenium.dto.LoginDTO;
 import com.raven.selenium.ocr.AccurateBasic;
 import com.raven.selenium.ocr.util.CalculateUtil;
 import com.raven.selenium.ocr.util.HttpClientUtil;
@@ -12,8 +12,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
+import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -48,10 +47,32 @@ public class AutoLoginService {
     public static final String YZM_INPUT_XPATH = "//*[@id=\"app\"]/section/main/div/form/div[3]/div/div[1]/input";
     public static final String LOGIN_BUTTON = "//*[@id=\"app\"]/section/main/div/form/div[4]/div/button";
     public static final String REDIS_KEY = "AUTO_LOGIN";
+    public static final String PROFILES_KEY = "PROFILES_KEY";
+    public static final String LOGIN_KEY = "DIPAO_LOGIN";
+    public static final String SET_COOKIE_URL = "/admin/crawling/order/set/cookie";
+    public static final String DIPAO_LOGIN_URL = "/admin/staff/login";
     @Autowired
     private StringRedisTemplate redisTemplate;
 
     public void autoLogin(String baseName, String username, String password) {
+        Pair<String, String> pair = loginDipao();
+        if (pair == null) {
+            for (int i = 0; i < 3; i++) {
+                if (Objects.isNull(pair)) {
+                    pair = loginDipao();
+                }
+            }
+        }
+
+        //重试多次依然失败
+        if (Objects.isNull(pair)) {
+            HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(baseName + " 地跑登录多次失败！"));
+            return;
+        }
+        String loginStaff = pair.getLeft();
+        String doMain = pair.getRight();
+        HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(baseName + " 地跑登录成功"));
+
         WebDriver driver = null;
         int retryCount = 10;
         boolean retryFlag = true;
@@ -99,6 +120,9 @@ public class AutoLoginService {
                 if (cookie == null) {
                     break;
                 }
+
+                // 设置cookie到地跑RDS服务器
+                setDipaoCookie(doMain, baseName, loginStaff, cookie.getName() + "=" + cookie.getValue());
                 redisTemplate.opsForHash().put(REDIS_KEY, baseName, cookie.getName() + "=" + cookie.getValue());
                 log.info(REDIS_KEY + baseName + "cookie [ name:" + cookie.getName() + "  value:" + cookie.getValue() + " ]");
 
@@ -125,6 +149,28 @@ public class AutoLoginService {
                     driver.close();
                 }
             }
+        }
+    }
+
+    private void setDipaoCookie(String doMain, String baseName, String loginStaffId, String cookie) {
+        String url = doMain + SET_COOKIE_URL + "?" + "loginStaffId=" + loginStaffId + "&key=" + REDIS_KEY + "&hashKey=" + baseName + "&value=" + cookie;
+        String response = HttpClientUtil.getInstance().sendHttpGet(url);
+        if (StringUtils.isEmpty(response)) {
+            for (int i = 0; i < 3; i++) {
+                if (StringUtils.isEmpty(response)) {
+                    response = HttpClientUtil.getInstance().sendHttpGet(url);
+                }
+            }
+        }
+        if (StringUtils.isEmpty(response)) {
+            HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(baseName + "设置cookie失败。"));
+            throw new RuntimeException(baseName + "设置cookie失败。");
+        }
+
+        JSONObject jsonObject = JSON.parseObject(response);
+        if (StringUtils.equals(jsonObject.getString("code"), "0")) {
+            HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(baseName + "设置cookie失败。"));
+            throw new RuntimeException(baseName + "设置cookie失败。");
         }
     }
 
@@ -200,4 +246,39 @@ public class AutoLoginService {
         messageMap.put("content", contentMap);
         return JSON.toJSONString(messageMap);
     }
+
+    /**
+     * 登录地跑系统获取loginStaffId
+     *
+     * @return
+     */
+    public Pair<String, String> loginDipao() {
+        String profiles = redisTemplate.opsForValue().get(PROFILES_KEY);
+        if (StringUtils.isEmpty(profiles)) {
+            throw new RuntimeException("dipao profiles is empty !");
+        }
+        Object obj = redisTemplate.opsForHash().get(LOGIN_KEY, profiles);
+        if (Objects.isNull(obj)) {
+            throw new RuntimeException("dipao login info is null !");
+        }
+        LoginDTO dto = JSON.parseObject(obj.toString(), LoginDTO.class);
+
+        String url = dto.getDomainName() + DIPAO_LOGIN_URL + "?" + "phone=" + dto.getPhone() + "&pass=" + dto.getPassWord();
+
+        String response = HttpClientUtil.getInstance().sendHttpGet(url);
+        if (StringUtils.isEmpty(response)) {
+            log.error("login dipao error");
+            return null;
+        }
+        JSONObject resultJsonObject = JSON.parseObject(response);
+
+        JSONObject dataJsonObject = resultJsonObject.getJSONObject("data");
+        if (Objects.isNull(dataJsonObject)) {
+            return null;
+        }
+
+        return Pair.of(dataJsonObject.getString("staffId"), dto.getDomainName());
+    }
+
+
 }

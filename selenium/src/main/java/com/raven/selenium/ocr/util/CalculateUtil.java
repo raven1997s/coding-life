@@ -26,7 +26,7 @@ public class CalculateUtil {
                 res = num1 * num2;
                 break;
             default:
-                res = num1 + num2;
+                res = num1 * num2;
         }
         return res;
     }
