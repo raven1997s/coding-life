@@ -153,12 +153,13 @@ public class AutoLoginService {
     }
 
     private void setDipaoCookie(String doMain, String baseName, String loginStaffId, String cookie) {
-        String url = doMain + SET_COOKIE_URL + "?" + "loginStaffId=" + loginStaffId + "&key=" + REDIS_KEY + "&hashKey=" + baseName + "&value=" + cookie;
-        String response = HttpClientUtil.getInstance().sendHttpGet(url);
+        String url = doMain + SET_COOKIE_URL ;
+        String params =  "loginStaffId=" + loginStaffId + "&key=" + REDIS_KEY + "&hashKey=" + baseName + "&value=" + cookie;
+        String response = HttpClientUtil.getInstance().sendHttpPost(url,params);
         if (StringUtils.isEmpty(response)) {
             for (int i = 0; i < 3; i++) {
                 if (StringUtils.isEmpty(response)) {
-                    response = HttpClientUtil.getInstance().sendHttpGet(url);
+                    response = HttpClientUtil.getInstance().sendHttpPost(url,params);
                 }
             }
             if (StringUtils.isEmpty(response)) {
