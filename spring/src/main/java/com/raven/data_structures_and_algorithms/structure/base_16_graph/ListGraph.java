@@ -1,6 +1,8 @@
 package com.raven.data_structures_and_algorithms.structure.base_16_graph;
 
 
+import com.google.common.collect.Lists;
+
 import java.util.*;
 
 /**
@@ -223,6 +225,43 @@ public class ListGraph<V, E> implements Graph<V, E> {
                 break;
             }
         }
+    }
+
+    @Override
+    public List<V> topologicalSort() {
+        // 定义结果集封装排序结果
+        List<V> result = new ArrayList<>();
+        // 定义队列记录接下来需要排序的 入度为0的顶点
+        Queue<Vertex<V, E>> queue = new LinkedList<>();
+        // 定义map存储顶点对应的入度值 k 顶点 v 入度值
+        Map<Vertex<V, E>, Integer> inMap = new HashMap<>();
+        vertices.forEach((v, vertex) -> {
+            int in = vertex.inEdges.size();
+            if (in == 0) {
+                queue.offer(vertex);
+            } else {
+                inMap.put(vertex, in);
+            }
+        });
+
+        // 取出队列中入度为0的顶点 放入结果集中
+        while (!queue.isEmpty()) {
+            Vertex<V, E> vertex = queue.poll();
+            result.add(vertex.value);
+            // 遍历度为0顶点的出发边列表
+            for (Edge<V, E> edge : vertex.outEdges) {
+                // 从map中取出到达顶点的入度值
+                Vertex<V, E> toVertex = edge.to;
+                int in = inMap.get(toVertex) - 1;
+                // 如果入度值修改为0 则放入队列 否则更新map中顶点的入度值
+                if (in == 0) {
+                    queue.offer(toVertex);
+                } else {
+                    inMap.put(toVertex, in);
+                }
+            }
+        }
+        return result;
     }
 
     /**

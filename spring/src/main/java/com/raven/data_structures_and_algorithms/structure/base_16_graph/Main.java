@@ -1,6 +1,7 @@
 package com.raven.data_structures_and_algorithms.structure.base_16_graph;
 
 import org.apache.commons.lang3.StringUtils;
+import sun.java2d.pipe.SpanIterator;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -15,7 +16,18 @@ public class Main {
     public static void main(String[] args) {
         //bsf("V1");
         //testBsf();
-        dfs();
+        //dfs();
+        topoTest();
+    }
+
+    public static void topoTest() {
+        Graph<Object, Double> graph = directedGraph(Data.TOPO);
+        graph.bfs(3, o -> {
+            System.out.println(o);
+            return false;
+        });
+        System.out.println("=====");
+        graph.topologicalSort().forEach(System.out::println);
     }
 
     public static void dfs() {

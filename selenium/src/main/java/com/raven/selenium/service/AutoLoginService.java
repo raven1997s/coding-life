@@ -46,9 +46,9 @@ public class AutoLoginService {
     public static final String YZM_XPATH = "//*[@id=\"app\"]/section/main/div/form/div[3]/div/div[2]/img";
     public static final String YZM_INPUT_XPATH = "//*[@id=\"app\"]/section/main/div/form/div[3]/div/div[1]/input";
     public static final String LOGIN_BUTTON = "//*[@id=\"app\"]/section/main/div/form/div[4]/div/button";
-    public static final String REDIS_KEY = "AUTO_LOGIN";
-    public static final String PROFILES_KEY = "PROFILES_KEY";
-    public static final String LOGIN_KEY = "DIPAO_LOGIN";
+    public static final String REDIS_KEY = "AUTO_LOGIN_COOKIE";
+    public static final String PROFILES_KEY = "AUTO_LOGIN_PROFILES_KEY";
+    public static final String LOGIN_KEY = "AUTO_LOGIN_DIPAO_LOGIN";
     public static final String SET_COOKIE_URL = "/admin/crawling/order/set/cookie";
     public static final String DIPAO_LOGIN_URL = "/admin/staff/login";
     @Autowired
@@ -161,14 +161,14 @@ public class AutoLoginService {
                     response = HttpClientUtil.getInstance().sendHttpGet(url);
                 }
             }
-        }
-        if (StringUtils.isEmpty(response)) {
-            HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(baseName + "设置cookie失败。"));
-            throw new RuntimeException(baseName + "设置cookie失败。");
+            if (StringUtils.isEmpty(response)) {
+                HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(baseName + "设置cookie失败。"));
+                throw new RuntimeException(baseName + "设置cookie失败。");
+            }
         }
 
         JSONObject jsonObject = JSON.parseObject(response);
-        if (StringUtils.equals(jsonObject.getString("code"), "0")) {
+        if (!StringUtils.equals(jsonObject.getString("code"), "0")) {
             HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(baseName + "设置cookie失败。"));
             throw new RuntimeException(baseName + "设置cookie失败。");
         }
@@ -263,9 +263,10 @@ public class AutoLoginService {
         }
         LoginDTO dto = JSON.parseObject(obj.toString(), LoginDTO.class);
 
-        String url = dto.getDomainName() + DIPAO_LOGIN_URL + "?" + "phone=" + dto.getPhone() + "&pass=" + dto.getPassWord();
+        String url = dto.getDomainName() + DIPAO_LOGIN_URL;
+        String param = "phone=" + dto.getPhone() + "&pass=" + dto.getPassWord();
 
-        String response = HttpClientUtil.getInstance().sendHttpGet(url);
+        String response = HttpClientUtil.getInstance().sendHttpPost(url,param);
         if (StringUtils.isEmpty(response)) {
             log.error("login dipao error");
             return null;
@@ -279,6 +280,5 @@ public class AutoLoginService {
 
         return Pair.of(dataJsonObject.getString("staffId"), dto.getDomainName());
     }
-
 
 }
