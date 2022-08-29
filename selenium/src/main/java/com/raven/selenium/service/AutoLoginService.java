@@ -113,18 +113,19 @@ public class AutoLoginService {
 
                 // 中国重汽一线通 - 首页  登录成功发送cookie到redis
                 log.info(baseName + "title of current page is {}，login success ", driver.getTitle());
-                String loginMSg = baseName + " 登录成功";
-                HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(loginMSg));
 
                 Cookie cookie = driver.manage().getCookieNamed("jwt");
                 if (cookie == null) {
                     break;
                 }
+                String loginMsg = baseName + " %s";
+                HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(String.format(loginMsg, "重汽登录成功")));
 
                 // 设置cookie到地跑RDS服务器
                 setDipaoCookie(doMain, baseName, loginStaff, cookie.getName() + "=" + cookie.getValue());
                 redisTemplate.opsForHash().put(REDIS_KEY, baseName, cookie.getName() + "=" + cookie.getValue());
                 log.info(REDIS_KEY + baseName + "cookie [ name:" + cookie.getName() + "  value:" + cookie.getValue() + " ]");
+                HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(String.format(loginMsg, "地跑设置cookie成功")));
 
                 while (driver.getTitle().contains("中国重汽一线通")) {
                     // 每隔一段时间刷新页面
@@ -153,24 +154,26 @@ public class AutoLoginService {
     }
 
     private void setDipaoCookie(String doMain, String baseName, String loginStaffId, String cookie) {
-        String url = doMain + SET_COOKIE_URL ;
-        String params =  "loginStaffId=" + loginStaffId + "&key=" + REDIS_KEY + "&hashKey=" + baseName + "&value=" + cookie;
-        String response = HttpClientUtil.getInstance().sendHttpPost(url,params);
-        if (StringUtils.isEmpty(response)) {
-            for (int i = 0; i < 3; i++) {
-                if (StringUtils.isEmpty(response)) {
-                    response = HttpClientUtil.getInstance().sendHttpPost(url,params);
-                }
-            }
+        String url = doMain + SET_COOKIE_URL;
+        String params = "loginStaffId=" + loginStaffId + "&key=" + REDIS_KEY + "&hashKey=" + baseName + "&value=" + cookie;
+        String response = "";
+        boolean setCookieOk = false;
+        for (int i = 0; i < 3; i++) {
+            response = HttpClientUtil.getInstance().sendHttpPost(url, params);
             if (StringUtils.isEmpty(response)) {
-                HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(baseName + "设置cookie失败。"));
-                throw new RuntimeException(baseName + "设置cookie失败。");
+                continue;
             }
+            JSONObject jsonObject = JSON.parseObject(response);
+            String code = jsonObject.getString("code");
+            if (!StringUtils.equals(code, "0")) {
+                loginDipao();
+                continue;
+            }
+            setCookieOk = true;
         }
 
-        JSONObject jsonObject = JSON.parseObject(response);
-        if (!StringUtils.equals(jsonObject.getString("code"), "0")) {
-            HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(baseName + "设置cookie失败。"));
+        if (!setCookieOk) {
+            HttpClientUtil.getInstance().sendHttpPostJson(NOTIFY_URL, buildJsonParams(baseName + "设置cookie失败。 setCookie response = " + response));
             throw new RuntimeException(baseName + "设置cookie失败。");
         }
     }
@@ -267,7 +270,7 @@ public class AutoLoginService {
         String url = dto.getDomainName() + DIPAO_LOGIN_URL;
         String param = "phone=" + dto.getPhone() + "&pass=" + dto.getPassWord();
 
-        String response = HttpClientUtil.getInstance().sendHttpPost(url,param);
+        String response = HttpClientUtil.getInstance().sendHttpPost(url, param);
         if (StringUtils.isEmpty(response)) {
             log.error("login dipao error");
             return null;
