@@ -264,6 +264,11 @@ public class ListGraph<V, E> implements Graph<V, E> {
         return result;
     }
 
+    @Override
+    public Set<EdgeInfo<V, E>> mst() {
+        return null;
+    }
+
     /**
      * 从指定元素出发进行广度优先搜索遍历
      *

@@ -2,6 +2,7 @@ package com.raven.data_structures_and_algorithms.structure.base_16_graph;
 
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Description:
@@ -97,4 +98,18 @@ public interface Graph<V, E> {
     // 假设G=(V，E)是有权的连通图（无向）)，A是G中最小生成树的边集
     // 算法从S={uo}(uo EV)，A={}开始，重复执行下述操作，直到S=V为止
     // 找到切分 C=(S，V-S) 的最小横切边（uo，Vo）并入集合 A，同时将 Vo并入集合S
+
+    Set<EdgeInfo<V, E>> mst();
+
+    class EdgeInfo<V, E> {
+        V from;
+        V to;
+        E eight;
+
+        public EdgeInfo(V from, V to, E eight) {
+            this.from = from;
+            this.to = to;
+            this.eight = eight;
+        }
+    }
 }
