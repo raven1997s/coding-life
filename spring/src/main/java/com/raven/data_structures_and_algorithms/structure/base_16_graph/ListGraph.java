@@ -2,6 +2,7 @@ package com.raven.data_structures_and_algorithms.structure.base_16_graph;
 
 
 import com.google.common.collect.Lists;
+import org.springframework.cglib.core.CollectionUtils;
 
 import java.util.*;
 
@@ -14,11 +15,20 @@ import java.util.*;
  * @author raven
  */
 @SuppressWarnings("unchecked")
-public class ListGraph<V, E> implements Graph<V, E> {
+public class ListGraph<V, E> extends Graph<V, E> {
+    public ListGraph() {
+    }
+
+    public ListGraph(WeightManger<E> weightManger) {
+        super(weightManger);
+    }
+
     // 存储所有的边
     private Set<Edge<V, E>> edges = new HashSet<>();
     // 存储V元素和顶点的映射
     private HashMap<V, Vertex<V, E>> vertices = new HashMap<>();
+    // 定义边比较器
+    private Comparator<Edge<V, E>> edgeComparator = (e1, e2) -> weightManger.compare(e1.weight, e2.weight);
 
     @Override
     public int edgesSize() {
@@ -266,6 +276,50 @@ public class ListGraph<V, E> implements Graph<V, E> {
 
     @Override
     public Set<EdgeInfo<V, E>> mst() {
+        return prim();
+    }
+
+    /**
+     * prim 算法生成最小生成树
+     *
+     * @return
+     */
+    private Set<EdgeInfo<V, E>> prim() {
+        // 先随机获取一个顶点
+        Iterator<Vertex<V, E>> it = vertices.values().iterator();
+        if (!it.hasNext()) {
+            return null;
+        }
+        Vertex<V, E> vertex = it.next();
+        // 通过最小堆挑出顶点到其他顶点权值最小的边
+        Set<EdgeInfo<V, E>> edgeInfos = new HashSet<>();
+        // 记录所有已经添加到堆中到顶点
+        Set<Vertex<V, E>> addedVertices = new HashSet<>();
+        // 将顶点出发的所有边批量建堆 放入堆中
+        MinHeap<Edge<V, E>> heap = new MinHeap<>(vertex.outEdges, edgeComparator);
+        addedVertices.add(vertex);
+
+        // 所有顶点都添加过后最小生成树已经形成
+        int vertexSize = vertices.size();
+        while (!heap.isEmpty() && addedVertices.size() < vertexSize) {
+            // 获取堆顶元素放入最小生成树中
+            Edge<V, E> edge = heap.remove();
+            // 如果该边到到达顶点已经添加过，则删除这条边 继续循环
+            if (addedVertices.contains(edge.to)) {
+                continue;
+            }
+
+            // 把到达顶点的出发的所有边 放入堆中
+            heap.addAll(edge.to.outEdges);
+            // 将到达顶点放入已经添加过到顶点集合中
+            addedVertices.add(edge.to);
+            edgeInfos.add(edge.info());
+        }
+
+        return edgeInfos;
+    }
+
+    private Set<EdgeInfo<V, E>> kruskal() {
         return null;
     }
 
@@ -474,6 +528,10 @@ public class ListGraph<V, E> implements Graph<V, E> {
                     ", to=" + to +
                     ", weight=" + weight +
                     '}';
+        }
+
+        public EdgeInfo<V, E> info() {
+            return new EdgeInfo<>(from.value, to.value, weight);
         }
     }
 }

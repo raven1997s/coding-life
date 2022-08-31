@@ -5,6 +5,7 @@ import sun.java2d.pipe.SpanIterator;
 
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Description:
@@ -13,11 +14,33 @@ import java.util.Objects;
  * @author raven
  */
 public class Main {
+
+    static Graph.WeightManger<Double> weightManger = new Graph.WeightManger<Double>() {
+        @Override
+        public int compare(Double w1, Double w2) {
+            return w1.compareTo(w2);
+        }
+
+        @Override
+        public Double add(Double w1, Double w2) {
+            return w1 + w2;
+        }
+    };
+
     public static void main(String[] args) {
         //bsf("V1");
         //testBsf();
         //dfs();
-        topoTest();
+        //topoTest();
+        testMst();
+    }
+
+    public static void testMst() {
+        Graph<Object, Double> graph = undirectedGraph(Data.MST_01);
+        Set<Graph.EdgeInfo<Object, Double>> infos = graph.mst();
+        for (Graph.EdgeInfo<Object, Double> info : infos) {
+            System.out.println(info);
+        }
     }
 
     public static void topoTest() {
@@ -76,7 +99,7 @@ public class Main {
      * 有向图
      */
     private static Graph<Object, Double> directedGraph(Object[][] data) {
-        Graph<Object, Double> graph = new ListGraph<>();
+        Graph<Object, Double> graph = new ListGraph<>(weightManger);
         for (Object[] edge : data) {
             if (edge.length == 1) {
                 graph.addVertex(edge[0]);
@@ -97,7 +120,7 @@ public class Main {
      * @return
      */
     private static Graph<Object, Double> undirectedGraph(Object[][] data) {
-        Graph<Object, Double> graph = new ListGraph<>();
+        Graph<Object, Double> graph = new ListGraph<>(weightManger);
         for (Object[] edge : data) {
             if (edge.length == 1) {
                 graph.addVertex(edge[0]);
