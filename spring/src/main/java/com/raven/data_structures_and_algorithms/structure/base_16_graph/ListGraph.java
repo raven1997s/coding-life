@@ -276,7 +276,7 @@ public class ListGraph<V, E> extends Graph<V, E> {
 
     @Override
     public Set<EdgeInfo<V, E>> mst() {
-        return prim();
+        return kruskal();
     }
 
     /**
@@ -319,8 +319,38 @@ public class ListGraph<V, E> extends Graph<V, E> {
         return edgeInfos;
     }
 
+    /**
+     * 通过kruskal算法求最小生成树
+     *
+     * @return
+     */
     private Set<EdgeInfo<V, E>> kruskal() {
-        return null;
+        // 遍历完整个堆 或者最小生成树的顶点个数等于图的顶点个数时 最小生成树已经形成
+        int vertexSize = vertices.size();
+        if (vertexSize == 0) {
+            return null;
+        }
+        // 构建返回的最小生成树集合
+        Set<EdgeInfo<V, E>> edgeInfos = new HashSet<>();
+        // 把所有边批量建堆放入最小堆中 用于基于权值从小到大获取边
+        MinHeap<Edge<V, E>> heap = new MinHeap<>(edges, edgeComparator);
+        // 把所有顶点放到并查集中 用于判断是否会产生闭环
+        UnionFind<Vertex<V, E>> uf = new UnionFind<>();
+        vertices.forEach((v, e) -> uf.markSet(e));
+
+
+        while (!heap.isEmpty() && edgeInfos.size() < vertexSize) {
+            // 获取权值最小的边
+            Edge<V, E> edge = heap.remove();
+            // 如果from和to已经在同一链路上 则这条边不能加入最小生成树 否则会产生环
+            if (uf.isSame(edge.from, edge.to)) {
+                continue;
+            }
+            uf.union(edge.from, edge.to);
+            edgeInfos.add(edge.info());
+        }
+
+        return edgeInfos;
     }
 
     /**
