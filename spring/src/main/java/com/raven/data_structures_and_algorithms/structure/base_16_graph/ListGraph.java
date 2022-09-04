@@ -274,6 +274,86 @@ public class ListGraph<V, E> extends Graph<V, E> {
         return result;
     }
 
+    /**
+     * 获取指定元素到其他任意一个顶点到最短权值和
+     *
+     * @param begin
+     * @return
+     */
+    @Override
+    public Map<V, E> shortestPath(V begin) {
+        // 获取出发元素对应的顶点
+        Vertex<V, E> beginVertex = vertices.get(begin);
+        if (beginVertex == null) {
+            return null;
+        }
+
+        /**
+         * 用于封装begin到其他所有顶点的最短路径的权值和(已经确定了最终结果)
+         *
+         * key 顶点元素
+         * value begin到该元素到权值和
+         */
+        Map<V, E> selectedPaths = new HashMap<>();
+
+        /**
+         * 用于记录begin元素到其他顶点的最短路径权值和(过程值 松弛操作后不断更新)
+         * key 顶点
+         * value beginVertex到顶点到权值
+         */
+        Map<Vertex<V, E>, E> paths = new HashMap<>();
+        // 初始化paths 存储出发顶点到可直接到达的所有顶点的权值
+        for (Edge<V, E> edge : beginVertex.outEdges) {
+            paths.put(edge.to, edge.weight);
+        }
+        // 不断的从paths中取出最短的路径放入结果集中 然后进行松弛操作，更新出发顶点到其他顶点的最小权值和
+        while (!paths.isEmpty()) {
+            Map.Entry<Vertex<V, E>, E> minEntry = getMinPath(paths);
+            Vertex<V, E> minVertex = minEntry.getKey();
+            // 存储minVertex顶点的最短路径
+            selectedPaths.put(minVertex.value, minEntry.getValue());
+            // 从paths中删除minVertex minVertex离开桌面
+            paths.remove(minVertex);
+            // 对minVertex进行松弛操作,重新计算从beginVertex 到其他所有顶点到最小权值和
+            for (Edge<V, E> edge : minVertex.outEdges) {
+                // 如果edge.to 已经离开桌面 则没比较再进行松弛操作
+                if (selectedPaths.containsKey(edge.to.value)) {
+                    continue;
+                }
+                // 新的最短路径： beginVertex到edge.from的最短路径 + edge. weight
+                E newWeight = weightManger.add(minEntry.getValue(), edge.weight);
+                // 以前的最短路径 beginVertex到edge.to到最短路径
+                // paths中之前没存储从beginVertex 到 endVertex的权值 或者新值路径值小于旧到路径值  把新的最短路径记录起来
+                E oldWeight = paths.get(edge.to);
+                if (oldWeight == null || weightManger.compare(newWeight, oldWeight) < 0) {
+                    paths.put(edge.to, newWeight);
+                }
+            }
+        }
+        selectedPaths.remove(beginVertex.value);
+        return selectedPaths;
+    }
+
+    private void relax() {
+
+    }
+
+    /**
+     * 从paths中填写一个最短路径出来
+     *
+     * @param paths
+     * @return
+     */
+    private Map.Entry<Vertex<V, E>, E> getMinPath(Map<Vertex<V, E>, E> paths) {
+        Map.Entry<Vertex<V, E>, E> minEntry = null;
+        for (Map.Entry<Vertex<V, E>, E> entry : paths.entrySet()) {
+            if (minEntry == null || weightManger.compare(entry.getValue(), minEntry.getValue()) < 0) {
+                minEntry = entry;
+            }
+        }
+        return minEntry;
+    }
+
     @Override
     public Set<EdgeInfo<V, E>> mst() {
         return kruskal();

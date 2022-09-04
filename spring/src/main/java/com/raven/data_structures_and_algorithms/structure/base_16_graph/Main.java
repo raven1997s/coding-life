@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import sun.java2d.pipe.SpanIterator;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -32,7 +33,16 @@ public class Main {
         //testBsf();
         //dfs();
         //topoTest();
-        testMst();
+        //testMst();
+        testSp();
+    }
+
+    public static void testSp() {
+        Graph<Object, Double> graph = undirectedGraph(Data.SP);
+        Map<Object, Double> shortestPath = graph.shortestPath("A");
+        shortestPath.forEach((key,value) -> {
+            System.out.println(key + "__" + value);
+        });
     }
 
     public static void testMst() {

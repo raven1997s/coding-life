@@ -2,6 +2,7 @@ package com.raven.data_structures_and_algorithms.structure.base_16_graph;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -97,6 +98,14 @@ public abstract class Graph<V, E> {
     public abstract List<V> topologicalSort();
 
     /**
+     * 获取指定元素到其他任意一个顶点到最短权值和
+     *
+     * @param begin
+     * @return
+     */
+    public abstract Map<V, E> shortestPath(V begin);
+
+    /**
      * 权值管理器接口
      *
      * @param <E>
@@ -132,7 +141,6 @@ public abstract class Graph<V, E> {
     //若加入该边会与生成树形成环，则不加入该边
     //从第3条边开始，可能会与生成树形成环
     public abstract Set<EdgeInfo<V, E>> mst();
-
 
 
     public static class EdgeInfo<V, E> {
