@@ -12,10 +12,10 @@ public class Article {
     public int value;
     public double valueDensity;
 
-    public Article(int weight, int value, double valueDensity) {
+    public Article(int weight, int value) {
         this.weight = weight;
         this.value = value;
-        this.valueDensity = valueDensity;
+        this.valueDensity = value * 1.0 / weight;
     }
 
     @Override
