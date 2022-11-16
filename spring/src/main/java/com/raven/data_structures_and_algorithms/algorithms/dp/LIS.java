@@ -6,6 +6,7 @@ import java.util.Arrays;
  * Description:
  * date: 2022/11/16 11:31
  * 动态规划-最长上升子序列个数
+ * LIS:最长上升子序列(Longest Increasing Subsequence)
  *
  * @author raven
  */
