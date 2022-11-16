@@ -13,7 +13,13 @@ public class MaxSubArray {
     }
 
     /**
-     * // 定义dp数组，dp[i] 以nums[i] 结尾的最大连续子序列和
+     * // 定义状态： 定义dp数组，dp[i] 以nums[i] 结尾的最大连续子序列和
+     * // 状态转移方程 if (dp[i - 1] < 0) {
+     *                 dp[i] = nums[i];
+     *             } else {
+     *                 dp[i] = dp[i - 1] + nums[i];
+     *             }
+     *
      *
      * @param nums
      * @return
