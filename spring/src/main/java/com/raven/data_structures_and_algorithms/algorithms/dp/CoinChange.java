@@ -18,19 +18,25 @@ public class CoinChange {
             return -1;
         }
 
+        //  记录凑够n 需要的最少硬币数量
         int[] dp = new int[n + 1];
         // faces[i] 是凑过i分时最后选择的那枚硬币的面值
         for (int i = 1; i <= n; i++) {
             int min = Integer.MAX_VALUE;
             for (int face : faces) {
+                // 金额小于面值 无法兑换 尝试下一个面值
                 if (i < face) {
                     continue;
                 }
-                if (dp[i - face] < 0 || dp[i - face] >= min) {
+                //
+                int value = i - face;
+                if (dp[value] < 0 || dp[value] >= min) {
                     continue;
                 }
-                min = Math.min((dp[i - face]), min);
+                min = dp[value];
             }
+
+            // 没有可用的面值 返回-1
             if (min == Integer.MAX_VALUE) {
                 dp[i] = -1;
             } else {
