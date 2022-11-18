@@ -4,11 +4,49 @@ package com.raven.data_structures_and_algorithms.algorithms.dp;
  * Description:
  * date: 2022/11/17 21:48
  * 动态规划-01背包问题
+ *
  * @author raven
  */
 public class Knapsack {
     public static void main(String[] args) {
         System.out.println(maxValues(new int[]{6, 3, 5, 4, 6}, new int[]{2, 2, 6, 5, 4}, 10));
+    }
+
+
+    /**
+     * 恰好装满
+     *
+     * @param values
+     * @param weights
+     * @param capacity
+     * @return 如果返回-1 代表无法刚好凑够capacity这个容量
+     */
+    static int maxValues2(int[] values, int[] weights, int capacity) {
+        if (values == null || values.length == 0) {
+            return 0;
+        }
+        if (weights == null || weights.length == 0) {
+            return 0;
+        }
+        if (values.length != weights.length || capacity <= 0) {
+            return 0;
+        }
+
+        // 定义dp数组
+        // 假设dp(i,j) 是最大承重为j ,有钱i件物品可以选时的最大总价值
+        int[] dp = new int[capacity + 1];
+        for (int j = 1; j <= capacity; j++) {
+            dp[j] = Integer.MIN_VALUE;
+        }
+        for (int i = 1; i <= values.length; i++) {
+            for (int j = capacity; j > 1; j--) {
+                // 最后一件物品可以选，看选的价值搞还是不选的价值高
+                if (j >= weights[i - 1]) {
+                    dp[j] = Math.max(dp[j], dp[j - weights[i - 1]] + values[i - 1]);
+                }
+            }
+        }
+        return dp[capacity] < -1 ? 0 : dp[capacity];
     }
 
     /**
