@@ -1,5 +1,6 @@
 package com.raven.data_structures_and_algorithms.algorithms.sequence;
 
+import com.raven.utils.Asserts;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -10,7 +11,9 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class KMP {
     public static void main(String[] args) {
-
+        Asserts.test(indexOf("Hello World", "or") == 7);
+        Asserts.test(indexOf("Hello World", "H") == 0);
+        Asserts.test(indexOf("Hello World", "abc") == -1);
     }
 
     public static int indexOf(String text, String pattern) {
@@ -39,17 +42,40 @@ public class KMP {
         return (pi == plen) ? (ti - pi) : -1;
     }
 
-    private static int[] next(String pattern){
+    private static int[] next(String pattern) {
         char[] chars = pattern.toCharArray();
         int[] next = new int[chars.length];
         next[0] = -1;
         int i = 0;
-        int iMax = chars.length -1;
+        int iMax = chars.length - 1;
         int n = -1;
-        while (i < iMax){
-            if (n < 0 || chars[i] == chars[n]){
+        while (i < iMax) {
+            if (n < 0 || chars[i] == chars[n]) {
                 next[++i] = ++n;
-            }else  {
+            } else {
+                n = next[n];
+            }
+        }
+        return next;
+    }
+
+    private static int[] next2(String pattern) {
+        char[] chars = pattern.toCharArray();
+        int[] next = new int[chars.length];
+        next[0] = -1;
+        int i = 0;
+        int iMax = chars.length - 1;
+        int n = -1;
+        while (i < iMax) {
+            if (n < 0 || chars[i] == chars[n]) {
+                ++i;
+                ++n;
+                if (chars[i] == chars[n]){
+                    next[i] = next[n];
+                }else {
+                    next[i] = n;
+                }
+            } else {
                 n = next[n];
             }
         }
