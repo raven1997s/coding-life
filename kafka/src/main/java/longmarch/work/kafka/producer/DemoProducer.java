@@ -16,7 +16,7 @@ import java.util.concurrent.Future;
  *
  * @author longjiaocao
  */
-public class TestProducer {
+public class DemoProducer {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         Properties properties = new Properties();
         //指定kafka服务器地址 如果是集群可以指定多个  但是就算只指定一个他也会去集群环境下寻找其他的节点地 址
@@ -29,9 +29,9 @@ public class TestProducer {
 //        properties.setProperty("value.serializer", StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(properties);
-        ProducerRecord<String, String> stringStringProducerRecord = new ProducerRecord<String, String>("demo-topic", 1, "testKey", "hello,kafka");
+        ProducerRecord<String, String> stringStringProducerRecord = new ProducerRecord<String, String>("demo-topic", 0, "testKey", "hello,kafka");
         Future<RecordMetadata> send = kafkaProducer.send(stringStringProducerRecord);
-        ProducerRecord<String, String> stringStringProducerRecord2 = new ProducerRecord<String, String>("demo-topic", 0, "testKey", "hello,kafka");
+        ProducerRecord<String, String> stringStringProducerRecord2 = new ProducerRecord<String, String>("test-topic", 0, "testKey", "hello,kafka");
         kafkaProducer.send(stringStringProducerRecord2);
         // 同步接收消息发送成功的返回
         RecordMetadata recordMetadata = send.get();
