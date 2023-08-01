@@ -1,0 +1,48 @@
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    password:
+    timeout: 3600
+    lettuce:
+      pool:
+        max-active: 3
+        max-wait: 5
+        max-idle: 3
+        min-idle: 0
+    client-name: redisson_demo
+    redisson:
+#       file: classpath:redisson.yaml
+      config: |
+         threads: 16
+         nettyThreads: 16
+         singleServerConfig:
+           address: "redis://${spring.redis.host}:${spring.redis.port}"
+           password: ${spring.redis.password}
+           subscriptionConnectionPoolSize: 50
+           connectionPoolSize: 100
+           idleConnectionTimeout: 10000
+           connectTimeout: 10000
+           timeout: 3000
+           retryInterval: 1500
+           pingConnectionInterval: 1000
+           dnsMonitoringInterval: 1000 
+
+#
+#    redisson:
+#      config: |
+#        {
+#          "singleServerConfig": {
+#            "address": "redis://r-bp1u6v3yxgmnhy4lz0pd.redis.rds.aliyuncs.com:6379",
+#            "connectionMinimumIdleSize": 11,
+#            "password": "2023!@#raven",
+#            "database": 0
+#          }
+#        }
+
+
+redisson:
+  address: redis://${spring.redis.host}:${spring.redis.port}
+  password: ${spring.redis.password}
+

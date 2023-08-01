@@ -1,0 +1,18 @@
+singleServerConfig:
+  address: "redis://${spring.redis.host}:${spring.redis.port}"
+  connectionMinimumIdleSize: 11
+  password: ${spring.redis.password}
+  database: 0
+threads: 0
+nettyThreads: 0
+codec: !<org.redisson.codec.FstCodec> { }
+transportMode: "NIO"
+
+#{
+#  "singleServerConfig": {
+#    "address": "redis://${spring.redis.host}:${spring.redis.port}",
+#    "connectionMinimumIdleSize": 11,
+#    "password": "${spring.redis.password}",
+#    "database": 0
+#  }
+#}
