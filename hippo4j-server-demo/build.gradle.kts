@@ -24,8 +24,9 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("cn.hippo4j:hippo4j-config-spring-boot-starter:1.4.3-upgrade")
+    implementation("cn.hippo4j:hippo4j-config-spring-boot-starter:1.5.0")
 
+//	implementation("com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config:2.2.7.RELEASE")
 }
 
 tasks.withType<Test> {
