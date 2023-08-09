@@ -1,0 +1,25 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: ${nacos.instance.hostname}:${nacos.instance.port}
+        file-extension: yaml
+        namespace: ${nacos.instance.namespace}
+        name: hippo4j-config
+  application:
+    name: hippo4j-config
+  profiles:
+    active: dev
+
+
+
+nacos:
+  instance:
+    hostname: nacos.dev.igancao.cn
+    port: 80
+    namespace: 19416107-fc22-4f3b-a303-ead7ba9d8693
+# ?????
+#  nacos??? namespace group dataId ???????????????????????????????
+# ?????spring-cloud--nacos-config-name??dataId = spring.application.name + file-extension(???properties)
+# ???name? dataId = name + file-extension = nacosConfig.yaml
+# ??????namespace - group - dataId ?????????? springboot????
