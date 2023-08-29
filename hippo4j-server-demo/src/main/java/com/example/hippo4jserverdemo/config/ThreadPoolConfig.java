@@ -17,9 +17,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 public class ThreadPoolConfig {
 
+
     @Bean
     @DynamicThreadPool
-    public ThreadPoolExecutor serverMessageConsumeDynamicExecutor() {
+    public ThreadPoolExecutor messageConsumeDynamicExecutor() {
         String threadPoolId = "server-message-consume";
         ThreadPoolExecutor messageConsumeDynamicExecutor = ThreadPoolBuilder.builder()
                 .threadFactory(threadPoolId)
@@ -31,33 +32,8 @@ public class ThreadPoolConfig {
 
     @Bean
     @DynamicThreadPool
-    public ThreadPoolExecutor serverMessageProduceDynamicExecutor() {
-        String threadPoolId = "server-message-produce";
-        ThreadPoolExecutor messageProduceDynamicExecutor = ThreadPoolBuilder.builder()
-                .threadFactory(threadPoolId)
-                .threadPoolId(threadPoolId)
-                .dynamicPool()
-                .build();
-        return messageProduceDynamicExecutor;
-    }
-
-
-    @Bean
-    @DynamicThreadPool
-    public ThreadPoolExecutor messageConsumeDynamicExecutor() {
-        String threadPoolId = "message-consume";
-        ThreadPoolExecutor messageConsumeDynamicExecutor = ThreadPoolBuilder.builder()
-                .threadFactory(threadPoolId)
-                .threadPoolId(threadPoolId)
-                .dynamicPool()
-                .build();
-        return messageConsumeDynamicExecutor;
-    }
-
-    @Bean
-    @DynamicThreadPool
     public ThreadPoolExecutor messageProduceDynamicExecutor() {
-        String threadPoolId = "message-produce";
+        String threadPoolId = "server-message-produce";
         ThreadPoolExecutor messageProduceDynamicExecutor = ThreadPoolBuilder.builder()
                 .threadFactory(threadPoolId)
                 .threadPoolId(threadPoolId)
