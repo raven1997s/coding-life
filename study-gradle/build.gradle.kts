@@ -20,11 +20,14 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
-    compileOnly("org.projectlombok:lombok")
+    implementation("org.projectlombok:lombok:1.18.16")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok:1.18.16") // 添加Lombok依赖
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("com.alibaba:transmittable-thread-local:2.14.2")
+    testCompileOnly("org.projectlombok:lombok:1.18.16")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.16")
 }
 
 tasks.withType<Test> {
