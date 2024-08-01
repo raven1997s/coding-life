@@ -1,0 +1,45 @@
+
+server:
+  port: 8080
+  servlet:
+    encoding:
+      enabled: true
+      force: true
+
+spring:
+  application:
+    name: dream-fulfill
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    url: jdbc:mysql://${ds.url}:3306/dream_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=Asia/Shanghai&allowMultiQueries=true&useSSL=false
+    username: ${ds.name}
+    password: ${ds.pwd}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      validation-query: SELECT 1
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      test-on-borrow: false
+      test-on-return: false
+      #      ????
+      connect-timeout: 10000
+      #      socket?????sql??????????
+      socket-timeout: 30000
+
+ds:
+  url: igaon.cn
+  name: dream_job
+  pwd: Y6EEBNyR7LKfpAz8
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.raven.dream.job.mapper
